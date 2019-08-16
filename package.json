@@ -1,0 +1,39 @@
+{
+  "name": "gem-of-love",
+  "version": "0.0.1",
+  "description": "A 2D game of a story about fighting dragons and bring back the gem of love",
+  "main": "webpack.config.js",
+  "scripts": {
+    "dev": "npm run clear && webpack",
+    "dev:watch": "webpack --watch",
+    "build": "npm run clear && webpack --mode production",
+    "build:watch": "webpack --mode production --watch",
+    "server": "http-server",
+    "clear": "rm -rf ./public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryancat/js13k2019.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryancat/js13k2019/issues"
+  },
+  "homepage": "https://github.com/ryancat/js13k2019#readme",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^4.5.2",
+    "eslint": "^5.5.0",
+    "eslint-watch": "^4.0.2",
+    "file-loader": "^4.2.0",
+    "http-server": "^0.11.1",
+    "webpack": "^4.39.2",
+    "webpack-bundle-analyzer": "^3.4.1",
+    "webpack-cli": "^3.3.7",
+    "zip-webpack-plugin": "^3.0.0"
+  }
+}
