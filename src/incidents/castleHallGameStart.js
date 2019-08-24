@@ -11,4 +11,4 @@ export function castleHallGameStart(game, dt) {
   const castleHallMap = createCastleHall();
 
   game.flag.castleHallGameStart = true;
-};
+}
