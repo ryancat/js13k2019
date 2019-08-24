@@ -201,15 +201,19 @@ function createGameLoop(fps) {
     gameLoop.callbacks = [];
   };
 
-  gameLoop.run = (upTime) => {
+  gameLoop.run = () => {
     gameLoop.timeoutId = window.requestAnimationFrame(gameLoop.run);
+
+    const now = Date.now();
+    const lastRun = gameLoop.lastRun;
+    gameLoop.lastRun = now;
 
     if (gameLoop.isPaused) {
       return;
     }
 
-    let dt;
-    if (!gameLoop.lastRun || (dt = Date.now() - gameLoop.lastRun) && (dt >= 1000 / fps)) {
+    const dt = now - lastRun;
+    if (dt >= 1000 / fps) {
       // We need to check game fps to decide if we should run registered callbacks
       gameLoop.callbacks.forEach(callback => callback(dt));
     }
@@ -225,6 +229,7 @@ function createGameLoop(fps) {
   };
 
   gameLoop.run();
+  gameLoop.lastRun = Date.now();
 
   return gameLoop;
 }
