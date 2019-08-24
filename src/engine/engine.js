@@ -1,4 +1,5 @@
-import * as canvas from './renderers/canvas';
+import { CanvasRenderer } from './renderers/canvas';
+import * as spriteMap from '../sprites';
 
 const DEFAULT_GAME_WIDTH = 800;
 const DEFAULT_GAME_HEIGHT = 800;
@@ -8,7 +9,7 @@ const DEFAULT_NUM_TILE_HEIGHT = 32;
 const DEFAULT_SCALE_MODE = 'fit';
 const DEFAULT_BACKGROUND_COLOR = '#000';
 const DEFAULT_FPS = 60;
-const DEFAULT_RENDERER = canvas;
+const DEFAULT_RENDERER = new CanvasRenderer();
 
 export class Game {
   constructor(options = {}) {
@@ -20,7 +21,7 @@ export class Game {
       scaleMode = DEFAULT_SCALE_MODE,
       backgroundColor = DEFAULT_BACKGROUND_COLOR,
       fps = DEFAULT_FPS,
-      renderer = DEFAULT_RENDERER
+      container = document.createElement('div')
     } = options;
 
     Object.assign(this, {
@@ -30,18 +31,19 @@ export class Game {
       height,
       scaleMode,
       backgroundColor,
-      renderer,
       sprites: [],
+      container,
       flag: {},
       incidents: [],
       incidentMap: {},
+      layerMap: {},
       loop: createGameLoop(fps)
     });
   }
 
   // Load all sprite classes
-  loadSprites(sprites = []) {
-    
+  loadSprites() {
+    this.spriteMap = spriteMap;
   }
 
   /**
@@ -54,8 +56,19 @@ export class Game {
   /**
    * Add game layers
    */
-  addLayer(options) {
+  addLayer(layerKey = 'layer', options = {}) {
+    const {
+      width = this.pixelWidth,
+      height = this.pixelHeight,
+      renderer = new CanvasRenderer({
+        width,
+        height,
+        container: this.container,
+        key: layerKey
+      })
+    } = options;
 
+    this.layerMap[layerKey] = renderer;
   }
 
   /**
@@ -69,29 +82,40 @@ export class Game {
 
     this.incidents.push(incidentFn);
   }
+
+  /**
+   * Create a sprite object
+   * @param {string} spriteKey the key to hash sprite data
+   */
+  createSprite(spriteKey = '', options = {}) {
+    return new this.spriteMap[spriteKey](options);
+  }
 }
 
-class Group {
-  constructor({
-    x,
-    y,
-    width,
-    height,
-    type,
-    parent,
-    renderer,
-    children
-  }) {
+export class Group {
+  constructor(options = {}) {
     Object.assign(this, {
-      x,
-      y,
-      width,
-      height,
-      children,
-      parent,
-      type,
-      renderer
-    });
+      x: 0,
+      y: 0,
+      width: DEFAULT_NUM_TILE_WIDTH,
+      height: DEFAULT_NUM_TILE_HEIGHT,
+      children: [],
+      parent: null,
+      type: 'group',
+    }, options);
+  }
+
+  get renderer() {
+    let renderer = this._renderer;
+    while (!renderer && this.parent) {
+      renderer = this.parent.renderer;
+    }
+
+    return renderer;
+  }
+
+  set renderer(renderer) {
+    this._renderer = renderer;
   }
 
   // Add sprite (or another group) to children
@@ -101,13 +125,29 @@ class Group {
   };
 
   render() {
-    this.children.forEach(child => child.render())
+    this.children.forEach(child => child.render(this.renderer))
   }
 
   update(dt) {
     this.children.forEach(child => child.update(dt))
   }
 }
+
+// export class MapGroup extends Group {
+//   constructor(options = {}) {
+//     super(options);
+
+//     const {
+//       pixelWidth = DEFAULT_GAME_WIDTH,
+//       pixelHeight = DEFAULT_GAME_HEIGHT
+//     } = options;
+
+//     Object.assign(this, {
+//       pixelWidth,
+//       pixelHeight
+//     });
+//   }
+// }
 
 export class Scene extends Group {
   constructor(game, {

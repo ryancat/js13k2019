@@ -8,16 +8,15 @@
 // 4. Try not to use tileset when possible to reduce size
 import {
   Game
-} from './engine/index';
-import {
-  CastleHallGround
-} from './sprites/castle';
+} from './engine/engine';
 import {
   castleHallGameStart
 } from './incidents/castleHallGameStart';
 
 // Use default values for now
-const game = new Game();
+const game = new Game({
+  container: document.getElementById('root')
+});
 
 // The update function will be getting called each animation
 // frame. It will go through dirty flags to move game forward.
@@ -25,9 +24,8 @@ function update(dt) {
   // Step 1: load game assets
   if (!game.flag.isLoadAssets) {
     // Load sprites
-    game.loadSprites([
-      CastleHallGround
-    ]);
+    game.loadSprites();
+
     // Load sound assets
     game.loadSounds();
     game.flag.isLoadAssets = true;
@@ -71,3 +69,8 @@ game.loop.start();
 
 // Add first game incident
 game.addIncident(castleHallGameStart, 'castleHallGameStart');
+
+// For debug
+if (IS_DEV_MODE) {
+  window.game = game;
+}

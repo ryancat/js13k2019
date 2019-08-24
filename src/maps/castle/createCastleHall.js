@@ -57,7 +57,7 @@ export function createCastleHall(config = {}) {
     tileWidth: 16,
     tileHeight: 16,
     tileSet: {
-      1: 'CastleHallGround'
+      1: 'RectSprite'
     }
   };
 };

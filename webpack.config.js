@@ -1,4 +1,6 @@
 const path = require('path');
+const webpack = require('webpack');
+
 // Plugins
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -10,6 +12,9 @@ module.exports = function (env, argv) {
 
   // Plugins
   const plugins = [
+    new webpack.DefinePlugin({
+      IS_DEV_MODE: mode === 'development'
+    }),
     // Copy the index.html to the public folder
     new CopyWebpackPlugin([{
       from: './src/index.html',
