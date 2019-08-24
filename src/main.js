@@ -16,6 +16,7 @@ import {
   castleHallGameStart
 } from './incidents/castleHallGameStart';
 
+// Use default values for now
 const game = new Game();
 
 // The update function will be getting called each animation
