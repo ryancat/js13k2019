@@ -120,7 +120,7 @@ export class BaseIncident {
 
       // for debug
       if (IS_DEV_MODE) {
-        window[`${this.constructor.name}-mapGroup`] = this.mapGroup
+        window[`mapGroup_${this.constructor.name}`] = this.mapGroup
       }
     })
 

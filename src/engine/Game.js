@@ -127,7 +127,14 @@ export class Game {
     return keyObj
   }
 
-  static hitTestPoint({ x = 0, y = 0 }, sprite) {}
+  static hitTestPoint({ x = 0, y = 0 }, sprite) {
+    return (
+      x >= sprite.pixelX + sprite.hitArea.x &&
+      x <= sprite.pixelX + sprite.hitArea.x + sprite.hitArea.width &&
+      y >= sprite.pixelY + sprite.hitArea.y &&
+      y <= sprite.pixelY + sprite.hitArea.y + sprite.hitArea.height
+    )
+  }
 
   // Load all sprite classes
   loadSprites() {
