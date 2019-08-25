@@ -1,8 +1,8 @@
 import { CanvasRenderer } from './renderers/canvas';
-import * as spriteMap from '../sprites';
+import * as spriteClassMap from '../sprites';
 
-const DEFAULT_GAME_WIDTH = 800;
-const DEFAULT_GAME_HEIGHT = 800;
+const DEFAULT_GAME_WIDTH = 480;
+const DEFAULT_GAME_HEIGHT = 480;
 const DEFAULT_NUM_TILE_WIDTH = 32;
 const DEFAULT_NUM_TILE_HEIGHT = 32;
 // Can be 'fit', 'fixed'
@@ -43,7 +43,7 @@ export class Game {
 
   // Load all sprite classes
   loadSprites() {
-    this.spriteMap = spriteMap;
+    this.spriteClassMap = spriteClassMap;
   }
 
   /**
@@ -88,7 +88,7 @@ export class Game {
    * @param {string} spriteKey the key to hash sprite data
    */
   createSprite(spriteKey = '', options = {}) {
-    return new this.spriteMap[spriteKey](options);
+    return new this.spriteClassMap[spriteKey](options);
   }
 }
 

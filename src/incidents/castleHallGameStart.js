@@ -26,7 +26,6 @@ export function castleHallGameStart(game, dt) {
 
   console.log('start castleHallGameStart', game, dt);
 
-
   flag.finished = true;
 }
 
@@ -39,7 +38,7 @@ function initMapGroup(game) {
     height: castleHallMap.height,
     pixelWidth: game.pixelWidth,
     pixelHeight: game.pixelHeight,
-    tileSet: castleHallMap.tileSet,
+    spriteMap: castleHallMap.spriteMap,
     layers: castleHallMap.layers,
     renderer: game.layerMap['main']
   });
@@ -54,18 +53,27 @@ function initMapGroup(game) {
       pixelHeight: castleHallMapGroup.pixelHeight
     });
 
-    // create sprites for the current layer
-    layer.data.forEach((tileId, tileIndex) => {
-      const pixelWidth = castleHallLayerGroup.pixelWidth / castleHallLayerGroup.width;
-      const pixelHeight = castleHallLayerGroup.pixelHeight / castleHallLayerGroup.height;
+    switch (layer.type) {
+      case 'tilelayer':
+        // for tiled layer, we will draw them as is
+        // create sprites for the current layer
+        layer.data.forEach((tileId, tileIndex) => {
+          const pixelWidth = castleHallLayerGroup.pixelWidth / castleHallLayerGroup.width;
+          const pixelHeight = castleHallLayerGroup.pixelHeight / castleHallLayerGroup.height;
 
-      castleHallLayerGroup.add(game.createSprite(castleHallMapGroup.tileSet[tileId], {
-        x: (tileIndex % castleHallLayerGroup.width) * pixelWidth,
-        y: Math.floor(tileIndex / castleHallLayerGroup.width) * pixelHeight,
-        pixelWidth,
-        pixelHeight
-      }));
-    });
+          castleHallLayerGroup.add(game.createSprite(castleHallMapGroup.spriteMap[tileId], {
+            x: (tileIndex % castleHallLayerGroup.width) * pixelWidth,
+            y: Math.floor(tileIndex / castleHallLayerGroup.width) * pixelHeight,
+            pixelWidth,
+            pixelHeight
+          }));
+        });
+        break;
+
+      case 'objectgroup':
+        // for object layer, we need to put object at given location
+        break;
+    }
 
     // add layer group to map group
     castleHallMapGroup.add(castleHallLayerGroup);

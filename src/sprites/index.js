@@ -3,23 +3,21 @@ import { palette } from '../utils/colors';
 const DEFAULT_RECT_SPRITE_WIDTH = 50;
 const DEFAULT_RECT_SPRITE_HEIGHT = 50;
 
-export class RectSprite {
+class RectSprite {
   constructor(options = {}) {
     Object.assign(this, {
       x: 0,
       y: 0,
       pixelWidth: DEFAULT_RECT_SPRITE_WIDTH,
       pixelHeight: DEFAULT_RECT_SPRITE_HEIGHT,
-      backgroundColor: palette.brown[4]
+      backgroundColor: palette.gunmetal[4]
     }, options);
   }
 
   update(dt) {
-    console.log('update RectSprite', dt);
   }
 
   render(renderer) {
-    console.log('render RectSprite', renderer);
     renderer.drawRect({
       x: this.x,
       y: this.y,
@@ -27,5 +25,79 @@ export class RectSprite {
       pixelHeight: this.pixelHeight,
       backgroundColor: this.backgroundColor
     });
+  }
+}
+
+export class EmptySprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.opacity = 0;
+
+    // construct sprite using base sprite
+    super(options);
+  }
+
+  // empty sprite don't render anything
+  render() {}
+}
+
+export class CastleHallGroundSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.red[4];
+
+    // construct sprite using base sprite
+    super(options);
+  }
+}
+
+export class CastleHallWallSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.brown[3];
+
+    // construct sprite using base sprite
+    super(options);
+  }
+}
+
+export class CastleHallExitSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.green[0];
+
+    // construct sprite using base sprite
+    super(options);
+  }
+}
+
+export class CastleHallWallTopSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.red[0];
+
+    // construct sprite using base sprite
+    super(options);
+  }
+}
+
+export class CastleHallKingSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.blue[3];
+
+    // construct sprite using base sprite
+    super(options);
+  }
+}
+
+export class CastleHallBackgroundSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.gunmetal[4];
+    options.opacity = options.opacity || 0;
+
+    // construct sprite using base sprite
+    super(options);
   }
 }
