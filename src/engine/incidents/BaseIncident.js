@@ -86,8 +86,8 @@ export class BaseIncident {
           layer.data.forEach((tileId, tileIndex) => {
             layerGroup.add(
               this.game.createSprite(this.mapGroup.tileSpriteMap[tileId], {
-                x: (tileIndex % layerGroup.width) * pixelWidth,
-                y: Math.floor(tileIndex / layerGroup.width) * pixelHeight,
+                pixelX: (tileIndex % layerGroup.width) * pixelWidth,
+                pixelY: Math.floor(tileIndex / layerGroup.width) * pixelHeight,
                 pixelWidth,
                 pixelHeight,
               })
@@ -102,8 +102,8 @@ export class BaseIncident {
               this.game.createSprite(
                 this.mapGroup.objectSpriteMap[gameObject.id],
                 {
-                  x: gameObject.x * this.mapGroup.tileWidthScale,
-                  y: gameObject.y * this.mapGroup.tileHeightScale,
+                  pixelX: gameObject.x * this.mapGroup.tileWidthScale,
+                  pixelY: gameObject.y * this.mapGroup.tileHeightScale,
                   pixelWidth: gameObject.width * this.mapGroup.tileWidthScale,
                   pixelHeight:
                     gameObject.height * this.mapGroup.tileHeightScale,
