@@ -10,7 +10,8 @@ class RectSprite {
       y: 0,
       pixelWidth: DEFAULT_RECT_SPRITE_WIDTH,
       pixelHeight: DEFAULT_RECT_SPRITE_HEIGHT,
-      backgroundColor: palette.gunmetal[4]
+      backgroundColor: palette.gunmetal[4],
+      type: 'sprite'
     }, options);
   }
 

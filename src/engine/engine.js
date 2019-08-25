@@ -223,6 +223,30 @@ export class Group {
   update(dt) {
     this.children.forEach(child => child.update(dt))
   }
+
+  getSpriteByName(spriteName) {
+    return this.getSprite('name', spriteName);
+  }
+
+  getSprite(key, value) {
+    let sprite;
+
+    for (let i = 0; i < this.children.length; i++) {
+      const item = this.children[i];
+      if (item instanceof Group) {
+        sprite = item.getSprite(key, value);
+      }
+      else if (item.type === 'sprite' && item[key] === value) {
+        sprite = item;
+      }
+
+      if (sprite) {
+        return sprite;
+      }
+    }
+
+    return null;
+  }
 }
 
 // export class MapGroup extends Group {

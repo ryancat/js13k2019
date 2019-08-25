@@ -13,20 +13,23 @@ export function castleHallGameStart(game, dt) {
     return true;
   }
 
+  // init or update incident
   if (!flag.initState) {
     initMapGroup(game);
     flag.initState = true;
   }
+  else {
+    update(game, dt);
+  }
 
+  // render layers
   flag.layerDirtyArr.forEach((isLayerDirty, layerIndex) => {
     if (isLayerDirty) {
       castleHallMapGroup.children[layerIndex].render();
     }
   });
 
-  console.log('start castleHallGameStart', game, dt);
-
-  flag.finished = true;
+  // flag.finished = true;
 }
 
 function initMapGroup(game) {
@@ -46,7 +49,8 @@ function initMapGroup(game) {
     tileSpriteMap: castleHallMap.tileSpriteMap,
     objectSpriteMap: castleHallMap.objectSpriteMap,
     layers: castleHallMap.layers,
-    renderer: game.layerMap['main']
+    renderer: game.layerMap['main'],
+    type: 'map'
   });
 
   // init layers in map
@@ -56,7 +60,8 @@ function initMapGroup(game) {
       width: castleHallMapGroup.width,
       height: castleHallMapGroup.height,
       pixelWidth: castleHallMapGroup.pixelWidth,
-      pixelHeight: castleHallMapGroup.pixelHeight
+      pixelHeight: castleHallMapGroup.pixelHeight,
+      type: 'layer'
     });
 
     const pixelWidth = castleHallLayerGroup.pixelWidth / castleHallLayerGroup.width;
@@ -83,7 +88,8 @@ function initMapGroup(game) {
             x: gameObject.x * castleHallMapGroup.tileWidthScale,
             y: gameObject.y * castleHallMapGroup.tileHeightScale,
             pixelWidth: gameObject.width * castleHallMapGroup.tileWidthScale,
-            pixelHeight: gameObject.height * castleHallMapGroup.tileHeightScale
+            pixelHeight: gameObject.height * castleHallMapGroup.tileHeightScale,
+            name: gameObject.name
           }));
         });
         break;
@@ -99,4 +105,30 @@ function initMapGroup(game) {
   });
 
   flag.layerDirtyArr = castleHallMapGroup.layers.map(() => true);
+}
+
+function update(game, dt) {
+  if (game.keyMap.up.isDown) {
+    // up key is pressed
+    const playerSprite = castleHallMapGroup.getSpriteByName('player')
+    playerSprite.y -= 0.15 * dt;
+  }
+
+  if (game.keyMap.down.isDown) {
+    // up key is pressed
+    const playerSprite = castleHallMapGroup.getSpriteByName('player')
+    playerSprite.y += 0.15 * dt;
+  }
+
+  if (game.keyMap.left.isDown) {
+    // up key is pressed
+    const playerSprite = castleHallMapGroup.getSpriteByName('player')
+    playerSprite.x -= 0.15 * dt;
+  }
+
+  if (game.keyMap.right.isDown) {
+    // up key is pressed
+    const playerSprite = castleHallMapGroup.getSpriteByName('player')
+    playerSprite.x += 0.15 * dt;
+  }
 }
