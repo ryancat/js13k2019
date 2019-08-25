@@ -4,11 +4,14 @@
   "description": "A 2D game of a story about fighting dragons and bring back the gem of love",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "npm-run-all --parallel pretty:watch dev:server",
     "dev": "npm run clear && webpack",
     "dev:watch": "webpack --watch",
+    "dev:server": "webpack-dev-server --open",
     "build": "npm run clear && webpack --mode production",
     "build:watch": "webpack --mode production --watch",
+    "pretty": "pretty-quick",
+    "pretty:watch": "nodemon --exec 'npm run pretty || exit 1'",
     "server": "http-server",
     "clear": "rm -rf ./public",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,7 +36,10 @@
     "file-loader": "^4.2.0",
     "http-server": "^0.11.1",
     "husky": "^3.0.4",
+    "nodemon": "^1.19.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
@@ -42,7 +48,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "prettier-quick --staged"
+      "pre-commit": "pretty-quick --staged"
     }
   }
 }
