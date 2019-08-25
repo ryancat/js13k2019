@@ -20,7 +20,7 @@
          "name":"ground",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -32,7 +32,7 @@
          "name":"obstacles",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -57,13 +57,13 @@
                 {
                  "height":48,
                  "id":3,
-                 "name":"",
+                 "name":"player",
                  "rotation":0,
-                 "type":"",
+                 "type":"controllable",
                  "visible":true,
                  "width":32,
                  "x":240,
-                 "y":207
+                 "y":224
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -78,7 +78,7 @@
          "name":"wallTop",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0

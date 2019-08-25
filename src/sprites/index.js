@@ -101,3 +101,13 @@ export class CastleHallBackgroundSprite extends RectSprite {
     super(options);
   }
 }
+
+export class PlayerSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.brown[0];
+
+    // construct sprite using base sprite
+    super(options);
+  }
+}

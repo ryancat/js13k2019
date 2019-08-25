@@ -1,3 +1,4 @@
+import { createGameLoop } from './util';
 import { CanvasRenderer } from './renderers/canvas';
 import * as spriteClassMap from '../sprites';
 
@@ -37,8 +38,95 @@ export class Game {
       incidents: [],
       incidentMap: {},
       layerMap: {},
-      loop: createGameLoop(fps)
+      keyMap: {},
+      loop: Game.createGameLoop(fps)
     });
+  }
+
+  static createGameLoop(fps) {
+    const gameLoop = {
+      fps,
+      callbacks: [],
+      isPaused: true,
+      timeoutId: null
+    };
+  
+    gameLoop.add = (...callbacks) => {
+      Array.prototype.push.apply(gameLoop.callbacks, callbacks);
+    }
+  
+    gameLoop.remove = (callback) => {
+      const index = gameLoop.callbacks.indexOf(callback);
+      if (index >= 0) {
+        gameLoop.callbacks.splice(index, 1);
+      }
+    };
+  
+    gameLoop.removeAll = () => {
+      gameLoop.callbacks = [];
+    };
+  
+    gameLoop.run = () => {
+      gameLoop.timeoutId = window.requestAnimationFrame(gameLoop.run);
+  
+      const now = Date.now();
+      const lastRun = gameLoop.lastRun;
+      gameLoop.lastRun = now;
+  
+      if (gameLoop.isPaused) {
+        return;
+      }
+  
+      const dt = now - lastRun;
+      if (dt >= 1000 / fps) {
+        // We need to check game fps to decide if we should run registered callbacks
+        gameLoop.callbacks.forEach(callback => callback(dt));
+      }
+    };
+  
+    gameLoop.start = () => {
+      gameLoop.isPaused = false;
+    };
+  
+    gameLoop.stop = () => {
+      gameLoop.isPaused = true;
+      gameLoop.lastRun = null;
+    };
+  
+    gameLoop.run();
+    gameLoop.lastRun = Date.now();
+  
+    return gameLoop;
+  }
+
+  static createKeyInteraction(keyCodes = []) {
+    const keyObj = {
+      keyCodes,
+      isDown: false,
+      isUp: true,
+    };
+
+    document.addEventListener('keydown', (evt) => {
+      if (keyObj.keyCodes.indexOf(evt.keyCode) === -1) {
+        return;
+      }
+
+      keyObj.isDown = true;
+      keyObj.isUp = false;
+      evt.preventDefault();
+    });
+
+    document.addEventListener('keyup', (evt) => {
+      if (keyObj.keyCodes.indexOf(evt.keyCode) === -1) {
+        return;
+      }
+
+      keyObj.isDown = false;
+      keyObj.isUp = true;
+      evt.preventDefault();
+    });
+    
+    return keyObj;
   }
 
   // Load all sprite classes
@@ -51,6 +139,10 @@ export class Game {
    */
   loadSounds() {
 
+  }
+
+  addInteractionKey(keyId, keyObj) {
+    this.keyMap[keyId] = keyObj;
   }
 
   /**
@@ -218,58 +310,3 @@ export class Sprite {
   }
 }
 
-function createGameLoop(fps) {
-  const gameLoop = {
-    fps,
-    callbacks: [],
-    isPaused: true,
-    timeoutId: null
-  };
-
-  gameLoop.add = (...callbacks) => {
-    Array.prototype.push.apply(gameLoop.callbacks, callbacks);
-  }
-
-  gameLoop.remove = (callback) => {
-    const index = gameLoop.callbacks.indexOf(callback);
-    if (index >= 0) {
-      gameLoop.callbacks.splice(index, 1);
-    }
-  };
-
-  gameLoop.removeAll = () => {
-    gameLoop.callbacks = [];
-  };
-
-  gameLoop.run = () => {
-    gameLoop.timeoutId = window.requestAnimationFrame(gameLoop.run);
-
-    const now = Date.now();
-    const lastRun = gameLoop.lastRun;
-    gameLoop.lastRun = now;
-
-    if (gameLoop.isPaused) {
-      return;
-    }
-
-    const dt = now - lastRun;
-    if (dt >= 1000 / fps) {
-      // We need to check game fps to decide if we should run registered callbacks
-      gameLoop.callbacks.forEach(callback => callback(dt));
-    }
-  };
-
-  gameLoop.start = () => {
-    gameLoop.isPaused = false;
-  };
-
-  gameLoop.stop = () => {
-    gameLoop.isPaused = true;
-    gameLoop.lastRun = null;
-  };
-
-  gameLoop.run();
-  gameLoop.lastRun = Date.now();
-
-  return gameLoop;
-}

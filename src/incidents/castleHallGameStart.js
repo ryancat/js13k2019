@@ -30,7 +30,10 @@ export function castleHallGameStart(game, dt) {
 }
 
 function initMapGroup(game) {
-  const castleHallMap = createCastleHall();
+  const castleHallMap = createCastleHall({
+    tileWidth: game.pixelWidth / game.width,
+    tileHeight: game.pixelHeight / game.height
+  });
 
   // init map group
   castleHallMapGroup = new Group({
@@ -38,7 +41,10 @@ function initMapGroup(game) {
     height: castleHallMap.height,
     pixelWidth: game.pixelWidth,
     pixelHeight: game.pixelHeight,
-    spriteMap: castleHallMap.spriteMap,
+    tileWidthScale: castleHallMap.tileWidthScale,
+    tileHeightScale: castleHallMap.tileHeightScale,
+    tileSpriteMap: castleHallMap.tileSpriteMap,
+    objectSpriteMap: castleHallMap.objectSpriteMap,
     layers: castleHallMap.layers,
     renderer: game.layerMap['main']
   });
@@ -53,15 +59,15 @@ function initMapGroup(game) {
       pixelHeight: castleHallMapGroup.pixelHeight
     });
 
+    const pixelWidth = castleHallLayerGroup.pixelWidth / castleHallLayerGroup.width;
+    const pixelHeight = castleHallLayerGroup.pixelHeight / castleHallLayerGroup.height;
+
     switch (layer.type) {
       case 'tilelayer':
         // for tiled layer, we will draw them as is
         // create sprites for the current layer
         layer.data.forEach((tileId, tileIndex) => {
-          const pixelWidth = castleHallLayerGroup.pixelWidth / castleHallLayerGroup.width;
-          const pixelHeight = castleHallLayerGroup.pixelHeight / castleHallLayerGroup.height;
-
-          castleHallLayerGroup.add(game.createSprite(castleHallMapGroup.spriteMap[tileId], {
+          castleHallLayerGroup.add(game.createSprite(castleHallMapGroup.tileSpriteMap[tileId], {
             x: (tileIndex % castleHallLayerGroup.width) * pixelWidth,
             y: Math.floor(tileIndex / castleHallLayerGroup.width) * pixelHeight,
             pixelWidth,
@@ -72,6 +78,14 @@ function initMapGroup(game) {
 
       case 'objectgroup':
         // for object layer, we need to put object at given location
+        layer.objects.forEach(gameObject => {
+          castleHallLayerGroup.add(game.createSprite(castleHallMapGroup.objectSpriteMap[gameObject.id], {
+            x: gameObject.x * castleHallMapGroup.tileWidthScale,
+            y: gameObject.y * castleHallMapGroup.tileHeightScale,
+            pixelWidth: gameObject.width * castleHallMapGroup.tileWidthScale,
+            pixelHeight: gameObject.height * castleHallMapGroup.tileHeightScale
+          }));
+        });
         break;
     }
 

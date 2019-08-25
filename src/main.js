@@ -59,15 +59,17 @@ function update(dt) {
   }
 }
 
-// // Render castleHall
-// const castleHallMap = createCastleHall();
-// game.create
-
 // Register render functions
 game.loop.add(update);
 
 // Start game loop
 game.loop.start();
+
+// Add interaction control
+game.addInteractionKey('up', Game.createKeyInteraction([87, 38]));
+game.addInteractionKey('down', Game.createKeyInteraction([83, 40]));
+game.addInteractionKey('left', Game.createKeyInteraction([65, 37]));
+game.addInteractionKey('right', Game.createKeyInteraction([68, 39]));
 
 // Add first game incident
 game.addIncident(castleHallGameStart, 'castleHallGameStart');
