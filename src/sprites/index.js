@@ -44,7 +44,7 @@ export class EmptySprite extends RectSprite {
 export class CastleHallGroundSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.red[4];
+    options.backgroundColor = options.backgroundColor || palette.gunmetal[3];
 
     // construct sprite using base sprite
     super(options);
@@ -64,7 +64,7 @@ export class CastleHallWallSprite extends RectSprite {
 export class CastleHallExitSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.green[0];
+    options.backgroundColor = options.backgroundColor || palette.green[3];
 
     // construct sprite using base sprite
     super(options);
@@ -74,7 +74,7 @@ export class CastleHallExitSprite extends RectSprite {
 export class CastleHallWallTopSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.red[0];
+    options.backgroundColor = options.backgroundColor || palette.brown[1];
 
     // construct sprite using base sprite
     super(options);
@@ -84,7 +84,7 @@ export class CastleHallWallTopSprite extends RectSprite {
 export class CastleHallKingSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.blue[3];
+    options.backgroundColor = options.backgroundColor || palette.blue[2];
 
     // construct sprite using base sprite
     super(options);
