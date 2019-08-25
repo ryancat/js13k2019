@@ -6,10 +6,10 @@ export class Group {
     Object.assign(
       this,
       {
-        x: 0,
-        y: 0,
-        width: DEFAULT_NUM_TILE_WIDTH,
-        height: DEFAULT_NUM_TILE_HEIGHT,
+        colIndex: 0,
+        rowIndex: 0,
+        colNum: DEFAULT_NUM_TILE_WIDTH,
+        rowNum: DEFAULT_NUM_TILE_HEIGHT,
         children: [],
         parent: null,
         type: 'group',

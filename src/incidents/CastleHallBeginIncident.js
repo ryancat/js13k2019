@@ -8,8 +8,8 @@ export class CastleHallBeginIncident extends BaseIncident {
 
   createMapData() {
     this.mapData = generateMapData({
-      tileWidth: this.game.pixelWidth / this.game.width,
-      tileHeight: this.game.pixelHeight / this.game.height,
+      tileWidth: this.game.width / this.game.colNum,
+      tileHeight: this.game.height / this.game.rowNum,
     })
   }
 
@@ -17,19 +17,19 @@ export class CastleHallBeginIncident extends BaseIncident {
     const playerSprite = this.mapGroup.getSpriteByName('player')
     if (this.game.keyMap.up.isDown) {
       // up key is pressed
-      playerSprite.pixelY -= 0.15 * dt
+      playerSprite.y -= 0.15 * dt
     }
     if (this.game.keyMap.down.isDown) {
       // up key is pressed
-      playerSprite.pixelY += 0.15 * dt
+      playerSprite.y += 0.15 * dt
     }
     if (this.game.keyMap.left.isDown) {
       // up key is pressed
-      playerSprite.pixelX -= 0.15 * dt
+      playerSprite.x -= 0.15 * dt
     }
     if (this.game.keyMap.right.isDown) {
       // up key is pressed
-      playerSprite.pixelX += 0.15 * dt
+      playerSprite.x += 0.15 * dt
     }
   }
 }

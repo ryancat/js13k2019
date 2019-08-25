@@ -14,20 +14,20 @@ const DEFAULT_RENDERER = new CanvasRenderer()
 
 export class Game {
   constructor({
-    pixelWidth = DEFAULT_GAME_WIDTH,
-    pixelHeight = DEFAULT_GAME_HEIGHT,
-    width = DEFAULT_NUM_TILE_WIDTH,
-    height = DEFAULT_NUM_TILE_HEIGHT,
+    width = DEFAULT_GAME_WIDTH,
+    height = DEFAULT_GAME_HEIGHT,
+    colNum = DEFAULT_NUM_TILE_WIDTH,
+    rowNum = DEFAULT_NUM_TILE_HEIGHT,
     scaleMode = DEFAULT_SCALE_MODE,
     backgroundColor = DEFAULT_BACKGROUND_COLOR,
     fps = DEFAULT_FPS,
     container = document.createElement('div'),
   }) {
     Object.assign(this, {
-      pixelWidth,
-      pixelHeight,
       width,
       height,
+      colNum,
+      rowNum,
       scaleMode,
       backgroundColor,
       sprites: [],
@@ -127,13 +127,18 @@ export class Game {
     return keyObj
   }
 
-  static hitTestPoint({ x = 0, y = 0 }, sprite) {
+  // TODO: only test rect sprite for now
+  static hitTestPoint({ x = 0, y = 0 }, rectSprite) {
     return (
-      x >= sprite.pixelX + sprite.hitArea.x &&
-      x <= sprite.pixelX + sprite.hitArea.x + sprite.hitArea.width &&
-      y >= sprite.pixelY + sprite.hitArea.y &&
-      y <= sprite.pixelY + sprite.hitArea.y + sprite.hitArea.height
+      x >= rectSprite.x + rectSprite.hitArea.x &&
+      x <= rectSprite.x + rectSprite.hitArea.x + rectSprite.hitArea.width &&
+      y >= rectSprite.y + rectSprite.hitArea.y &&
+      y <= rectSprite.y + rectSprite.hitArea.y + rectSprite.hitArea.height
     )
+  }
+
+  static hitTestRect(rectSprite1, recSprite2) {
+    return {}
   }
 
   // Load all sprite classes
@@ -156,8 +161,8 @@ export class Game {
   addLayer(
     layerKey = 'layer',
     {
-      width = this.pixelWidth,
-      height = this.pixelHeight,
+      width = this.width,
+      height = this.height,
       renderer = new CanvasRenderer({
         width,
         height,

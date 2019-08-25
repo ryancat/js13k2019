@@ -3,38 +3,33 @@ const DEFAULT_RECT_SPRITE_HEIGHT = 50
 
 export class RectSprite {
   constructor({
-    pixelX = 0,
-    pixelY = 0,
-    pixelWidth = DEFAULT_RECT_SPRITE_WIDTH,
-    pixelHeight = DEFAULT_RECT_SPRITE_HEIGHT,
+    x = 0,
+    y = 0,
+    width = DEFAULT_RECT_SPRITE_WIDTH,
+    height = DEFAULT_RECT_SPRITE_HEIGHT,
     // TODO: have engine level palette
     backgroundColor = 'red',
     type = 'sprite',
     name = '',
   } = {}) {
     Object.assign(this, {
-      pixelX,
-      pixelY,
-      pixelWidth,
-      pixelHeight,
+      x,
+      y,
+      width,
+      height,
       backgroundColor,
       type,
       name,
       hitArea: {
         x: 0,
         y: 0,
-        width: pixelWidth,
-        height: pixelHeight,
+        width,
+        height,
       },
     })
   }
 
-  setHitArea({
-    x = 0,
-    y = 0,
-    width = this.pixelWidth,
-    height = this.pixelHeight,
-  } = {}) {
+  setHitArea({ x = 0, y = 0, width = this.width, height = this.height } = {}) {
     Object.assign(this.hitArea, {
       x,
       y,
@@ -47,10 +42,10 @@ export class RectSprite {
 
   render(renderer) {
     renderer.drawRect({
-      pixelX: this.pixelX,
-      pixelY: this.pixelY,
-      pixelWidth: this.pixelWidth,
-      pixelHeight: this.pixelHeight,
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height,
       backgroundColor: this.backgroundColor,
     })
   }

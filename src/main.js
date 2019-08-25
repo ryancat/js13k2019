@@ -12,8 +12,8 @@ import { CastleHallBeginIncident } from './incidents/CastleHallBeginIncident'
 // Use default values for now
 const game = new Game({
   container: document.getElementById('root'),
-  pixelWidth: 640,
-  pixelHeight: 640,
+  width: 640,
+  height: 640,
 })
 
 // The update function will be getting called each animation

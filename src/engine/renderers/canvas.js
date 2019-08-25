@@ -41,17 +41,17 @@ export class CanvasRenderer {
   }
 
   drawRect({
-    pixelX = 0,
-    pixelY = 0,
-    pixelWidth = DEFAULT_DRAW_WIDTH,
-    pixelHeight = DEFAULT_DRAW_HEIGHT,
+    x = 0,
+    y = 0,
+    width = DEFAULT_DRAW_WIDTH,
+    height = DEFAULT_DRAW_HEIGHT,
     backgroundColor = DEFAULT_DRAW_BACKGROUND_COLOR,
     opacity = 1,
   } = {}) {
     this._ctx.save()
     this._ctx.globalAlpha = opacity
     this._ctx.fillStyle = backgroundColor
-    this._ctx.fillRect(pixelX, pixelY, pixelWidth, pixelHeight)
+    this._ctx.fillRect(x, y, width, height)
     this._ctx.restore()
   }
 }
