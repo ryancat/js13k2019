@@ -2,9 +2,7 @@ import { generateMapData } from '../maps/emptyMap'
 import { Group } from '../sprites/Group'
 
 export class BaseIncident {
-  constructor(options = {}) {
-    const { game, key } = options
-
+  constructor({ game, key } = {}) {
     Object.assign(this, {
       game,
       key,

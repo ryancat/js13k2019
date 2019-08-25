@@ -13,18 +13,16 @@ const DEFAULT_FPS = 60
 const DEFAULT_RENDERER = new CanvasRenderer()
 
 export class Game {
-  constructor(options = {}) {
-    const {
-      pixelWidth = DEFAULT_GAME_WIDTH,
-      pixelHeight = DEFAULT_GAME_HEIGHT,
-      width = DEFAULT_NUM_TILE_WIDTH,
-      height = DEFAULT_NUM_TILE_HEIGHT,
-      scaleMode = DEFAULT_SCALE_MODE,
-      backgroundColor = DEFAULT_BACKGROUND_COLOR,
-      fps = DEFAULT_FPS,
-      container = document.createElement('div'),
-    } = options
-
+  constructor({
+    pixelWidth = DEFAULT_GAME_WIDTH,
+    pixelHeight = DEFAULT_GAME_HEIGHT,
+    width = DEFAULT_NUM_TILE_WIDTH,
+    height = DEFAULT_NUM_TILE_HEIGHT,
+    scaleMode = DEFAULT_SCALE_MODE,
+    backgroundColor = DEFAULT_BACKGROUND_COLOR,
+    fps = DEFAULT_FPS,
+    container = document.createElement('div'),
+  }) {
     Object.assign(this, {
       pixelWidth,
       pixelHeight,
@@ -129,6 +127,8 @@ export class Game {
     return keyObj
   }
 
+  static hitTestPoint({ x = 0, y = 0 }, sprite) {}
+
   // Load all sprite classes
   loadSprites() {
     this.spriteClassMap = spriteClassMap
@@ -146,8 +146,9 @@ export class Game {
   /**
    * Add game layers
    */
-  addLayer(layerKey = 'layer', options = {}) {
-    const {
+  addLayer(
+    layerKey = 'layer',
+    {
       width = this.pixelWidth,
       height = this.pixelHeight,
       renderer = new CanvasRenderer({
@@ -156,8 +157,8 @@ export class Game {
         container: this.container,
         key: layerKey,
       }),
-    } = options
-
+    } = {}
+  ) {
     this.layerMap[layerKey] = renderer
   }
 
