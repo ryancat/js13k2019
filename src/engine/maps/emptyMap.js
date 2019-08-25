@@ -1,4 +1,4 @@
-export function createMapData(
+export function generateMapData(
   width = 32,
   height = 32,
   tileWidth = 16,

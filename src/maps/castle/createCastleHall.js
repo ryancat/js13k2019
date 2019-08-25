@@ -1,10 +1,10 @@
-import tiledMapJson from './castleHall.json';
+import tiledMapJson from './castleHall.json'
 
-export function createCastleHall(config = {}) {
+export function generateMapData(config = {}) {
   const {
     tileWidth = tiledMapJson.tilewidth,
-    tileHeight = tiledMapJson.tileheight
-  } = config;
+    tileHeight = tiledMapJson.tileheight,
+  } = config
 
   Object.assign(tiledMapJson, {
     tileSpriteMap: {
@@ -17,13 +17,12 @@ export function createCastleHall(config = {}) {
       441: 'CastleHallKingSprite',
     },
     objectSpriteMap: {
-      3: 'PlayerSprite'
+      3: 'PlayerSprite',
     },
     tileWidthScale: tileWidth / tiledMapJson.tilewidth,
-    tileHeightScale: tileHeight / tiledMapJson.tileheight
+    tileHeightScale: tileHeight / tiledMapJson.tileheight,
   })
 
   // TODO: Hard-coded map for now. Should be automatically generated.
-  return tiledMapJson;
-};
-
+  return tiledMapJson
+}

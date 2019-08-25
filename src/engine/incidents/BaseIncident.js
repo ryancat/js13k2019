@@ -1,4 +1,4 @@
-import { createMapData } from '../maps/emptyMap'
+import { generateMapData } from '../maps/emptyMap'
 import { Group } from '../sprites/Group'
 
 export class BaseIncident {
@@ -41,7 +41,7 @@ export class BaseIncident {
   }
 
   createMapData() {
-    this.mapData = createMapData(
+    this.mapData = generateMapData(
       this.game.width,
       this.game.height,
       this.game.pixelWidth,

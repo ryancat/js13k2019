@@ -1,13 +1,13 @@
-import { createCastleHall } from '../maps/castle/createCastleHall'
+import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
 
 export class CastleHallBeginIncident extends BaseIncident {
-  constructor(game, dt) {
-    super(game, dt)
+  constructor(options = {}) {
+    super(options)
   }
 
   createMapData() {
-    this.mapData = createCastleHall({
+    this.mapData = generateMapData({
       tileWidth: this.game.pixelWidth / this.game.width,
       tileHeight: this.game.pixelHeight / this.game.height,
     })
