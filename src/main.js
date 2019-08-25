@@ -15,7 +15,9 @@ import {
 
 // Use default values for now
 const game = new Game({
-  container: document.getElementById('root')
+  container: document.getElementById('root'),
+  pixelWidth: 640,
+  pixelHeight: 640
 });
 
 // The update function will be getting called each animation

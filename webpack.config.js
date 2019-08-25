@@ -67,6 +67,10 @@ module.exports = function (env, argv) {
     // Use eval-source-map to get faster rebuild sourcemap
     devtool: mode === 'production' ? undefined : 'inline-source-map',
 
+    devServer: {
+      contentBase: './public'
+    },
+
     module: {
       rules: [{
         test: /\.js$/,

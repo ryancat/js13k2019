@@ -4,6 +4,7 @@
   "description": "A 2D game of a story about fighting dragons and bring back the gem of love",
   "main": "webpack.config.js",
   "scripts": {
+    "start": "webpack-dev-server --open",
     "dev": "npm run clear && webpack",
     "dev:watch": "webpack --watch",
     "build": "npm run clear && webpack --mode production",
@@ -36,6 +37,7 @@
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0",
     "zip-webpack-plugin": "^3.0.0"
   },
   "husky": {
