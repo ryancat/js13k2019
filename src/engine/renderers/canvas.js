@@ -1,10 +1,9 @@
-import { palette } from '../../utils/colors'
-
 const DEFAULT_RENDERER_WIDTH = 500
 const DEFAULT_RENDERER_HEIGHT = 500
 const DEFAULT_DRAW_WIDTH = 20
 const DEFAULT_DRAW_HEIGHT = 20
-const DEFAULT_DRAW_BACKGROUND_COLOR = palette.red[2]
+const DEFAULT_DRAW_BACKGROUND_COLOR = 'red'
+const DEFAULT_DRAW_BORDER_COLOR = 'black'
 
 export class CanvasRenderer {
   constructor({
@@ -45,13 +44,30 @@ export class CanvasRenderer {
     y = 0,
     width = DEFAULT_DRAW_WIDTH,
     height = DEFAULT_DRAW_HEIGHT,
+    shouldFill = true,
+    shouldStroke = false,
     backgroundColor = DEFAULT_DRAW_BACKGROUND_COLOR,
+    borderColor = DEFAULT_DRAW_BORDER_COLOR,
     opacity = 1,
   } = {}) {
-    this._ctx.save()
-    this._ctx.globalAlpha = opacity
-    this._ctx.fillStyle = backgroundColor
-    this._ctx.fillRect(x, y, width, height)
-    this._ctx.restore()
+    const context = this._ctx
+    context.save()
+    context.globalAlpha = opacity
+    context.fillStyle = backgroundColor
+    context.strokeStyle = borderColor
+
+    // Draw rect path
+    context.beginPath()
+    context.rect(x, y, width, height)
+
+    if (shouldFill) {
+      context.fill()
+    }
+
+    if (shouldStroke) {
+      context.stroke()
+    }
+
+    context.restore()
   }
 }

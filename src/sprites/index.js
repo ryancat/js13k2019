@@ -82,6 +82,8 @@ export class CastleHallKingSprite extends RectSprite {
 
     // construct sprite using base sprite
     super(options)
+
+    this.name = 'king'
   }
 }
 

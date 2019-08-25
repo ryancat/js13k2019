@@ -130,15 +130,36 @@ export class Game {
   // TODO: only test rect sprite for now
   static hitTestPoint({ x = 0, y = 0 }, rectSprite) {
     return (
-      x >= rectSprite.x + rectSprite.hitArea.x &&
-      x <= rectSprite.x + rectSprite.hitArea.x + rectSprite.hitArea.width &&
-      y >= rectSprite.y + rectSprite.hitArea.y &&
-      y <= rectSprite.y + rectSprite.hitArea.y + rectSprite.hitArea.height
+      x >= rectSprite.x + rectSprite.hitArea.localX &&
+      x <=
+        rectSprite.x +
+          rectSprite.hitArea.localX +
+          rectSprite.hitArea.localWidth &&
+      y >= rectSprite.y + rectSprite.hitArea.localY &&
+      y <=
+        rectSprite.y +
+          rectSprite.hitArea.localY +
+          rectSprite.hitArea.localHeight
     )
   }
 
-  static hitTestRect(rectSprite1, recSprite2) {
-    return {}
+  static hitTestRect(rectSprite1, rectSprite2) {
+    // The two rect sprite hit each other when they hit on both x and y
+    // cooridnates. On each coordinate, there are four cases that they
+    // may hit
+    const overlapOnXCoorinate =
+      (rectSprite1.x <= rectSprite2.x &&
+        rectSprite1.x + rectSprite1.width >= rectSprite2.x) ||
+      (rectSprite2.x <= rectSprite1.x &&
+        rectSprite2.x + rectSprite2.width >= rectSprite1.x)
+
+    const overlapOnYCoorinate =
+      (rectSprite1.y <= rectSprite2.y &&
+        rectSprite1.y + rectSprite1.height >= rectSprite2.y) ||
+      (rectSprite2.y <= rectSprite1.y &&
+        rectSprite2.y + rectSprite2.height >= rectSprite1.y)
+
+    return overlapOnXCoorinate && overlapOnYCoorinate
   }
 
   // Load all sprite classes

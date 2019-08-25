@@ -20,21 +20,23 @@ export class RectSprite {
       backgroundColor,
       type,
       name,
-      hitArea: {
-        x: 0,
-        y: 0,
-        width,
-        height,
-      },
+      hitArea: {},
     })
+
+    this.setHitArea()
   }
 
-  setHitArea({ x = 0, y = 0, width = this.width, height = this.height } = {}) {
+  setHitArea({
+    localX = 0,
+    localY = 0,
+    localWidth = this.width,
+    localHeight = this.height,
+  } = {}) {
     Object.assign(this.hitArea, {
-      x,
-      y,
-      width,
-      height,
+      localX,
+      localY,
+      localWidth,
+      localHeight,
     })
   }
 
@@ -46,7 +48,21 @@ export class RectSprite {
       y: this.y,
       width: this.width,
       height: this.height,
+      shouldFill: true,
+      shouldStroke: false,
       backgroundColor: this.backgroundColor,
     })
+
+    if (localStorage.getItem('GAME_DEBUG_MODE')) {
+      renderer.drawRect({
+        x: this.x + this.hitArea.localX,
+        y: this.y + this.hitArea.localY,
+        width: this.hitArea.localWidth,
+        height: this.hitArea.localHeight,
+        shouldFill: false,
+        shouldStroke: true,
+        borderColor: 'red',
+      })
+    }
   }
 }
