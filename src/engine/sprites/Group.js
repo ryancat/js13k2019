@@ -45,8 +45,12 @@ export class Group {
     this.children.forEach(child => child.update(dt))
   }
 
-  getSpriteByName(spriteName) {
+  getSpriteByName(spriteName = '') {
     return this.getSprite('name', spriteName)
+  }
+
+  getSpritesByName(spriteName = '') {
+    return this.getSprites('name', spriteName)
   }
 
   getSprite(key, value) {
@@ -66,5 +70,20 @@ export class Group {
     }
 
     return null
+  }
+
+  getSprites(key, value) {
+    let sprites = []
+
+    for (let i = 0; i < this.children.length; i++) {
+      const item = this.children[i]
+      if (item instanceof Group) {
+        sprites = sprites.concat(item.getSprites(key, value))
+      } else if (item.type === 'sprite' && item[key] === value) {
+        sprites.push(item)
+      }
+    }
+
+    return sprites
   }
 }

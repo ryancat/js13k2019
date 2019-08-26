@@ -100,6 +100,8 @@ export class Game {
   static createKeyInteraction(keyCodes = []) {
     const keyObj = {
       keyCodes,
+      pressStartTime: null,
+      pressDuration: 0,
       isDown: false,
       isUp: true,
     }
@@ -111,6 +113,12 @@ export class Game {
 
       keyObj.isDown = true
       keyObj.isUp = false
+      const now = Date.now()
+      if (!keyObj.pressStartTime) {
+        keyObj.pressStartTime = now
+      } else {
+        keyObj.pressDuration = now - keyObj.pressStartTime
+      }
       evt.preventDefault()
     })
 
@@ -121,6 +129,8 @@ export class Game {
 
       keyObj.isDown = false
       keyObj.isUp = true
+      keyObj.pressStartTime = null
+      keyObj.pressDuration = 0
       evt.preventDefault()
     })
 
@@ -147,19 +157,40 @@ export class Game {
     // The two rect sprite hit each other when they hit on both x and y
     // cooridnates. On each coordinate, there are four cases that they
     // may hit
+    const r1HitArea = rectSprite1.hitArea
+    const r2HitArea = rectSprite2.hitArea
     const overlapOnXCoorinate =
-      (rectSprite1.x <= rectSprite2.x &&
-        rectSprite1.x + rectSprite1.width >= rectSprite2.x) ||
-      (rectSprite2.x <= rectSprite1.x &&
-        rectSprite2.x + rectSprite2.width >= rectSprite1.x)
-
+      (rectSprite1.x + r1HitArea.localX <= rectSprite2.x + r2HitArea.localX &&
+        rectSprite1.x + r1HitArea.localX + r1HitArea.localWidth >=
+          rectSprite2.x + r2HitArea.localX) ||
+      (rectSprite2.x + r2HitArea.localX <= rectSprite1.x + r1HitArea.localX &&
+        rectSprite2.x + r2HitArea.localX + r2HitArea.localWidth >=
+          rectSprite1.x + r1HitArea.localX)
     const overlapOnYCoorinate =
-      (rectSprite1.y <= rectSprite2.y &&
-        rectSprite1.y + rectSprite1.height >= rectSprite2.y) ||
-      (rectSprite2.y <= rectSprite1.y &&
-        rectSprite2.y + rectSprite2.height >= rectSprite1.y)
+      (rectSprite1.y + r1HitArea.localY <= rectSprite2.y + r2HitArea.localY &&
+        rectSprite1.y + r1HitArea.localY + r1HitArea.localHeight >=
+          rectSprite2.y + r2HitArea.localY) ||
+      (rectSprite2.y + r2HitArea.localY <= rectSprite1.y + r1HitArea.localY &&
+        rectSprite2.y + r2HitArea.localY + r2HitArea.localHeight >=
+          rectSprite1.y + r1HitArea.localY)
 
     return overlapOnXCoorinate && overlapOnYCoorinate
+  }
+
+  static hitTestRects(rectSpriteArr1 = [], rectSpriteArr2 = []) {
+    if (!Array.isArray(rectSpriteArr1)) {
+      rectSpriteArr1 = [rectSpriteArr1]
+    }
+
+    if (!Array.isArray(rectSpriteArr2)) {
+      rectSpriteArr2 = [rectSpriteArr2]
+    }
+
+    // the two group hit when any one sprite in rectSpriteArr1 hit
+    // any one sprite in rectSpriteArr2
+    return rectSpriteArr1.some(sprite1 =>
+      rectSpriteArr2.some(sprite2 => this.hitTestRect(sprite1, sprite2))
+    )
   }
 
   // Load all sprite classes
