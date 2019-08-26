@@ -27,45 +27,29 @@ export class CastleHallBeginIncident extends BaseIncident {
     const rightKey = this.game.keyMap.right
 
     // interaction detection
+    const diagonalDirection =
+      (upKey.isDown || downKey.isDown) && (leftKey.isDown || rightKey.isDown)
+    const projectSpeed = playerSprite.vMax / Math.sqrt(2)
+
     if (upKey.isDown) {
       // up key is pressed
-      // playerSprite.y += playerSprite.vy * dt
+      playerSprite.vy = -(diagonalDirection ? projectSpeed : playerSprite.vMax)
       playerSprite.y += playerSprite.vy
-      playerSprite.vy = -playerSprite.vMax
-
-      // TODO: think about easing later
-      // playerSprite.vy -= easingFn.easeInQuad(upKey.pressDuration / 1000) * dt
-      // playerSprite.vy -= (1 / 1000) * dt
-      // playerSprite.vy = Math.min(
-      //   playerSprite.vMax,
-      //   Math.max(-playerSprite.vMax, playerSprite.vy)
-      // )
-      // console.log(playerSprite.vy, playerSprite.y)
-      // playerSprite.y -= 0.15 * dt
     }
-
     if (downKey.isDown) {
       // down key is pressed
-      // playerSprite.y += playerSprite.vy * dt
+      playerSprite.vy = diagonalDirection ? projectSpeed : playerSprite.vMax
       playerSprite.y += playerSprite.vy
-      playerSprite.vy = playerSprite.vMax
-
-      // // playerSprite.vy += easingFn.easeInQuad(upKey.pressDuration / 1000) * dt
-      // playerSprite.vy += (1 / 1000) * dt
-      // playerSprite.vy = Math.min(
-      //   playerSprite.vMax,
-      //   Math.max(-playerSprite.vMax, playerSprite.vy)
-      // )
-      // console.log(playerSprite.vy, playerSprite.y)
-      // playerSprite.y += 0.15 * dt
     }
-    if (this.game.keyMap.left.isDown) {
-      // up key is pressed
-      playerSprite.x -= 0.15 * dt
+    if (leftKey.isDown) {
+      // left key is pressed
+      playerSprite.vx = -(diagonalDirection ? projectSpeed : playerSprite.vMax)
+      playerSprite.x += playerSprite.vx
     }
-    if (this.game.keyMap.right.isDown) {
-      // up key is pressed
-      playerSprite.x += 0.15 * dt
+    if (rightKey.isDown) {
+      // right key is pressed
+      playerSprite.vx = diagonalDirection ? projectSpeed : playerSprite.vMax
+      playerSprite.x += playerSprite.vx
     }
 
     // hit detection
@@ -74,13 +58,15 @@ export class CastleHallBeginIncident extends BaseIncident {
     }
 
     if (Game.hitTestRects(playerSprite, wallSprites)) {
-      // do {
-      //   // playerSprite.y -= playerSprite.vy * dt
-      //   playerSprite.y -= playerSprite.vy
-      // } while (Game.hitTestRects(playerSprite, wallSprites))
+      if (upKey.isDown || downKey.isDown) {
+        playerSprite.y -= playerSprite.vy
+        playerSprite.vy = 0
+      }
 
-      playerSprite.y -= playerSprite.vy
-      playerSprite.vy = 0
+      if (leftKey.isDown || rightKey.isDown) {
+        playerSprite.x -= playerSprite.vx
+        playerSprite.vx = 0
+      }
     }
   }
 }

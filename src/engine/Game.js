@@ -103,7 +103,6 @@ export class Game {
       pressStartTime: null,
       pressDuration: 0,
       isDown: false,
-      isUp: true,
     }
 
     document.addEventListener('keydown', evt => {
@@ -112,7 +111,6 @@ export class Game {
       }
 
       keyObj.isDown = true
-      keyObj.isUp = false
       const now = Date.now()
       if (!keyObj.pressStartTime) {
         keyObj.pressStartTime = now
@@ -128,7 +126,6 @@ export class Game {
       }
 
       keyObj.isDown = false
-      keyObj.isUp = true
       keyObj.pressStartTime = null
       keyObj.pressDuration = 0
       evt.preventDefault()

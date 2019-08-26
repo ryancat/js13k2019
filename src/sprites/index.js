@@ -116,6 +116,6 @@ export class PlayerSprite extends RectSprite {
     this.vy = 0
     // sqrt rule applies here
     // pixel per 1 ms
-    this.vMax = 20
+    this.vMax = 10
   }
 }
