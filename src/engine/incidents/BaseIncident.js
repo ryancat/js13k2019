@@ -74,6 +74,7 @@ export class BaseIncident {
         width: this.mapGroup.width,
         height: this.mapGroup.height,
         type: 'layer',
+        name: layer.name,
       })
 
       const width = layerGroup.width / layerGroup.colNum
@@ -84,12 +85,17 @@ export class BaseIncident {
           // for tiled layer, we will draw them as is
           // create sprites for the current layer
           layer.data.forEach((tileId, tileIndex) => {
+            const colIndex = tileIndex % layerGroup.colNum
+            const rowIndex = Math.floor(tileIndex / layerGroup.colNum)
             layerGroup.add(
               this.game.createSprite(this.mapGroup.tileSpriteMap[tileId], {
-                x: (tileIndex % layerGroup.colNum) * width,
-                y: Math.floor(tileIndex / layerGroup.colNum) * height,
+                x: colIndex * width,
+                y: rowIndex * height,
                 width,
                 height,
+                colIndex,
+                rowIndex,
+                tileIndex,
               })
             )
           })

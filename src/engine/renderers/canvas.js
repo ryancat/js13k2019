@@ -70,4 +70,22 @@ export class CanvasRenderer {
 
     context.restore()
   }
+
+  drawText({
+    x = 0,
+    y = 0,
+    align = 'center',
+    text = 'PLACE_HOLDER',
+    color = DEFAULT_DRAW_BACKGROUND_COLOR,
+  } = {}) {
+    const context = this._ctx
+    context.save()
+    context.font = '12px'
+    context.fillStyle = color
+    context.textAlign = align
+    context.textBaseline = 'middle'
+    context.fillText(text, x, y)
+
+    context.restore()
+  }
 }

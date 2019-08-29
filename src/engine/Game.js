@@ -134,62 +134,6 @@ export class Game {
     return keyObj
   }
 
-  // TODO: only test rect sprite for now
-  static hitTestPoint({ x = 0, y = 0 }, rectSprite) {
-    return (
-      x >= rectSprite.x + rectSprite.hitArea.localX &&
-      x <=
-        rectSprite.x +
-          rectSprite.hitArea.localX +
-          rectSprite.hitArea.localWidth &&
-      y >= rectSprite.y + rectSprite.hitArea.localY &&
-      y <=
-        rectSprite.y +
-          rectSprite.hitArea.localY +
-          rectSprite.hitArea.localHeight
-    )
-  }
-
-  static hitTestRect(rectSprite1, rectSprite2) {
-    // The two rect sprite hit each other when they hit on both x and y
-    // cooridnates. On each coordinate, there are four cases that they
-    // may hit
-    const r1HitArea = rectSprite1.hitArea
-    const r2HitArea = rectSprite2.hitArea
-    const overlapOnXCoorinate =
-      (rectSprite1.x + r1HitArea.localX <= rectSprite2.x + r2HitArea.localX &&
-        rectSprite1.x + r1HitArea.localX + r1HitArea.localWidth >=
-          rectSprite2.x + r2HitArea.localX) ||
-      (rectSprite2.x + r2HitArea.localX <= rectSprite1.x + r1HitArea.localX &&
-        rectSprite2.x + r2HitArea.localX + r2HitArea.localWidth >=
-          rectSprite1.x + r1HitArea.localX)
-    const overlapOnYCoorinate =
-      (rectSprite1.y + r1HitArea.localY <= rectSprite2.y + r2HitArea.localY &&
-        rectSprite1.y + r1HitArea.localY + r1HitArea.localHeight >=
-          rectSprite2.y + r2HitArea.localY) ||
-      (rectSprite2.y + r2HitArea.localY <= rectSprite1.y + r1HitArea.localY &&
-        rectSprite2.y + r2HitArea.localY + r2HitArea.localHeight >=
-          rectSprite1.y + r1HitArea.localY)
-
-    return overlapOnXCoorinate && overlapOnYCoorinate
-  }
-
-  static hitTestRects(rectSpriteArr1 = [], rectSpriteArr2 = []) {
-    if (!Array.isArray(rectSpriteArr1)) {
-      rectSpriteArr1 = [rectSpriteArr1]
-    }
-
-    if (!Array.isArray(rectSpriteArr2)) {
-      rectSpriteArr2 = [rectSpriteArr2]
-    }
-
-    // the two group hit when any one sprite in rectSpriteArr1 hit
-    // any one sprite in rectSpriteArr2
-    return rectSpriteArr1.some(sprite1 =>
-      rectSpriteArr2.some(sprite2 => this.hitTestRect(sprite1, sprite2))
-    )
-  }
-
   // Load all sprite classes
   loadSprites() {
     this.spriteClassMap = spriteClassMap

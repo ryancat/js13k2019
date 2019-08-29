@@ -1,27 +1,28 @@
+import { Sprite } from './Sprite'
 const DEFAULT_RECT_SPRITE_WIDTH = 50
 const DEFAULT_RECT_SPRITE_HEIGHT = 50
 
-export class RectSprite {
-  constructor({
-    x = 0,
-    y = 0,
-    width = DEFAULT_RECT_SPRITE_WIDTH,
-    height = DEFAULT_RECT_SPRITE_HEIGHT,
-    // TODO: have engine level palette
-    backgroundColor = 'red',
-    type = 'sprite',
-    name = '',
-  } = {}) {
-    Object.assign(this, {
-      x,
-      y,
-      width,
-      height,
-      backgroundColor,
-      type,
-      name,
-      hitArea: {},
-    })
+export class RectSprite extends Sprite {
+  constructor(options = {}) {
+    super()
+    Object.assign(
+      this,
+      {
+        x: 0,
+        y: 0,
+        width: DEFAULT_RECT_SPRITE_WIDTH,
+        height: DEFAULT_RECT_SPRITE_HEIGHT,
+        // TODO: have engine level palette
+        backgroundColor: 'red',
+        type: 'sprite',
+        tileIndex: -1,
+        colIndex: -1,
+        rowIndex: -1,
+        name: '',
+        hitArea: {},
+      },
+      options
+    )
 
     this.setHitArea()
   }
@@ -62,6 +63,15 @@ export class RectSprite {
         shouldFill: false,
         shouldStroke: true,
         borderColor: 'red',
+      })
+
+      renderer.drawText({
+        x: this.x + this.width / 2,
+        y: this.y + this.height / 2,
+        align: 'center',
+        verticalAlign: 'middle',
+        text: this.tileIndex,
+        color: 'red',
       })
     }
   }

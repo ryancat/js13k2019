@@ -116,6 +116,51 @@ export class PlayerSprite extends RectSprite {
     this.vy = 0
     // sqrt rule applies here
     // pixel per 1 ms
-    this.vMax = 10
+    this.vMax = 16
+
+    // the action queue that will update sprite movement
+    this._actionQ = []
+  }
+
+  move() {
+    this.y += this.vy
+    this.x += this.vx
+  }
+
+  hitSprite(sprite) {
+    if (sprite.hitObject) {
+      sprite.hitObject(this)
+    }
+  }
+
+  hitSprites(sprites = []) {
+    sprites.forEach(this.hitSprite.bind(this))
+  }
+
+  addToActionQ(actionItem = {}) {
+    this._actionQ.push(actionItem)
+  }
+
+  runActionQ() {
+    if (!this._actionQ.length) {
+      return
+    }
+
+    const finalAction = this._actionQ.reduce((preAction, postAction) => {
+      return {
+        vx: preAction.vx + postAction.vx,
+        vy: preAction.vy + postAction.vy,
+      }
+    })
+
+    const bothVxAndVy = finalAction.vx && finalAction.vy
+    this.vx = bothVxAndVy
+      ? ((finalAction.vx / Math.abs(finalAction.vx)) * this.vMax) / Math.sqrt(2)
+      : finalAction.vx
+    this.vy = bothVxAndVy
+      ? ((finalAction.vy / Math.abs(finalAction.vy)) * this.vMax) / Math.sqrt(2)
+      : finalAction.vy
+    this.x += this.vx
+    this.y += this.vy
   }
 }

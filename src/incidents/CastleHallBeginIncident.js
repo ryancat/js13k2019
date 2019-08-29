@@ -1,6 +1,6 @@
 import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
-import { Game } from '../engine/Game'
+import { hitTestRects } from '../engine/utils/hitDetection'
 import { easingFn } from '../engine/utils/easing'
 
 export class CastleHallBeginIncident extends BaseIncident {
@@ -17,7 +17,7 @@ export class CastleHallBeginIncident extends BaseIncident {
 
   update(dt) {
     const playerSprite = this.mapGroup.getSpriteByName('player')
-    const kingSprite = this.mapGroup.getSpriteByName('king')
+    const kingSprites = this.mapGroup.getSpritesByName('king')
     const wallSprites = this.mapGroup.getSpritesByName('wall')
 
     // keys
@@ -34,39 +34,59 @@ export class CastleHallBeginIncident extends BaseIncident {
     if (upKey.isDown) {
       // up key is pressed
       playerSprite.vy = -(diagonalDirection ? projectSpeed : playerSprite.vMax)
-      playerSprite.y += playerSprite.vy
     }
     if (downKey.isDown) {
       // down key is pressed
       playerSprite.vy = diagonalDirection ? projectSpeed : playerSprite.vMax
-      playerSprite.y += playerSprite.vy
     }
     if (leftKey.isDown) {
       // left key is pressed
       playerSprite.vx = -(diagonalDirection ? projectSpeed : playerSprite.vMax)
-      playerSprite.x += playerSprite.vx
     }
     if (rightKey.isDown) {
       // right key is pressed
       playerSprite.vx = diagonalDirection ? projectSpeed : playerSprite.vMax
-      playerSprite.x += playerSprite.vx
     }
+
+    if (!upKey.isDown && !downKey.isDown) {
+      playerSprite.vy = 0
+    }
+
+    if (!leftKey.isDown && !rightKey.isDown) {
+      playerSprite.vx = 0
+    }
+
+    const oldPosition = {
+      x: playerSprite.x,
+      y: playerSprite.y,
+    }
+    // console.log(oldPosition)
+
+    playerSprite.move()
+    // console.log(playerSprite.x, playerSprite.y)
 
     // hit detection
-    if (Game.hitTestRect(playerSprite, kingSprite)) {
-      console.log('hit king')
-    }
+    playerSprite.hitSprites(wallSprites)
+    playerSprite.hitSprites(kingSprites)
 
-    if (Game.hitTestRects(playerSprite, wallSprites)) {
-      if (upKey.isDown || downKey.isDown) {
-        playerSprite.y -= playerSprite.vy
-        playerSprite.vy = 0
-      }
+    // if (hitTestRects(playerSprite, kingSprites)) {
+    //   console.log('hit king')
+    // }
 
-      if (leftKey.isDown || rightKey.isDown) {
-        playerSprite.x -= playerSprite.vx
-        playerSprite.vx = 0
-      }
-    }
+    // if (hitTestRects(playerSprite, wallSprites)) {
+    //   // if (upKey.isDown || downKey.isDown) {
+    //   //   playerSprite.y -= playerSprite.vy
+    //   //   playerSprite.vy = 0
+    //   // }
+    //   playerSprite.x = oldPosition.x
+    //   playerSprite.y = oldPosition.y
+    // }
+
+    // // if (Game.hitTestRects(playerSprite, wallSprites)) {
+    // //   // if (leftKey.isDown || rightKey.isDown) {
+    // //   //   playerSprite.x -= playerSprite.vx
+    // //   //   playerSprite.vx = 0
+    // //   // }
+    // // }
   }
 }
