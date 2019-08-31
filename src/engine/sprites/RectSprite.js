@@ -5,6 +5,7 @@ const DEFAULT_RECT_SPRITE_HEIGHT = 50
 export class RectSprite extends Sprite {
   constructor(options = {}) {
     super()
+
     Object.assign(
       this,
       {
@@ -14,12 +15,10 @@ export class RectSprite extends Sprite {
         height: DEFAULT_RECT_SPRITE_HEIGHT,
         // TODO: have engine level palette
         backgroundColor: 'red',
-        type: 'sprite',
         tileIndex: -1,
         colIndex: -1,
         rowIndex: -1,
         name: '',
-        hitArea: {},
       },
       options
     )
@@ -41,9 +40,14 @@ export class RectSprite extends Sprite {
     })
   }
 
+  moveTo(x = 0, y = 0) {
+    this.x = x
+    this.y = y
+  }
+
   update(dt) {}
 
-  render(renderer) {
+  render(dt, renderer) {
     renderer.drawRect({
       x: this.x,
       y: this.y,
@@ -55,24 +59,23 @@ export class RectSprite extends Sprite {
     })
 
     if (localStorage.getItem('GAME_DEBUG_MODE')) {
-      renderer.drawRect({
-        x: this.x + this.hitArea.localX,
-        y: this.y + this.hitArea.localY,
-        width: this.hitArea.localWidth,
-        height: this.hitArea.localHeight,
-        shouldFill: false,
-        shouldStroke: true,
-        borderColor: 'red',
-      })
-
-      renderer.drawText({
-        x: this.x + this.width / 2,
-        y: this.y + this.height / 2,
-        align: 'center',
-        verticalAlign: 'middle',
-        text: this.tileIndex,
-        color: 'red',
-      })
+      // renderer.drawRect({
+      //   x: this.x + this.hitArea.localX,
+      //   y: this.y + this.hitArea.localY,
+      //   width: this.hitArea.localWidth,
+      //   height: this.hitArea.localHeight,
+      //   shouldFill: false,
+      //   shouldStroke: true,
+      //   borderColor: 'red',
+      // })
+      // renderer.drawText({
+      //   x: this.x + this.width / 2,
+      //   y: this.y + this.height / 2,
+      //   align: 'center',
+      //   verticalAlign: 'middle',
+      //   text: this.tileIndex,
+      //   color: 'red',
+      // })
     }
   }
 }

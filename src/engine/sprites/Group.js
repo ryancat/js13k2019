@@ -37,8 +37,8 @@ export class Group {
     obj.parent = this
   }
 
-  render() {
-    this.children.forEach(child => child.render(this.renderer))
+  render(dt, renderer = this.renderer) {
+    this.children.forEach(child => child.render(dt, renderer))
   }
 
   update(dt) {

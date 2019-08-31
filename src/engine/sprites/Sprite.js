@@ -1,6 +1,12 @@
 import { computeHit } from '../utils/hitDetection'
 
 export class Sprite {
+  constructor() {
+    Object.assign(this, {
+      hitArea: {},
+      type: 'sprite',
+    })
+  }
   /**
    * process logic on collide with object sprite
    * @param {Sprite} objectSprite
@@ -65,4 +71,8 @@ export class Sprite {
 
     return parent.name
   }
+
+  update(dt) {}
+
+  render(renderer, dt) {}
 }

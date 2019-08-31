@@ -29,7 +29,7 @@ export class BaseIncident {
     // render layers
     this.flag.layerDirtyArr.forEach((isLayerDirty, layerIndex) => {
       if (isLayerDirty) {
-        this.mapGroup.children[layerIndex].render()
+        this.mapGroup.children[layerIndex].render(dt)
       }
     })
   }
@@ -75,6 +75,7 @@ export class BaseIncident {
         height: this.mapGroup.height,
         type: 'layer',
         name: layer.name,
+        renderer: this.mapGroup.renderer,
       })
 
       const width = layerGroup.width / layerGroup.colNum
@@ -129,6 +130,7 @@ export class BaseIncident {
       }
     })
 
+    // Dirty all layer afte init
     this.flag.layerDirtyArr = this.mapGroup.layers.map(() => true)
   }
 
