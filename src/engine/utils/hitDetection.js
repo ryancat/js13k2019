@@ -8,25 +8,51 @@ export function computeRectHit(sprite, otherSprite) {
   const atYNeg =
     otherSprite.y + otherHitArea.localY <= sprite.y + hitArea.localY &&
     otherSprite.y + otherHitArea.localY + otherHitArea.localHeight >=
-      sprite.y + hitArea.localY
+      sprite.y + hitArea.localY &&
+    otherSprite.y +
+      otherHitArea.localY +
+      otherHitArea.localHeight -
+      (sprite.y + hitArea.localY)
   const atXPos =
     sprite.x + hitArea.localX <= otherSprite.x + otherHitArea.localX &&
     sprite.x + hitArea.localX + hitArea.localWidth >=
-      otherSprite.x + otherHitArea.localX
+      otherSprite.x + otherHitArea.localX &&
+    sprite.x +
+      hitArea.localX +
+      hitArea.localWidth -
+      (otherSprite.x + otherHitArea.localX)
   const atYPos =
     sprite.y + hitArea.localY <= otherSprite.y + otherHitArea.localY &&
     sprite.y + hitArea.localY + hitArea.localHeight >=
-      otherSprite.y + otherHitArea.localY
+      otherSprite.y + otherHitArea.localY &&
+    sprite.y +
+      hitArea.localY +
+      hitArea.localHeight -
+      (otherSprite.y + otherHitArea.localY)
   const atXNeg =
     otherSprite.x + otherHitArea.localX <= sprite.x + hitArea.localX &&
     otherSprite.x + otherHitArea.localX + otherHitArea.localWidth >=
-      sprite.x + hitArea.localX
+      sprite.x + hitArea.localX &&
+    otherSprite.x +
+      otherHitArea.localX +
+      otherHitArea.localWidth -
+      (sprite.x + hitArea.localX)
 
-  const top = atYNeg && (atXPos || atXNeg)
-  const right = atXPos && (atYPos || atYNeg)
-  const bottom = atYPos && (atXPos || atXNeg)
-  const left = atXNeg && (atYPos || atYNeg)
+  const top = Math.max(atXPos, atXNeg) && +atYNeg
+  const right = Math.max(atYPos, atYNeg) && +atXPos
+  const bottom = Math.max(atXPos, atXNeg) && +atYPos
+  const left = Math.max(atYPos, atYNeg) && +atXNeg
   const isHit = top || right || bottom || left
+
+  if (isHit) {
+    console.log({
+      top,
+      right,
+      bottom,
+      left,
+      isHit,
+    })
+  }
 
   return {
     top,

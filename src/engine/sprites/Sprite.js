@@ -12,7 +12,7 @@ export class Sprite {
    * @param {Sprite} objectSprite
    */
   hitObject(objectSprite, reactType = 'stop') {
-    const hitMap = computeHit(this, objectSprite)
+    let hitMap = computeHit(this, objectSprite)
     if (!hitMap.isHit) {
       return
     }
@@ -30,28 +30,30 @@ export class Sprite {
         if (reactType === 'stop') {
           if (hitMap.left) {
             if (objectSprite.vx > 0) {
-              objectSprite.x -= objectSprite.vMax
+              objectSprite.x -= hitMap.left
               objectSprite.vx = 0
             }
           }
 
           if (hitMap.right) {
             if (objectSprite.vx < 0) {
-              objectSprite.x += objectSprite.vMax
+              objectSprite.x += hitMap.right
               objectSprite.vx = 0
             }
           }
 
+          hitMap = computeHit(this, objectSprite)
+
           if (hitMap.bottom) {
             if (objectSprite.vy < 0) {
-              objectSprite.y += objectSprite.vMax
+              objectSprite.y += hitMap.bottom
               objectSprite.vy = 0
             }
           }
 
           if (hitMap.top) {
             if (objectSprite.vy > 0) {
-              objectSprite.y -= objectSprite.vMax
+              objectSprite.y -= hitMap.top
               objectSprite.vy = 0
             }
           }
