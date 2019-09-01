@@ -60,7 +60,7 @@ export class Group {
       const item = this.children[i]
       if (item instanceof Group) {
         sprite = item.getSprite(key, value)
-      } else if (item.type === 'sprite' && item[key] === value) {
+      } else if (item[key] === value) {
         sprite = item
       }
 
@@ -79,7 +79,7 @@ export class Group {
       const item = this.children[i]
       if (item instanceof Group) {
         sprites = sprites.concat(item.getSprites(key, value))
-      } else if (item.type === 'sprite' && item[key] === value) {
+      } else if (item[key] === value) {
         sprites.push(item)
       }
     }

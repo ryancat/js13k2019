@@ -188,8 +188,13 @@ export class Game {
    * Create a sprite object
    * @param {string} spriteKey the key to hash sprite data
    */
-  createSprite(spriteKey = '', options = {}) {
-    const spriteOption = Object.assign({}, options)
+  createTileSprite(spriteKey = '', options = {}) {
+    const spriteOption = Object.assign({ type: 'tileSprite' }, options)
+    return new this.spriteClassMap[spriteKey](spriteOption)
+  }
+
+  createObjectSprite(spriteKey = '', options = {}) {
+    const spriteOption = Object.assign({ type: 'objectSprite' }, options)
     return new this.spriteClassMap[spriteKey](spriteOption)
   }
 }

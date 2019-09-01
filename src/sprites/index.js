@@ -124,16 +124,6 @@ export class PlayerSprite1 extends RectSprite {
     // this._actionQ = []
   }
 
-  hitSprite(sprite) {
-    if (sprite.hitObject) {
-      sprite.hitObject(this)
-    }
-  }
-
-  hitSprites(sprites = []) {
-    sprites.forEach(this.hitSprite.bind(this))
-  }
-
   // addToActionQ(actionItem = {}) {
   //   this._actionQ.push(actionItem)
   // }
@@ -187,22 +177,6 @@ export class PlayerSprite2 extends RectSprite {
     // // the action queue that will update sprite movement
     // this._actionQ = []
   }
-
-  move() {
-    this.y += this.vy
-    this.x += this.vx
-  }
-
-  hitSprite(sprite) {
-    if (sprite.hitObject) {
-      sprite.hitObject(this)
-    }
-  }
-
-  hitSprites(sprites = []) {
-    sprites.forEach(this.hitSprite.bind(this))
-  }
-
   // addToActionQ(actionItem = {}) {
   //   this._actionQ.push(actionItem)
   // }
@@ -237,10 +211,10 @@ export class PlayerSprite extends FrameSprite {
     // construct sprite using base sprite
     super({
       ...options,
-      orderedFrames: [
-        Game.createSprite('PlayerSprite1', options),
-        Game.createSprite('PlayerSprite2', options),
-      ],
+      frameMap: {
+        stand1: new PlayerSprite1({ ...options }),
+        stand2: new PlayerSprite2({ ...options }),
+      },
     })
 
     // set velocity
@@ -257,17 +231,8 @@ export class PlayerSprite extends FrameSprite {
   setHitArea() {}
 
   move() {
-    this.moveTo(this.x + this.vx, this.y + this.vy)
-  }
-
-  hitSprite(sprite) {
-    if (sprite.hitObject) {
-      sprite.hitObject(this)
-    }
-  }
-
-  hitSprites(sprites = []) {
-    sprites.forEach(this.hitSprite.bind(this))
+    this.x += this.vx
+    this.y += this.vy
   }
 
   // addToActionQ(actionItem = {}) {

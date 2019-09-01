@@ -89,7 +89,7 @@ export class BaseIncident {
             const colIndex = tileIndex % layerGroup.colNum
             const rowIndex = Math.floor(tileIndex / layerGroup.colNum)
             layerGroup.add(
-              this.game.createSprite(this.mapGroup.tileSpriteMap[tileId], {
+              this.game.createTileSprite(this.mapGroup.tileSpriteMap[tileId], {
                 x: colIndex * width,
                 y: rowIndex * height,
                 width,
@@ -106,7 +106,7 @@ export class BaseIncident {
           // for object layer, we need to put object at given location
           layer.objects.forEach(gameObject => {
             layerGroup.add(
-              this.game.createSprite(
+              this.game.createObjectSprite(
                 this.mapGroup.objectSpriteMap[gameObject.id],
                 {
                   x: gameObject.x * this.mapGroup.tileWidthScale,

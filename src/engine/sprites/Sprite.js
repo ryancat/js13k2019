@@ -63,6 +63,17 @@ export class Sprite {
     }
   }
 
+  // For object sprite hit tile/item sprite
+  hitSprite(sprite) {
+    if (this.type === 'objectSprite' && sprite.hitObject) {
+      sprite.hitObject(this)
+    }
+  }
+
+  hitSprites(sprites = []) {
+    sprites.forEach(this.hitSprite.bind(this))
+  }
+
   getLayerName() {
     let parent = this.parent
     while (parent && parent.type !== 'layer') {
