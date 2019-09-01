@@ -35,6 +35,7 @@ export class CastleHallWallSprite extends RectSprite {
     super(options)
 
     this.name = 'wall'
+    this.hitType = 'stop'
   }
 }
 
@@ -94,6 +95,7 @@ export class CastleHallKingSprite extends RectSprite {
     super(options)
 
     this.name = 'king'
+    this.hitType = 'stop'
   }
 }
 
@@ -119,6 +121,7 @@ export class PlayerSprite1 extends RectSprite {
     // sqrt rule applies here
     // pixel per 1 ms
     this.vMax = 16
+    this.hitType = 'stop'
 
     // // the action queue that will update sprite movement
     // this._actionQ = []

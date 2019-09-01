@@ -56,12 +56,16 @@ export class CastleHallBeginIncident extends BaseIncident {
       playerSprite.vx = 0
     }
 
-    const oldPosition = {
-      x: playerSprite.x,
-      y: playerSprite.y,
-    }
+    // const oldPosition = {
+    //   x: playerSprite.x,
+    //   y: playerSprite.y,
+    // }
     // console.log(oldPosition)
 
+    // TODO: we are only move at most vMax at one frame, this
+    // maybe changed when we introduce dt and tweening. At that
+    // time, we may move a lot more than vMax, which may mess up
+    // with the current hit detection logic
     playerSprite.move()
     // console.log(playerSprite.x, playerSprite.y)
 
