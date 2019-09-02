@@ -76,6 +76,7 @@ export class BaseIncident {
         type: 'layer',
         name: layer.name,
         renderer: this.mapGroup.renderer,
+        map: this.mapGroup,
       })
 
       const width = layerGroup.width / layerGroup.colNum
@@ -97,6 +98,8 @@ export class BaseIncident {
                 colIndex,
                 rowIndex,
                 tileIndex,
+                layer: layerGroup,
+                map: this.mapGroup,
               })
             )
           })
@@ -114,6 +117,8 @@ export class BaseIncident {
                   width: gameObject.width * this.mapGroup.tileWidthScale,
                   height: gameObject.height * this.mapGroup.tileHeightScale,
                   name: gameObject.name,
+                  layer: layerGroup,
+                  map: this.mapGroup,
                 }
               )
             )

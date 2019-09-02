@@ -54,15 +54,15 @@ export class RectSprite extends Sprite {
     })
 
     if (localStorage.getItem('GAME_DEBUG_MODE')) {
-      // renderer.drawRect({
-      //   x: this.x + this.hitArea.localX,
-      //   y: this.y + this.hitArea.localY,
-      //   width: this.hitArea.localWidth,
-      //   height: this.hitArea.localHeight,
-      //   shouldFill: false,
-      //   shouldStroke: true,
-      //   borderColor: 'red',
-      // })
+      renderer.drawRect({
+        x: this.x + this.hitArea.localX,
+        y: this.y + this.hitArea.localY,
+        width: this.hitArea.localWidth,
+        height: this.hitArea.localHeight,
+        shouldFill: false,
+        shouldStroke: true,
+        borderColor: 'red',
+      })
       // renderer.drawText({
       //   x: this.x + this.width / 2,
       //   y: this.y + this.height / 2,

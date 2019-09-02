@@ -44,15 +44,15 @@ export function computeRectHit(sprite, otherSprite) {
   const left = Math.max(atYPos, atYNeg) && +atXNeg
   const isHit = top || right || bottom || left
 
-  if (isHit) {
-    console.log({
-      top,
-      right,
-      bottom,
-      left,
-      isHit,
-    })
-  }
+  // if (isHit) {
+  //   console.log({
+  //     top,
+  //     right,
+  //     bottom,
+  //     left,
+  //     isHit,
+  //   })
+  // }
 
   return {
     top,

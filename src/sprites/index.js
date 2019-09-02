@@ -10,6 +10,8 @@ export class EmptySprite extends RectSprite {
 
     // construct sprite using base sprite
     super(options)
+
+    this.name = 'empty'
   }
 
   // empty sprite don't render anything
@@ -233,10 +235,10 @@ export class PlayerSprite extends FrameSprite {
 
   setHitArea() {}
 
-  move() {
-    this.x += this.vx
-    this.y += this.vy
-  }
+  // move() {
+  //   this.x += this.vx
+  //   this.y += this.vy
+  // }
 
   // addToActionQ(actionItem = {}) {
   //   this._actionQ.push(actionItem)

@@ -1,7 +1,5 @@
 import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
-import { hitTestRects } from '../engine/utils/hitDetection'
-import { easingFn } from '../engine/utils/easing'
 
 export class CastleHallBeginIncident extends BaseIncident {
   constructor(options = {}) {
@@ -17,8 +15,6 @@ export class CastleHallBeginIncident extends BaseIncident {
 
   update(dt) {
     const playerSprite = this.mapGroup.getSpriteByName('player')
-    const kingSprites = this.mapGroup.getSpritesByName('king')
-    const wallSprites = this.mapGroup.getSpritesByName('wall')
 
     // keys
     const upKey = this.game.keyMap.up
@@ -56,41 +52,10 @@ export class CastleHallBeginIncident extends BaseIncident {
       playerSprite.vx = 0
     }
 
-    // const oldPosition = {
-    //   x: playerSprite.x,
-    //   y: playerSprite.y,
-    // }
-    // console.log(oldPosition)
-
     // TODO: we are only move at most vMax at one frame, this
     // maybe changed when we introduce dt and tweening. At that
     // time, we may move a lot more than vMax, which may mess up
     // with the current hit detection logic
     playerSprite.move()
-    // console.log(playerSprite.x, playerSprite.y)
-
-    // hit detection
-    playerSprite.hitSprites(wallSprites)
-    playerSprite.hitSprites(kingSprites)
-
-    // if (hitTestRects(playerSprite, kingSprites)) {
-    //   console.log('hit king')
-    // }
-
-    // if (hitTestRects(playerSprite, wallSprites)) {
-    //   // if (upKey.isDown || downKey.isDown) {
-    //   //   playerSprite.y -= playerSprite.vy
-    //   //   playerSprite.vy = 0
-    //   // }
-    //   playerSprite.x = oldPosition.x
-    //   playerSprite.y = oldPosition.y
-    // }
-
-    // // if (Game.hitTestRects(playerSprite, wallSprites)) {
-    // //   // if (leftKey.isDown || rightKey.isDown) {
-    // //   //   playerSprite.x -= playerSprite.vx
-    // //   //   playerSprite.vx = 0
-    // //   // }
-    // // }
   }
 }
