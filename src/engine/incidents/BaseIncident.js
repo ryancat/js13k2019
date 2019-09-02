@@ -9,7 +9,10 @@ export class BaseIncident {
       flag: {
         finished: false,
         initState: false,
+        bindEventCallback: false,
+        addSceneSprites: false,
       },
+      sceneSprites: [],
     })
   }
 
@@ -22,9 +25,22 @@ export class BaseIncident {
     if (!this.flag.initState) {
       this.initMapGroup()
       this.flag.initState = true
-    } else {
-      this.update(dt)
+      return false
     }
+
+    if (!this.flag.addSceneSprites) {
+      this.addSceneSprites()
+      this.flag.addSceneSprites = true
+      return false
+    }
+
+    if (!this.flag.bindEventCallback) {
+      this.bindEventCallback()
+      this.flag.bindEventCallback = true
+      return false
+    }
+
+    this.update(dt)
 
     // render layers
     this.flag.layerDirtyArr.forEach((isLayerDirty, layerIndex) => {
@@ -100,6 +116,7 @@ export class BaseIncident {
                 tileIndex,
                 layer: layerGroup,
                 map: this.mapGroup,
+                game: this.game,
               })
             )
           })
@@ -119,6 +136,7 @@ export class BaseIncident {
                   name: gameObject.name,
                   layer: layerGroup,
                   map: this.mapGroup,
+                  game: this.game,
                 }
               )
             )
@@ -140,4 +158,8 @@ export class BaseIncident {
   }
 
   update(dt) {}
+
+  bindEventCallback() {}
+
+  addSceneSprites() {}
 }

@@ -64,6 +64,10 @@ export function computeRectHit(sprite, otherSprite) {
 }
 
 export function computeHit(sprite, otherSprite) {
+  // TODO: should I use instanceof SceneSprite?
+  if (otherSprite.children) {
+  }
+
   // TODO: only rect here
   return computeRectHit(sprite, otherSprite)
 }

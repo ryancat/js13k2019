@@ -4,18 +4,17 @@ const DEFAULT_FRAME_SPRITE_FPS = 10
 
 export class FrameSprite extends Sprite {
   constructor(options = {}) {
-    super()
-
-    Object.assign(
-      this,
-      {
-        frameMap: {},
-        activeFrames: [],
-        fps: DEFAULT_FRAME_SPRITE_FPS,
-        currentFrameIndex: 0,
-        currentFrameDuration: 0,
-      },
-      options
+    super(
+      Object.assign(
+        {
+          frameMap: {},
+          activeFrames: [],
+          fps: DEFAULT_FRAME_SPRITE_FPS,
+          currentFrameIndex: 0,
+          currentFrameDuration: 0,
+        },
+        options
+      )
     )
 
     this.setActiveFrames(Object.keys(this.frameMap))

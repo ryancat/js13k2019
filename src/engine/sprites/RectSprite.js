@@ -4,23 +4,15 @@ const DEFAULT_RECT_SPRITE_HEIGHT = 50
 
 export class RectSprite extends Sprite {
   constructor(options = {}) {
-    super()
-
-    Object.assign(
-      this,
-      {
-        x: 0,
-        y: 0,
-        width: DEFAULT_RECT_SPRITE_WIDTH,
-        height: DEFAULT_RECT_SPRITE_HEIGHT,
-        // TODO: have engine level palette
-        backgroundColor: 'red',
-        tileIndex: -1,
-        colIndex: -1,
-        rowIndex: -1,
-        name: '',
-      },
-      options
+    super(
+      Object.assign(
+        {
+          tileIndex: -1,
+          colIndex: -1,
+          rowIndex: -1,
+        },
+        options
+      )
     )
 
     this.setHitArea()

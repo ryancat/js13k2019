@@ -1,5 +1,6 @@
 import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
+import { SceneSprite } from '../engine/sprites/SceneSprite'
 
 export class CastleHallBeginIncident extends BaseIncident {
   constructor(options = {}) {
@@ -15,7 +16,25 @@ export class CastleHallBeginIncident extends BaseIncident {
 
   update(dt) {
     const playerSprite = this.mapGroup.getSpriteByName('player')
+    this.handlePlayerMove(playerSprite, dt)
+  }
 
+  bindEventCallback() {
+    const kingSprite = this.getSceneByName('king')
+    kingSprite.hitCallback = sprite => {
+      console.log(sprite)
+    }
+  }
+
+  addSceneSprites() {
+    const kingSprites = this.mapGroup.getSpritesByName('kingSprite')
+    const sceneSprite = new SceneSprite()
+    sceneSprite.addSprites(kingSprites)
+    sceneSprite.name = 'king'
+    this.sceneSprites.push(sceneSprite)
+  }
+
+  handlePlayerMove(playerSprite, dt) {
     // keys
     const upKey = this.game.keyMap.up
     const downKey = this.game.keyMap.down
@@ -57,5 +76,11 @@ export class CastleHallBeginIncident extends BaseIncident {
     // time, we may move a lot more than vMax, which may mess up
     // with the current hit detection logic
     playerSprite.move()
+  }
+
+  getSceneByName(sceneName = '') {
+    return this.sceneSprites.filter(
+      sceneSprite => sceneSprite.name === sceneName
+    )[0]
   }
 }

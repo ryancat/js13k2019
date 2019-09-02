@@ -1,76 +1,38 @@
 import { computeHit } from '../utils/hitDetection'
 
+const DEFAULT_SPRITE_WIDTH = 50
+const DEFAULT_SPRITE_HEIGHT = 50
+
 export class Sprite {
-  constructor() {
-    Object.assign(this, {
-      hitArea: {},
-      hitMoveMap: {
-        stop: this.hitMoveStop.bind(this),
-        pass: () => {},
+  constructor(options = {}) {
+    Object.assign(
+      this,
+      {
+        x: 0,
+        y: 0,
+        width: DEFAULT_SPRITE_WIDTH,
+        height: DEFAULT_SPRITE_HEIGHT,
+        // offset dimensions from parent scene
+        offsetX: 0,
+        offsetY: 0,
+        // TODO: have engine level palette
+        backgroundColor: 'red',
+        name: '',
+        hitArea: {},
+        hitMoveMap: {
+          stop: this.hitMoveStop.bind(this),
+          pass: () => {},
+        },
+        type: 'sprite',
+        disableHit: false,
+        hitType: 'pass',
+        scene: null,
       },
-      type: 'sprite',
-      hitType: 'pass',
-    })
+      options
+    )
 
     this.initAggregateHitMap()
   }
-  // /**
-  //  * process logic on collide with object sprite
-  //  * @param {Sprite} objectSprite
-  //  */
-  // hitObject(objectSprite, reactType = 'stop') {
-  //   let hitMap = computeHit(this, objectSprite)
-  //   if (!hitMap.isHit) {
-  //     return
-  //   }
-
-  //   switch (this.getLayerName()) {
-  //     case 'background':
-  //     case 'ground':
-  //       // background and ground layers are accessible
-  //       // do nothing here
-  //       break
-
-  //     case 'obstacles':
-  //     case 'items':
-  //       // obstacle layer cannot be passed by objects
-  //       if (reactType === 'stop') {
-  //         if (hitMap.left) {
-  //           if (objectSprite.vx > 0) {
-  //             objectSprite.x -= hitMap.left
-  //             objectSprite.vx = 0
-  //           }
-  //         }
-
-  //         if (hitMap.right) {
-  //           if (objectSprite.vx < 0) {
-  //             objectSprite.x += hitMap.right
-  //             objectSprite.vx = 0
-  //           }
-  //         }
-
-  //         hitMap = computeHit(this, objectSprite)
-
-  //         if (hitMap.bottom) {
-  //           if (objectSprite.vy < 0) {
-  //             objectSprite.y += hitMap.bottom
-  //             objectSprite.vy = 0
-  //           }
-  //         }
-
-  //         if (hitMap.top) {
-  //           if (objectSprite.vy > 0) {
-  //             objectSprite.y -= hitMap.top
-  //             objectSprite.vy = 0
-  //           }
-  //         }
-  //       }
-  //       break
-
-  //     default:
-  //       break
-  //   }
-  // }
 
   initAggregateHitMap() {
     this.aggregateHitMap = {
@@ -83,10 +45,11 @@ export class Sprite {
 
   // For object sprite hit tile/item sprite
   hitSprite(sprite) {
-    if (sprite === this && sprite.hitType === 'pass') {
-      // Cannot hit self
+    if (sprite === this || sprite.hitType === 'pass' || sprite.disableHit) {
+      // Cannot hit self or sprite that not supposed to be hit
       return
     }
+
     // if (this.type === 'objectSprite' && sprite.hitObject) {
     //   sprite.hitObject(this)
     // }
@@ -135,61 +98,6 @@ export class Sprite {
         })
       }
     }
-
-    // switch (sprite.layer.name) {
-    //   case 'background':
-    //   case 'ground':
-    //     // background and ground layers are accessible
-    //     // do nothing here
-    //     break
-
-    //   case 'obstacles':
-    //   case 'items':
-    //     // obstacle layer cannot be passed by objects
-    //     if (hitMap.right) {
-    //       if (this.vx > 0) {
-    //         this.aggregateHitMap.right.push({
-    //           sprite,
-    //           value: hitMap.right,
-    //           direction: 'right',
-    //         })
-    //       }
-    //     }
-
-    //     if (hitMap.left) {
-    //       if (this.vx < 0) {
-    //         this.aggregateHitMap.left.push({
-    //           sprite,
-    //           value: hitMap.left,
-    //           direction: 'left',
-    //         })
-    //       }
-    //     }
-
-    //     if (hitMap.top) {
-    //       if (this.vy < 0) {
-    //         this.aggregateHitMap.top.push({
-    //           sprite,
-    //           value: hitMap.top,
-    //           direction: 'top',
-    //         })
-    //       }
-    //     }
-
-    //     if (hitMap.bottom) {
-    //       if (this.vy > 0) {
-    //         this.aggregateHitMap.bottom.push({
-    //           sprite,
-    //           value: hitMap.bottom,
-    //           direction: 'bottom',
-    //         })
-    //       }
-    //     }
-    //     break
-
-    //   default:
-    //     break
-    // }
   }
 
   hitSprites(sprites = []) {
@@ -197,48 +105,6 @@ export class Sprite {
 
     // Generate this.aggregateHitMap for smoothing hit results
     sprites.forEach(this.hitSprite.bind(this))
-
-    // // The hitDirection is decided by most number of blocking sprites
-    // const hitDirections = Object.keys(this.aggregateHitMap).sort(
-    //   (directionA, directionB) => {
-    //     return (
-    //       this.aggregateHitMap[directionB].length -
-    //       this.aggregateHitMap[directionA].length
-    //     )
-    //   }
-    // )
-
-    // const lrHitDirection =
-    //   this.aggregateHitMap.left.length > this.aggregateHitMap.right.length
-    //     ? 'left'
-    //     : 'right'
-    // const tbHitDirection =
-    //   this.aggregateHitMap.top.length > this.aggregateHitMap.bottom.length
-    //     ? 'top'
-    //     : 'bottom'
-
-    // const lrActualHitSpirteObj = this.aggregateHitMap[lrHitDirection].sort(
-    //   (hitA, hitB) => {
-    //     return hitB.value - hitA.value
-    //   }
-    // )[0]
-    // const tbActualHitSpirteObj = this.aggregateHitMap[tbHitDirection].sort(
-    //   (hitA, hitB) => {
-    //     return hitB.value - hitA.value
-    //   }
-    // )[0]
-
-    // if (lrActualHitSpirteObj) {
-    //   this.hitMoveMap[lrActualHitSpirteObj.sprite.hitType](lrActualHitSpirteObj)
-    // }
-
-    // if (tbActualHitSpirteObj) {
-    //   this.hitMoveMap[tbActualHitSpirteObj.sprite.hitType](tbActualHitSpirteObj)
-    // }
-
-    // console.log(this.aggregateHitMap)
-
-    // this.hitMoveMap[actualHitSpriteObj.sprite.hitType](actualHitSpriteObj)
 
     // The hitDirection is decided by most number of blocking sprites
     const hitDirection = Object.keys(this.aggregateHitMap).sort(
@@ -264,7 +130,15 @@ export class Sprite {
       console.log(actualHitSpriteObj)
     }
 
-    this.hitMoveMap[actualHitSpriteObj.sprite.hitType](actualHitSpriteObj)
+    const actualHitSprite = actualHitSpriteObj.sprite
+    // Handle hit move response
+    this.hitMoveMap[actualHitSprite.hitType](actualHitSpriteObj)
+
+    // Handle hit callbacks
+    actualHitSprite.hitCallback(this)
+    if (actualHitSprite.scene) {
+      actualHitSprite.scene.hitCallback(this)
+    }
   }
 
   hitMoveStop({ value = 0, direction = '' }) {
@@ -358,23 +232,7 @@ export class Sprite {
     return possibleHitSprites
   }
 
-  // getLayer() {
-  //   let parent = this.parent
-  //   while (parent && parent.type !== 'layer') {
-  //     parent = parent.parent
-  //   }
-
-  //   return parent
-  // }
-
-  // getMap() {
-  //   let parent = this.parent
-  //   while (parent && parent.type !== 'map') {
-  //     parent = parent.parent
-  //   }
-
-  //   return parent
-  // }
+  hitCallback(sprite) {}
 
   update(dt) {}
 
