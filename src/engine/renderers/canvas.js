@@ -76,16 +76,26 @@ export class CanvasRenderer {
     y = 0,
     align = 'center',
     text = 'PLACE_HOLDER',
+    fontSize = '16',
     color = DEFAULT_DRAW_BACKGROUND_COLOR,
   } = {}) {
     const context = this._ctx
     context.save()
-    context.font = '12px'
+    context.font = `${fontSize}px serif`
     context.fillStyle = color
     context.textAlign = align
     context.textBaseline = 'middle'
     context.fillText(text, x, y)
 
     context.restore()
+  }
+
+  clearRect({
+    x = 0,
+    y = 0,
+    width = DEFAULT_DRAW_WIDTH,
+    height = DEFAULT_DRAW_HEIGHT,
+  } = {}) {
+    this._ctx.clearRect(x, y, width, height)
   }
 }

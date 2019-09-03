@@ -1,6 +1,7 @@
 import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
+import { kingIntroduction } from './conversations/king'
 
 export class CastleHallBeginIncident extends BaseIncident {
   constructor(options = {}) {
@@ -19,19 +20,23 @@ export class CastleHallBeginIncident extends BaseIncident {
     this.handlePlayerMove(playerSprite, dt)
   }
 
+  addSceneSprites() {
+    const kingSprites = this.mapGroup.getSpritesByName('kingSprite')
+    const kingSceneSprite = new SceneSprite()
+    kingSceneSprite.addSprites(kingSprites)
+    kingSceneSprite.name = 'king'
+    this.sceneSprites.push(kingSceneSprite)
+  }
+
   bindEventCallback() {
     const kingSprite = this.getSceneByName('king')
     kingSprite.hitCallback = sprite => {
       console.log(sprite)
+      if (!this.game.dialog) {
+        // Only play conversation when there is no dialog right now
+        this.game.playConversation(kingIntroduction(kingSprite, sprite))
+      }
     }
-  }
-
-  addSceneSprites() {
-    const kingSprites = this.mapGroup.getSpritesByName('kingSprite')
-    const sceneSprite = new SceneSprite()
-    sceneSprite.addSprites(kingSprites)
-    sceneSprite.name = 'king'
-    this.sceneSprites.push(sceneSprite)
   }
 
   handlePlayerMove(playerSprite, dt) {

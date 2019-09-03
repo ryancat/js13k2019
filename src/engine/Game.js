@@ -1,6 +1,8 @@
 import { CanvasRenderer } from './renderers/canvas'
 import * as spriteClassMap from '../sprites'
 import { BaseIncident } from './incidents/BaseIncident'
+import { Dialog } from './Dialog'
+import { GameLoop } from './GameLoop'
 
 const DEFAULT_GAME_WIDTH = 480
 const DEFAULT_GAME_HEIGHT = 480
@@ -37,64 +39,10 @@ export class Game {
       incidentMap: {},
       layerMap: {},
       keyMap: {},
-      loop: Game.createGameLoop(fps),
+      loop: new GameLoop({
+        fps,
+      }),
     })
-  }
-
-  static createGameLoop(fps) {
-    const gameLoop = {
-      fps,
-      callbacks: [],
-      isPaused: true,
-      timeoutId: null,
-    }
-
-    gameLoop.add = (...callbacks) => {
-      Array.prototype.push.apply(gameLoop.callbacks, callbacks)
-    }
-
-    gameLoop.remove = callback => {
-      const index = gameLoop.callbacks.indexOf(callback)
-      if (index >= 0) {
-        gameLoop.callbacks.splice(index, 1)
-      }
-    }
-
-    gameLoop.removeAll = () => {
-      gameLoop.callbacks = []
-    }
-
-    gameLoop.run = () => {
-      gameLoop.timeoutId = window.requestAnimationFrame(gameLoop.run)
-
-      const now = Date.now()
-      const lastRun = gameLoop.lastRun
-      gameLoop.lastRun = now
-
-      if (gameLoop.isPaused) {
-        return
-      }
-
-      const dt = now - lastRun
-      if (dt >= 1000 / fps) {
-        // We need to check game fps to decide if we should run registered callbacks
-        gameLoop.callbacks.forEach(callback => callback(dt))
-      }
-    }
-
-    gameLoop.start = () => {
-      gameLoop.isPaused = false
-    }
-
-    gameLoop.stop = () => {
-      gameLoop.isPaused = true
-      gameLoop.lastRun = null
-    }
-
-    gameLoop.run()
-    gameLoop.lastRun = Date.now()
-
-    return gameLoop
   }
 
   static createKeyInteraction(keyCodes = []) {
@@ -197,4 +145,38 @@ export class Game {
     const spriteOption = Object.assign({ type: 'objectSprite' }, options)
     return new this.spriteClassMap[spriteKey](spriteOption)
   }
+
+  playConversation(conversation = {}) {
+    const { contentObjs = [], callback = () => {} } = conversation
+
+    // this.startDialog()
+    // contentObjs.forEach(this.updateDialog.bind(this))
+    // this.endDialog(callback)
+
+    this.dialog = new Dialog(contentObjs, this)
+    this.dialog.start()
+    this.dialog.endCallbacks.push(
+      callback,
+      (() => {
+        delete this.dialog
+      }).bind(this)
+    )
+  }
+
+  // Pause the game
+  pause() {
+    this.loop.stop()
+  }
+
+  resume() {
+    this.loop.start()
+  }
+
+  startDialog() {}
+
+  updateDialog(contentObj = {}) {
+    const { from = '', content = '', contentCallback = () => {} } = contentObj
+  }
+
+  endDialog(callback = () => {}) {}
 }

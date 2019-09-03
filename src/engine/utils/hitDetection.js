@@ -66,6 +66,9 @@ export function computeRectHit(sprite, otherSprite) {
 export function computeHit(sprite, otherSprite) {
   // TODO: should I use instanceof SceneSprite?
   if (otherSprite.children) {
+    // otherSprite.hitAreaSprites.forEach(hitAreaSprite =>
+    //   computeRectHit(sprite, hitAreaSprite)
+    // )
   }
 
   // TODO: only rect here

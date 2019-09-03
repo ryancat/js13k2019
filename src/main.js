@@ -69,6 +69,7 @@ game.addInteractionKey('up', Game.createKeyInteraction([87, 38]))
 game.addInteractionKey('down', Game.createKeyInteraction([83, 40]))
 game.addInteractionKey('left', Game.createKeyInteraction([65, 37]))
 game.addInteractionKey('right', Game.createKeyInteraction([68, 39]))
+game.addInteractionKey('enter', Game.createKeyInteraction([13]))
 
 // Add first game incident
 // game.addIncident(castleHallGameStart, 'castleHallGameStart')
