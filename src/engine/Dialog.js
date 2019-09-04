@@ -41,27 +41,49 @@ export class Dialog {
     this.game.pause()
   }
 
-  update() {
+  update(dt) {
     // We need to show next conversation
+    let activeContent = this.contentObjs[this.activeContentIndex]
+
+    if (typeof activeContent === 'string') {
+      activeContent = {
+        fromSpriteKey: '',
+        content: activeContent,
+        contentCallback: () => {},
+        options: {},
+      }
+    }
+
     const {
-      from = '',
+      fromSpriteKey = '',
       content = '',
       contentCallback = () => {},
-    } = this.contentObjs[this.activeContentIndex]
+      options = {},
+    } = activeContent
 
     this.clear()
 
+    // Draw dialog box
     this.renderer.drawRect({
       x: this.x,
       y: this.y,
       width: this.width,
       height: this.height,
-      opacity: 0.9,
+      opacity: 0.95,
       shouldFill: true,
       shouldStroke: false,
       backgroundColor: palette.blue[3],
     })
 
+    // Draw dialog from character sprite
+    new this.game.spriteClassMap[fromSpriteKey]({
+      x: this.x + PADDING,
+      y: this.y + PADDING,
+      width: Math.floor(this.width * CONTENT_START_RATIO_X) - PADDING * 2,
+      height: this.height - PADDING * 2,
+    }).render(dt, this.renderer)
+
+    // Draw text content
     getWrappedStrings(content, {
       maxWrappedWidth: this.contentWidth,
       maxWrappedHeight: this.contentHeight,
@@ -73,7 +95,7 @@ export class Dialog {
         y: this.contentY + this.contentHeight / 2 + index * FONT_SIZE,
         text: wrappedContent,
         align: 'start',
-        color: 'red',
+        color: options.color || palette.gunmetal[4],
         fontSize: FONT_SIZE,
       })
     })
@@ -86,6 +108,7 @@ export class Dialog {
     if (!this.enterKey.isDown && this.enterKeyActive) {
       this.enterKeyActive = false
       this.activeContentIndex++
+      contentCallback()
 
       if (this.activeContentIndex >= this.contentObjs.length) {
         // Reach the end of conversation

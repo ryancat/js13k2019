@@ -101,6 +101,18 @@ export class CastleHallKingSprite extends RectSprite {
   }
 }
 
+export class KingDialogSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.blue[2]
+
+    // construct sprite using base sprite
+    super(options)
+
+    this.name = 'kingDialogSprite'
+  }
+}
+
 // Object sprite frames
 export class PlayerSprite1 extends RectSprite {
   constructor(options = {}) {
@@ -154,5 +166,17 @@ export class PlayerSprite extends FrameSprite {
     // sqrt rule applies here
     // pixel per 1 ms
     this.vMax = 16
+  }
+}
+
+export class PlayerDialogSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.brown[2]
+
+    // construct sprite using base sprite
+    super(options)
+
+    this.name = 'kingDialogSprite'
   }
 }

@@ -27,6 +27,7 @@ export class Sprite {
         disableHit: false,
         hitType: 'pass',
         scene: null,
+        state: {},
       },
       options
     )
