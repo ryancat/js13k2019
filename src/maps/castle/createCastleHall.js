@@ -9,12 +9,12 @@ export function generateMapData(config = {}) {
   Object.assign(tiledMapJson, {
     tileSpriteMap: {
       0: 'EmptySprite',
-      60: 'CastleHallBackgroundSprite',
-      1: 'CastleHallExitSprite',
-      117: 'CastleHallGroundSprite',
-      178: 'CastleHallWallSprite',
-      58: 'CastleHallWallTopSprite',
-      441: 'CastleHallKingSprite',
+      60: 'BackgroundSprite',
+      1: 'DoorSprite',
+      117: 'GroundSprite',
+      178: 'WallSprite',
+      58: 'WallTopSprite',
+      441: 'KingSprite',
     },
     objectSpriteMap: {
       3: 'PlayerSprite',

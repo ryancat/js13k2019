@@ -1,8 +1,9 @@
-import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
+
+import { generateMapData } from '../utils/mapGenerator'
 
 export class BattleFieldIncident extends BaseIncident {
   constructor(options = {}) {

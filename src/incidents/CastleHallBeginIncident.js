@@ -55,6 +55,10 @@ export class CastleHallBeginIncident extends BaseIncident {
         this.finish()
       }
     }
+
+    // TODO: REMOVE IN OFFICIAL GAME
+    doorSprite.backgroundColor = palette.green[3]
+    doorSprite.hitType = 'pass'
   }
 
   handlePlayerMove(playerSprite, dt) {

@@ -18,7 +18,7 @@ export class EmptySprite extends RectSprite {
   render() {}
 }
 
-export class CastleHallGroundSprite extends RectSprite {
+export class GroundSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.gunmetal[3]
@@ -28,7 +28,7 @@ export class CastleHallGroundSprite extends RectSprite {
   }
 }
 
-export class CastleHallWallSprite extends RectSprite {
+export class WallSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.brown[3]
@@ -41,7 +41,7 @@ export class CastleHallWallSprite extends RectSprite {
   }
 }
 
-export class CastleHallExitSprite extends RectSprite {
+export class DoorSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.green[3]
@@ -53,7 +53,7 @@ export class CastleHallExitSprite extends RectSprite {
   }
 }
 
-export class CastleHallWallTopSprite extends RectSprite {
+export class WallTopSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.brown[1]
@@ -73,7 +73,7 @@ export class PlaceholderSprite extends RectSprite {
   }
 }
 
-export class CastleHallBackgroundSprite extends RectSprite {
+export class BackgroundSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.gunmetal[4]
@@ -90,7 +90,7 @@ export class CastleHallBackgroundSprite extends RectSprite {
 // The problem is the map json data already split king into several sprites,
 // which makes it hard to describe which sprites should be grouped together.
 // I think I need to change the tileSpriteMap on mapData to do that.
-export class CastleHallKingSprite extends RectSprite {
+export class KingSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.blue[2]
