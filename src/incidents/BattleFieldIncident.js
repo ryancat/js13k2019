@@ -13,8 +13,10 @@ export class BattleFieldIncident extends BaseIncident {
   // TODO: generate random map
   createMapData() {
     this.mapData = generateMapData({
-      tileWidth: this.game.width / this.game.colNum,
-      tileHeight: this.game.height / this.game.rowNum,
+      width: 64,
+      height: 64,
+      tileWidth: this.game.width / 64,
+      tileHeight: this.game.height / 64,
     })
   }
 
@@ -24,6 +26,11 @@ export class BattleFieldIncident extends BaseIncident {
   }
 
   addSceneSprites() {}
+
+  setCamera() {
+    const playerSprite = this.mapGroup.getSpriteByName('player')
+    this.game.camera.follow(playerSprite)
+  }
 
   bindEventCallback() {}
 

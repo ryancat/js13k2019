@@ -35,9 +35,23 @@ export class RectSprite extends Sprite {
   update(dt) {}
 
   render(dt, renderer) {
+    const camera = renderer.game.camera
+    const transformX = this.x - camera.x
+    const transformY = this.y - camera.y
+
+    if (
+      transformX < -this.width ||
+      transformX > camera.width ||
+      transformY < -this.height ||
+      transformY > camera.height
+    ) {
+      // Out of camera. no need to render
+      return
+    }
+
     renderer.drawRect({
-      x: this.x,
-      y: this.y,
+      x: transformX,
+      y: transformY,
       width: this.width,
       height: this.height,
       shouldFill: true,
@@ -47,8 +61,8 @@ export class RectSprite extends Sprite {
 
     if (localStorage.getItem('GAME_DEBUG_MODE')) {
       renderer.drawRect({
-        x: this.x + this.hitArea.localX,
-        y: this.y + this.hitArea.localY,
+        x: transformX + this.hitArea.localX,
+        y: transformY + this.hitArea.localY,
         width: this.hitArea.localWidth,
         height: this.hitArea.localHeight,
         shouldFill: false,

@@ -11,9 +11,11 @@ export class CanvasRenderer {
     height = DEFAULT_RENDERER_HEIGHT,
     container = document.createElement('div'),
     key = 'canvasLayer',
+    game,
   } = {}) {
     this.container = container
     this.key = key
+    this.game = game
     this._canvas = document.createElement('canvas')
     this._ctx = this._canvas.getContext('2d')
 
@@ -42,8 +44,8 @@ export class CanvasRenderer {
   drawRect({
     x = 0,
     y = 0,
-    width = DEFAULT_DRAW_WIDTH,
-    height = DEFAULT_DRAW_HEIGHT,
+    width = this._canvas.width,
+    height = this._canvas.height,
     shouldFill = true,
     shouldStroke = false,
     backgroundColor = DEFAULT_DRAW_BACKGROUND_COLOR,
@@ -93,8 +95,8 @@ export class CanvasRenderer {
   clearRect({
     x = 0,
     y = 0,
-    width = DEFAULT_DRAW_WIDTH,
-    height = DEFAULT_DRAW_HEIGHT,
+    width = this._canvas.width,
+    height = this._canvas.height,
   } = {}) {
     this._ctx.clearRect(x, y, width, height)
   }

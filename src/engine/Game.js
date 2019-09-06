@@ -3,9 +3,10 @@ import * as spriteClassMap from '../sprites'
 import { BaseIncident } from './incidents/BaseIncident'
 import { Dialog } from './Dialog'
 import { GameLoop } from './GameLoop'
+import { Camera } from './Camera'
 
-const DEFAULT_GAME_WIDTH = 480
-const DEFAULT_GAME_HEIGHT = 480
+const DEFAULT_GAME_WIDTH = 1280
+const DEFAULT_GAME_HEIGHT = 1280
 const DEFAULT_NUM_TILE_WIDTH = 32
 const DEFAULT_NUM_TILE_HEIGHT = 32
 // Can be 'fit', 'fixed'
@@ -18,18 +19,18 @@ export class Game {
   constructor({
     width = DEFAULT_GAME_WIDTH,
     height = DEFAULT_GAME_HEIGHT,
-    colNum = DEFAULT_NUM_TILE_WIDTH,
-    rowNum = DEFAULT_NUM_TILE_HEIGHT,
     scaleMode = DEFAULT_SCALE_MODE,
     backgroundColor = DEFAULT_BACKGROUND_COLOR,
     fps = DEFAULT_FPS,
     container = document.createElement('div'),
+    cameraWidth,
+    cameraHeight,
+    cameraX,
+    cameraY,
   }) {
     Object.assign(this, {
       width,
       height,
-      colNum,
-      rowNum,
       scaleMode,
       backgroundColor,
       sprites: [],
@@ -42,6 +43,14 @@ export class Game {
       loop: new GameLoop({
         fps,
       }),
+    })
+
+    this.camera = new Camera({
+      game: this,
+      width: cameraWidth,
+      height: cameraHeight,
+      x: cameraX,
+      y: cameraY,
     })
   }
 
@@ -79,6 +88,10 @@ export class Game {
       evt.preventDefault()
     })
 
+    // document.addEventListener('scroll', evt => {
+    //   evt.preventDefault()
+    // })
+
     return keyObj
   }
 
@@ -102,13 +115,14 @@ export class Game {
   addLayer(
     layerKey = 'layer',
     {
-      width = this.width,
-      height = this.height,
+      width = this.camera.width,
+      height = this.camera.height,
       renderer = new CanvasRenderer({
         width,
         height,
         container: this.container,
         key: layerKey,
+        game: this,
       }),
     } = {}
   ) {

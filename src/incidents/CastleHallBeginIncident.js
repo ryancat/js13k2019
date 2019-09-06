@@ -12,14 +12,11 @@ export class CastleHallBeginIncident extends BaseIncident {
 
   createMapData() {
     this.mapData = generateMapData({
-      tileWidth: this.game.width / this.game.colNum,
-      tileHeight: this.game.height / this.game.rowNum,
+      width: 32,
+      height: 32,
+      tileWidth: this.game.width / 32,
+      tileHeight: this.game.height / 32,
     })
-  }
-
-  update(dt) {
-    const playerSprite = this.mapGroup.getSpriteByName('player')
-    this.handlePlayerMove(playerSprite, dt)
   }
 
   addSceneSprites() {
@@ -30,6 +27,11 @@ export class CastleHallBeginIncident extends BaseIncident {
     )
     castleDoorScene.backgroundColor = palette.red[3]
     castleDoorScene.hitType = 'stop'
+  }
+
+  setCamera() {
+    const playerSprite = this.mapGroup.getSpriteByName('player')
+    this.game.camera.follow(playerSprite)
   }
 
   bindEventCallback() {
@@ -59,6 +61,11 @@ export class CastleHallBeginIncident extends BaseIncident {
     // TODO: REMOVE IN OFFICIAL GAME
     doorSprite.backgroundColor = palette.green[3]
     doorSprite.hitType = 'pass'
+  }
+
+  update(dt) {
+    const playerSprite = this.mapGroup.getSpriteByName('player')
+    this.handlePlayerMove(playerSprite, dt)
   }
 
   handlePlayerMove(playerSprite, dt) {

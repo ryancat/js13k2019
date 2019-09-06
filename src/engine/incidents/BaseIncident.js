@@ -1,6 +1,6 @@
-import { generateMapData } from '../maps/emptyMap'
 import { Group } from '../sprites/Group'
 import { SceneSprite } from '../sprites/SceneSprite'
+import { palette } from '../../utils/colors'
 
 export class BaseIncident {
   constructor({ game, key } = {}) {
@@ -12,6 +12,10 @@ export class BaseIncident {
         initState: false,
         bindEventCallback: false,
         addSceneSprites: false,
+        setCamera: false,
+        renderBackground: false,
+        layerDirtyArr: [],
+        layerClearDirtyArr: [],
       },
       sceneSprites: [],
     })
@@ -29,9 +33,21 @@ export class BaseIncident {
       return false
     }
 
+    if (!this.flag.renderBackground) {
+      this.renderBackground()
+      this.flag.renderBackground = true
+      return false
+    }
+
     if (!this.flag.addSceneSprites) {
       this.addSceneSprites()
       this.flag.addSceneSprites = true
+      return false
+    }
+
+    if (!this.flag.setCamera) {
+      this.setCamera()
+      this.flag.setCamera = true
       return false
     }
 
@@ -45,6 +61,12 @@ export class BaseIncident {
     this.update(dt)
 
     // render layers
+    this.flag.layerClearDirtyArr.forEach((isLayerClearDirty, layerIndex) => {
+      if (isLayerClearDirty) {
+        this.mapGroup.children[layerIndex].clear(dt)
+      }
+    })
+
     this.flag.layerDirtyArr.forEach((isLayerDirty, layerIndex) => {
       if (isLayerDirty) {
         this.mapGroup.children[layerIndex].render(dt)
@@ -58,14 +80,7 @@ export class BaseIncident {
     this.flag.finished = true
   }
 
-  createMapData() {
-    this.mapData = generateMapData(
-      this.game.colNum,
-      this.game.rowNum,
-      this.game.width,
-      this.game.height
-    )
-  }
+  createMapData() {}
 
   initMapGroup() {
     this.createMapData()
@@ -159,6 +174,7 @@ export class BaseIncident {
 
     // Dirty all layer afte init
     this.flag.layerDirtyArr = this.mapGroup.layers.map(() => true)
+    this.flag.layerClearDirtyArr = this.mapGroup.layers.map(() => true)
   }
 
   getSceneByName(sceneName = '') {
@@ -177,9 +193,17 @@ export class BaseIncident {
     return sceneSprite
   }
 
+  renderBackground() {
+    this.game.layerMap['background'].drawRect({
+      backgroundColor: palette.gunmetal[4],
+    })
+  }
+
   update(dt) {}
 
-  bindEventCallback() {}
-
   addSceneSprites() {}
+
+  setCamera() {}
+
+  bindEventCallback() {}
 }

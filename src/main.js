@@ -12,8 +12,10 @@ import { CastleHallBeginIncident } from './incidents/CastleHallBeginIncident'
 // Use default values for now
 const game = new Game({
   container: document.getElementById('root'),
-  width: 640,
-  height: 640,
+  width: 1280,
+  height: 1280,
+  cameraWidth: window.innerWidth,
+  cameraHeight: window.innerHeight,
 })
 
 // The update function will be getting called each animation
@@ -83,6 +85,7 @@ game.addInteractionKey('down', Game.createKeyInteraction([83, 40]))
 game.addInteractionKey('left', Game.createKeyInteraction([65, 37]))
 game.addInteractionKey('right', Game.createKeyInteraction([68, 39]))
 game.addInteractionKey('enter', Game.createKeyInteraction([13]))
+game.addInteractionKey('space', Game.createKeyInteraction([32]))
 
 // Add first game incident
 // game.addIncident(castleHallGameStart, 'castleHallGameStart')

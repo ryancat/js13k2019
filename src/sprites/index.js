@@ -167,7 +167,7 @@ export class PlayerSprite extends FrameSprite {
     this.vy = 0
     // sqrt rule applies here
     // pixel per 1 ms
-    this.vMax = 16
+    this.vMax = this.width / 4
   }
 }
 

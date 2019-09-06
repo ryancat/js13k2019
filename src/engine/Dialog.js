@@ -9,6 +9,8 @@ const FONT_SIZE = 20
 
 export class Dialog {
   constructor(contentObjs = [], game, layerKey = 'foreground') {
+    const camera = game.camera
+
     Object.assign(this, {
       contentObjs,
       game,
@@ -19,17 +21,6 @@ export class Dialog {
       enterKey: game.keyMap.enter,
       enterKeyActive: false,
       activeContentIndex: 0,
-      x: 0,
-      y: Math.floor(game.height * RATIO_Y),
-      width: game.width,
-      height: game.height - Math.floor(game.height * RATIO_Y),
-      contentX: Math.floor(game.width * (CONTENT_START_RATIO_X + PADDING)),
-      contentY: Math.floor(game.height * (RATIO_Y + PADDING)),
-      contentWidth:
-        game.width -
-        Math.floor(game.width * (CONTENT_START_RATIO_X + PADDING * 2)),
-      contentHeight:
-        game.height - Math.floor(game.height * (RATIO_Y + PADDING * 2)),
     })
 
     this.loop.add(this.update.bind(this))
@@ -63,12 +54,25 @@ export class Dialog {
 
     this.clear()
 
+    const camera = this.game.camera
+    // const x = 0
+    // const y = ,
+    // width = ,
+    // height: ,
+    // contentX: Math.floor(camera.width * (CONTENT_START_RATIO_X + PADDING)),
+    // contentY: ,
+    // contentWidth:
+    //   camera.width -
+    //   Math.floor(camera.width * (CONTENT_START_RATIO_X + PADDING * 2)),
+    // contentHeight:
+    //   camera.height - Math.floor(camera.height * (RATIO_Y + PADDING * 2)),
+
     // Draw dialog box
     this.renderer.drawRect({
-      x: this.x,
-      y: this.y,
-      width: this.width,
-      height: this.height,
+      x: 0,
+      y: camera.height * RATIO_Y,
+      width: camera.width,
+      height: camera.height - Math.floor(camera.height * RATIO_Y),
       opacity: 0.95,
       shouldFill: true,
       shouldStroke: false,
@@ -77,22 +81,25 @@ export class Dialog {
 
     // Draw dialog from character sprite
     new this.game.spriteClassMap[fromSpriteKey]({
-      x: this.x + PADDING,
-      y: this.y + PADDING,
-      width: Math.floor(this.width * CONTENT_START_RATIO_X) - PADDING * 2,
-      height: this.height - PADDING * 2,
+      x: camera.x,
+      y: camera.y + camera.height * RATIO_Y,
+      width: Math.floor(camera.width * CONTENT_START_RATIO_X),
+      height: camera.height - Math.floor(camera.height * RATIO_Y),
     }).render(dt, this.renderer)
 
     // Draw text content
     getWrappedStrings(content, {
-      maxWrappedWidth: this.contentWidth,
-      maxWrappedHeight: this.contentHeight,
+      maxWrappedWidth:
+        camera.width -
+        Math.floor(camera.width * (CONTENT_START_RATIO_X + PADDING * 2)),
+      maxWrappedHeight:
+        camera.height - Math.floor(camera.height * (RATIO_Y + PADDING * 2)),
       maxLineNum: Infinity,
       fontSize: FONT_SIZE,
     }).forEach((wrappedContent, index) => {
       this.renderer.drawText({
-        x: this.contentX,
-        y: this.contentY + this.contentHeight / 2 + index * FONT_SIZE,
+        x: Math.floor(camera.width * (CONTENT_START_RATIO_X + PADDING)),
+        y: Math.floor(camera.height * (RATIO_Y + PADDING)) + index * FONT_SIZE,
         text: wrappedContent,
         align: 'start',
         color: options.color || palette.gunmetal[4],

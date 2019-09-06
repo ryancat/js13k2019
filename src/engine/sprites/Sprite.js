@@ -256,5 +256,5 @@ export class Sprite {
 
   update(dt) {}
 
-  render(renderer, dt) {}
+  render(dt, renderer) {}
 }
