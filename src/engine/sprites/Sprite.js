@@ -19,10 +19,6 @@ export class Sprite {
         backgroundColor: 'red',
         name: '',
         hitArea: {},
-        hitMoveMap: {
-          stop: this.hitMoveStop.bind(this),
-          pass: () => {},
-        },
         type: 'sprite',
         disableHit: false,
         hitType: 'pass',
@@ -44,9 +40,28 @@ export class Sprite {
     }
   }
 
+  getHitMoveCallback(hitType) {
+    let hitMoveCallback
+
+    switch (hitType) {
+      case 'pass':
+        hitMoveCallback = this.hitMovePass.bind(this)
+        break
+
+      case 'stop':
+        hitMoveCallback = this.hitMoveStop.bind(this)
+        break
+
+      default:
+        throw new Error(`invalid hit type: ${hitType}`)
+    }
+
+    return hitMoveCallback
+  }
+
   // For object sprite hit tile/item sprite
   hitSprite(sprite) {
-    if (sprite === this || sprite.hitType === 'pass' || sprite.disableHit) {
+    if (sprite === this || sprite.disableHit) {
       // Cannot hit self or sprite that not supposed to be hit
       return
     }
@@ -61,7 +76,7 @@ export class Sprite {
     }
 
     if (hitMap.right) {
-      if (this.vx > 0) {
+      if (sprite.hitType === 'pass' || this.vx > 0) {
         this.aggregateHitMap.right.push({
           sprite,
           value: hitMap.right,
@@ -71,7 +86,7 @@ export class Sprite {
     }
 
     if (hitMap.left) {
-      if (this.vx < 0) {
+      if (sprite.hitType === 'pass' || this.vx < 0) {
         this.aggregateHitMap.left.push({
           sprite,
           value: hitMap.left,
@@ -81,7 +96,7 @@ export class Sprite {
     }
 
     if (hitMap.top) {
-      if (this.vy < 0) {
+      if (sprite.hitType === 'pass' || this.vy < 0) {
         this.aggregateHitMap.top.push({
           sprite,
           value: hitMap.top,
@@ -91,7 +106,7 @@ export class Sprite {
     }
 
     if (hitMap.bottom) {
-      if (this.vy > 0) {
+      if (sprite.hitType === 'pass' || this.vy > 0) {
         this.aggregateHitMap.bottom.push({
           sprite,
           value: hitMap.bottom,
@@ -133,7 +148,7 @@ export class Sprite {
 
     const actualHitSprite = actualHitSpriteObj.sprite
     // Handle hit move response
-    this.hitMoveMap[actualHitSprite.hitType](actualHitSpriteObj)
+    this.getHitMoveCallback(actualHitSprite.hitType)(actualHitSpriteObj)
 
     // Handle hit callbacks
     actualHitSprite.hitCallback(this)
@@ -168,6 +183,8 @@ export class Sprite {
         throw new Error(`unexpected hit direction: ${direction}`)
     }
   }
+
+  hitMovePass() {}
 
   // Move the sprite with current speed, and hit detection
   move() {
@@ -218,7 +235,9 @@ export class Sprite {
         if (layer.name === 'objects') {
           // This is when we detect other objects with current objects.
           // This can be optimized by quad tree
-          possibleHitSprites = possibleHitSprites.concat(layer.children)
+          possibleHitSprites = possibleHitSprites.concat(
+            layer.children.filter(objectSprite => objectSprite !== this)
+          )
         } else if (
           ['obstacles', 'items'].indexOf(layer.name) >= 0 &&
           layer.children[spriteIndex] &&

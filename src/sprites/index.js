@@ -48,6 +48,8 @@ export class CastleHallExitSprite extends RectSprite {
 
     // construct sprite using base sprite
     super(options)
+
+    this.name = 'castleDoorSprite'
   }
 }
 

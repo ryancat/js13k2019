@@ -46,10 +46,23 @@ function update(dt) {
   // own map, events, etc
   // TODO: move this into engine
   if (!game.flag.isPlayDirty) {
-    game.flag.isPlayDirty = game.incidentPlays.reduce(
-      (pre, post) => (typeof pre === 'boolean' ? pre : pre(dt)) && post(dt),
-      true
-    )
+    let result = false
+
+    for (let i = 0; i < game.incidentPlays.length; i++) {
+      const current = game.incidentPlays[i]
+      result = typeof current === 'boolean' ? current : current(dt)
+
+      if (!result) {
+        break
+      }
+    }
+
+    game.flag.isPlayDirty = result
+
+    // game.flag.isPlayDirty = game.incidentPlays.reduce((pre, post) => {
+    //   const preResult = typeof pre === 'boolean' ? pre : pre(dt)
+    //   return preResult && post(dt)
+    // }, true)
     return false
   }
 

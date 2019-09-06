@@ -3,13 +3,13 @@ import { BaseIncident } from '../engine/incidents/BaseIncident'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
-import { BattleFieldIncident } from './BattleFieldIncident'
 
-export class CastleHallBeginIncident extends BaseIncident {
+export class BattleFieldIncident extends BaseIncident {
   constructor(options = {}) {
     super(options)
   }
 
+  // TODO: generate random map
   createMapData() {
     this.mapData = generateMapData({
       tileWidth: this.game.width / this.game.colNum,
@@ -22,40 +22,9 @@ export class CastleHallBeginIncident extends BaseIncident {
     this.handlePlayerMove(playerSprite, dt)
   }
 
-  addSceneSprites() {
-    this.addSceneBySpriteName('king', 'kingSprite')
-    const castleDoorScene = this.addSceneBySpriteName(
-      'castleDoor',
-      'castleDoorSprite'
-    )
-    castleDoorScene.backgroundColor = palette.red[3]
-    castleDoorScene.hitType = 'stop'
-  }
+  addSceneSprites() {}
 
-  bindEventCallback() {
-    const kingSprite = this.getSceneByName('king')
-    const doorSprite = this.getSceneByName('castleDoor')
-
-    kingSprite.hitCallback = sprite => {
-      console.log(sprite)
-      if (!this.game.dialog) {
-        // Only play conversation when there is no dialog right now
-        this.game.playConversation(kingIntroduction(kingSprite, sprite), () => {
-          doorSprite.backgroundColor = palette.green[3]
-          doorSprite.hitType = 'pass'
-        })
-      }
-    }
-
-    doorSprite.hitCallback = sprite => {
-      console.log(sprite)
-      if (doorSprite.hitType === 'pass') {
-        // When we allow to pass, we need to switch to next incident
-        this.game.addIncident(BattleFieldIncident, 'BattleFieldIncident')
-        this.finish()
-      }
-    }
-  }
+  bindEventCallback() {}
 
   handlePlayerMove(playerSprite, dt) {
     // keys

@@ -10,7 +10,7 @@ export function generateMapData(config = {}) {
     tileSpriteMap: {
       0: 'EmptySprite',
       60: 'CastleHallBackgroundSprite',
-      37: 'CastleHallExitSprite',
+      1: 'CastleHallExitSprite',
       117: 'CastleHallGroundSprite',
       178: 'CastleHallWallSprite',
       58: 'CastleHallWallTopSprite',

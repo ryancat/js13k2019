@@ -1,5 +1,6 @@
 import { generateMapData } from '../maps/emptyMap'
 import { Group } from '../sprites/Group'
+import { SceneSprite } from '../sprites/SceneSprite'
 
 export class BaseIncident {
   constructor({ game, key } = {}) {
@@ -40,6 +41,7 @@ export class BaseIncident {
       return false
     }
 
+    // update layers
     this.update(dt)
 
     // render layers
@@ -48,9 +50,11 @@ export class BaseIncident {
         this.mapGroup.children[layerIndex].render(dt)
       }
     })
+
+    return false
   }
 
-  terminate() {
+  finish() {
     this.flag.finished = true
   }
 
@@ -155,6 +159,22 @@ export class BaseIncident {
 
     // Dirty all layer afte init
     this.flag.layerDirtyArr = this.mapGroup.layers.map(() => true)
+  }
+
+  getSceneByName(sceneName = '') {
+    return this.sceneSprites.filter(
+      sceneSprite => sceneSprite.name === sceneName
+    )[0]
+  }
+
+  addSceneBySpriteName(sceneName, spriteName) {
+    const sprites = this.mapGroup.getSpritesByName(spriteName)
+    const sceneSprite = new SceneSprite()
+    sceneSprite.addSprites(sprites)
+    sceneSprite.name = sceneName
+    this.sceneSprites.push(sceneSprite)
+
+    return sceneSprite
   }
 
   update(dt) {}

@@ -146,9 +146,7 @@ export class Game {
     return new this.spriteClassMap[spriteKey](spriteOption)
   }
 
-  playConversation(conversation = {}) {
-    const { contentObjs = [], callback = () => {} } = conversation
-
+  playConversation(contentObjs = [], callback = () => {}) {
     // this.startDialog()
     // contentObjs.forEach(this.updateDialog.bind(this))
     // this.endDialog(callback)

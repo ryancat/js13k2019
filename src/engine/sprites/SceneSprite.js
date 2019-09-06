@@ -40,6 +40,32 @@ export class SceneSprite extends Sprite {
     }
   }
 
+  get hitType() {
+    return this._hitType
+  }
+
+  set hitType(hitType = 'pass') {
+    this._hitType = hitType
+    if (this.children) {
+      this.children.forEach(sprite => {
+        sprite.hitType = hitType
+      })
+    }
+  }
+
+  get backgroundColor() {
+    return this._backgroundColor
+  }
+
+  set backgroundColor(backgroundColor = 'red') {
+    this._backgroundColor = backgroundColor
+    if (this.children) {
+      this.children.forEach(sprite => {
+        sprite.backgroundColor = backgroundColor
+      })
+    }
+  }
+
   addSprites(sprites = []) {
     sprites.forEach(sprite => this.addSprite(sprite))
   }
