@@ -140,7 +140,7 @@ export class Game {
     incidentClass = BaseIncident,
     key = Date.now().toString(),
     isForced = false,
-    data = {},
+    playerStatus = {},
   }) {
     const incidentRecord =
       !isForced && this.incidentMap[key]
@@ -150,7 +150,7 @@ export class Game {
             incident: new incidentClass({
               key,
               game: this,
-              data,
+              playerStatus,
             }),
           }
 
@@ -159,6 +159,8 @@ export class Game {
 
     // Start/Restart the incident
     const incident = incidentRecord.incident
+    // Make sure incident has updated playerStatus
+    incident.playerStatus = playerStatus
     incident.restart()
     this.incidentPlays.push(incident.play.bind(incident))
   }

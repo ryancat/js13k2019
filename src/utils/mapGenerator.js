@@ -271,26 +271,6 @@ export function generateMapJson({
           name: 'player',
         })
 
-        if (objects.player && objects.player.fromDoor) {
-          // Set player position to be next to from door
-          switch (objects.player.fromDoor) {
-            case 'top':
-              playerObj.x = (width * DEFAULT_TILE_WIDTH - playerObj.width) / 2
-              playerObj.y = 2 * DEFAULT_TILE_HEIGHT
-              break
-
-            case 'bottom':
-              playerObj.x = (width * DEFAULT_TILE_WIDTH - playerObj.width) / 2
-              playerObj.y = (height - 1) * DEFAULT_TILE_HEIGHT
-              break
-
-            default:
-              throw new Error(
-                `invalide from door direction: ${objects.player.fromDoor}`
-              )
-          }
-        }
-
         layer = Object.assign({}, objectLayerSchema, {
           x,
           y,

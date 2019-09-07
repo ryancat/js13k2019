@@ -17,6 +17,7 @@ export class BaseIncident {
           bindEventCallback: false,
           addSceneSprites: false,
           setCamera: false,
+          setPlayerStatus: false,
           renderBackground: false,
           layerDirtyArr: [],
           layerClearDirtyArr: [],
@@ -53,6 +54,12 @@ export class BaseIncident {
     if (!this.flag.addSceneSprites) {
       this.addSceneSprites()
       this.flag.addSceneSprites = true
+      return false
+    }
+
+    if (!this.flag.setPlayerStatus) {
+      this.setPlayerStatus()
+      this.flag.setPlayerStatus = true
       return false
     }
 
@@ -94,6 +101,7 @@ export class BaseIncident {
   restart() {
     this.flag.finished = false
     this.flag.setCamera = false
+    this.flag.setPlayerStatus = false
   }
 
   createMapData() {}
@@ -212,6 +220,8 @@ export class BaseIncident {
 
     return sceneSprite
   }
+
+  setPlayerStatus() {}
 
   renderBackground() {
     this.game.layerMap['background'].drawRect({

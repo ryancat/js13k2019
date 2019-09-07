@@ -1,12 +1,12 @@
 // import { generateMapData } from '../maps/castle/createCastleHall'
 import { generateMapData } from '../utils/mapGenerator'
-import { BaseIncident } from '../engine/incidents/BaseIncident'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
 import { BattleFieldFirstIncident } from './BattleFieldFirstIncident'
+import { GameIncident } from './GameIncident'
 
-export class CastleHallBeginIncident extends BaseIncident {
+export class CastleHallBeginIncident extends GameIncident {
   constructor(options = {}) {
     super(options)
   }
@@ -17,11 +17,11 @@ export class CastleHallBeginIncident extends BaseIncident {
       height: 32,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
-      objects: {
-        player: {
-          fromDoor: this.data.playerFromDoor,
-        },
-      },
+      // objects: {
+      //   player: {
+      //     fromDoor: this.data.playerFromDoor,
+      //   },
+      // },
     })
   }
 
@@ -62,15 +62,16 @@ export class CastleHallBeginIncident extends BaseIncident {
     doorSprite.hitCallback = sprite => {
       console.log(sprite)
       if (doorSprite.hitType === 'pass') {
+        this.finish()
+
         // When we allow to pass, we need to switch to next incident
         this.game.addIncident({
           incidentClass: BattleFieldFirstIncident,
           key: 'BattleFieldFirstIncident',
-          data: {
-            playerFromDoor: 'top',
+          playerStatus: {
+            fromDoor: 'top',
           },
         })
-        this.finish()
       }
     }
 
