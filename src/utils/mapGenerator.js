@@ -98,14 +98,14 @@ function generateTileLayerData(
           break
 
         case 'ground':
-          layerData[spriteIndex] = r >= 3 ? GROUND_SPRITE : 0
+          layerData[spriteIndex] = r >= 2 ? GROUND_SPRITE : 0
           break
 
         case 'obstacles':
           const isTopWall =
             doors.indexOf('top') === -1
-              ? r === 2 || r === 3
-              : (r === 2 || r === 3) &&
+              ? r === 1 || r === 2
+              : (r === 1 || r === 2) &&
                 (c < (width - DOOR_WIDTH) / 2 || c >= (width + DOOR_WIDTH) / 2)
           const isBottomWall =
             doors.indexOf('bottom') === -1
@@ -114,14 +114,14 @@ function generateTileLayerData(
                 (c < (width - DOOR_WIDTH) / 2 || c >= (width + DOOR_WIDTH) / 2)
           const isLeftWall =
             doors.indexOf('left') === -1
-              ? c === 0 && r >= 2
+              ? c === 0 && r >= 1
               : c === 0 &&
                 r >= 2 &&
                 (r < (height - DOOR_WIDTH) / 2 ||
                   r >= (height + DOOR_WIDTH) / 2)
           const isRightWall =
             doors.indexOf('right') === -1
-              ? c === width - 1 && r >= 2
+              ? c === width - 1 && r >= 1
               : c === width - 1 &&
                 r >= 2 &&
                 (r < (height - DOOR_WIDTH) / 2 ||
@@ -134,7 +134,7 @@ function generateTileLayerData(
 
         case 'items':
           const isTopDoor =
-            r === 3 &&
+            r === 2 &&
             (c >= (width - DOOR_WIDTH) / 2 && c < (width + DOOR_WIDTH) / 2)
           const isBottomDoor =
             r === height - 1 &&
@@ -162,8 +162,8 @@ function generateTileLayerData(
         case 'wallTop':
           const isTopWallTop =
             doors.indexOf('top') === -1
-              ? r === 1
-              : r === 1 &&
+              ? r === 0
+              : r === 0 &&
                 (c < (width - DOOR_WIDTH) / 2 || c >= (width + DOOR_WIDTH) / 2)
           const isBottomWallTop =
             doors.indexOf('bottom') === -1
@@ -172,14 +172,14 @@ function generateTileLayerData(
                 (c < (width - DOOR_WIDTH) / 2 || c >= (width + DOOR_WIDTH) / 2)
           const isLeftWallTop =
             doors.indexOf('left') === -1
-              ? c === 0 && (r >= 1 && r <= height - 3)
+              ? c === 0 && (r >= 0 && r <= height - 3)
               : c === 0 &&
                 (r >= 1 && r <= height - 3) &&
                 (r < (height - DOOR_WIDTH) / 2 ||
                   r >= (height + DOOR_WIDTH) / 2)
           const isRightWallTop =
             doors.indexOf('right') === -1
-              ? c === width - 1 && (r >= 1 && r <= height - 3)
+              ? c === width - 1 && (r >= 0 && r <= height - 3)
               : c === width - 1 &&
                 (r >= 1 && r <= height - 3) &&
                 (r < (height - DOOR_WIDTH) / 2 ||
@@ -208,6 +208,7 @@ export function generateMapJson({
   wallColor = palette.brown[3], // can be any color in palette
   wallTopColor = palette.brown[1], // can be any color in palette
   backgroundColor = palette.gunmetal[4], // can be any color in palette
+  objects = {},
 }) {
   const layerConfigs = [
     {
@@ -269,6 +270,21 @@ export function generateMapJson({
           id: PLAYER_ID,
           name: 'player',
         })
+
+        if (objects.player && objects.player.fromDoor) {
+          // Set player position to be next to from door
+          switch (objects.player.fromDoor) {
+            case 'top':
+              playerObj.x = (width * DEFAULT_TILE_WIDTH - playerObj.width) / 2
+              playerObj.y = 2 * DEFAULT_TILE_HEIGHT
+              break
+
+            default:
+              throw new Error(
+                `invalide from door direction: ${objects.player.fromDoor}`
+              )
+          }
+        }
 
         layer = Object.assign({}, objectLayerSchema, {
           x,
@@ -334,6 +350,7 @@ export function generateMapData({
   backgroundColor = palette.gunmetal[4], // can be any color in palette
   tileWidth,
   tileHeight,
+  objects = {},
 }) {
   const tiledMapJson = generateMapJson({
     type,
@@ -347,6 +364,7 @@ export function generateMapData({
     wallColor,
     wallTopColor,
     backgroundColor,
+    objects,
   })
   tileWidth = tileWidth || tiledMapJson.tilewidth
   tileHeight = tileHeight || tiledMapJson.tileheight

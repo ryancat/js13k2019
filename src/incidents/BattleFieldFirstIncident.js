@@ -19,6 +19,11 @@ export class BattleFieldFirstIncident extends BaseIncident {
       height: 32,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
+      objects: {
+        player: {
+          fromDoor: this.data.playerFromDoor,
+        },
+      },
     })
   }
 
@@ -41,13 +46,6 @@ export class BattleFieldFirstIncident extends BaseIncident {
       'leftDoor',
       'leftDoorSprite'
     )
-
-    rightDoorScene.backgroundColor = palette.red[3]
-    bottomDoorScene.backgroundColor = palette.red[3]
-    leftDoorScene.backgroundColor = palette.red[3]
-
-    // castleDoorScene.backgroundColor = palette.red[3]
-    // castleDoorScene.hitType = 'stop'
   }
 
   setCamera() {
@@ -59,13 +57,16 @@ export class BattleFieldFirstIncident extends BaseIncident {
     const topDoorScene = this.getSceneByName('topDoor')
 
     topDoorScene.hitCallback = sprite => {
-      console.log(sprite)
       if (topDoorScene.hitType === 'pass') {
         // When we allow to pass, we need to switch to next incident
-        this.game.addIncident(
-          CastleHallBeginIncident,
-          'CastleHallBeginIncident'
-        )
+        this.game.addIncident({
+          incidentClass: CastleHallBeginIncident,
+          key: 'CastleHallBeginIncident',
+          data: {
+            playerFromDoor: 'bottom',
+          },
+        })
+
         this.finish()
       }
     }

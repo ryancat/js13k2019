@@ -60,10 +60,13 @@ export class CastleHallBeginIncident extends BaseIncident {
       console.log(sprite)
       if (doorSprite.hitType === 'pass') {
         // When we allow to pass, we need to switch to next incident
-        this.game.addIncident(
-          BattleFieldFirstIncident,
-          'BattleFieldFirstIncident'
-        )
+        this.game.addIncident({
+          incidentClass: BattleFieldFirstIncident,
+          key: 'BattleFieldFirstIncident',
+          data: {
+            playerFromDoor: 'top',
+          },
+        })
         this.finish()
       }
     }

@@ -89,7 +89,10 @@ game.addInteractionKey('space', Game.createKeyInteraction([32]))
 
 // Add first game incident
 // game.addIncident(castleHallGameStart, 'castleHallGameStart')
-game.addIncident(CastleHallBeginIncident, 'CastleHallBeginIncident')
+game.addIncident({
+  incidentClass: CastleHallBeginIncident,
+  key: 'CastleHallBeginIncident',
+})
 
 // For debug
 if (IS_DEV_MODE) {

@@ -136,11 +136,12 @@ export class Game {
   /**
    * Add game incident function
    */
-  addIncident(
+  addIncident({
     incidentClass = BaseIncident,
     key = Date.now().toString(),
-    isForced = false
-  ) {
+    isForced = false,
+    data = {},
+  }) {
     const incidentRecord =
       !isForced && this.incidentMap[key]
         ? this.incidentMap[key]
@@ -149,6 +150,7 @@ export class Game {
             incident: new incidentClass({
               key,
               game: this,
+              data,
             }),
           }
 
