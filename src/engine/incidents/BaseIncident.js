@@ -93,6 +93,7 @@ export class BaseIncident {
 
   restart() {
     this.flag.finished = false
+    this.flag.setCamera = false
   }
 
   createMapData() {}

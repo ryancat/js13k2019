@@ -279,6 +279,11 @@ export function generateMapJson({
               playerObj.y = 2 * DEFAULT_TILE_HEIGHT
               break
 
+            case 'bottom':
+              playerObj.x = (width * DEFAULT_TILE_WIDTH - playerObj.width) / 2
+              playerObj.y = (height - 1) * DEFAULT_TILE_HEIGHT
+              break
+
             default:
               throw new Error(
                 `invalide from door direction: ${objects.player.fromDoor}`

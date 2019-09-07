@@ -1,4 +1,5 @@
-import { generateMapData } from '../maps/castle/createCastleHall'
+// import { generateMapData } from '../maps/castle/createCastleHall'
+import { generateMapData } from '../utils/mapGenerator'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
@@ -6,19 +7,21 @@ import { palette } from '../utils/colors'
 import { BattleFieldFirstIncident } from './BattleFieldFirstIncident'
 
 export class CastleHallBeginIncident extends BaseIncident {
-  constructor({ game, key }) {
-    super({
-      game,
-      key,
-      // width: 640,
-      // height: 640,
-    })
+  constructor(options = {}) {
+    super(options)
   }
 
   createMapData() {
     this.mapData = generateMapData({
       width: 32,
       height: 32,
+      tileWidth: this.game.tileWidth,
+      tileHeight: this.game.tileHeight,
+      objects: {
+        player: {
+          fromDoor: this.data.playerFromDoor,
+        },
+      },
     })
   }
 
@@ -26,7 +29,7 @@ export class CastleHallBeginIncident extends BaseIncident {
     this.addSceneBySpriteName('king', 'kingSprite')
     const castleDoorScene = this.addSceneBySpriteName(
       'castleDoor',
-      'castleDoorSprite'
+      'bottomDoorSprite'
     )
     castleDoorScene.backgroundColor = palette.red[3]
     castleDoorScene.hitType = 'stop'
