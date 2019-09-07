@@ -1,81 +1,78 @@
-import { generateMapData } from '../maps/castle/createCastleHall'
 import { BaseIncident } from '../engine/incidents/BaseIncident'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
-import { BattleFieldFirstIncident } from './BattleFieldFirstIncident'
 
-export class CastleHallBeginIncident extends BaseIncident {
-  constructor({ game, key }) {
-    super({
-      game,
-      key,
-      // width: 640,
-      // height: 640,
-    })
+import { generateMapData } from '../utils/mapGenerator'
+import { CastleHallBeginIncident } from './CastleHallBeginIncident'
+
+export class BattleFieldFirstIncident extends BaseIncident {
+  constructor(options = {}) {
+    super(options)
   }
 
+  // TODO: generate random map
   createMapData() {
     this.mapData = generateMapData({
+      doors: ['top', 'left', 'right', 'bottom'],
       width: 32,
       height: 32,
+      tileWidth: this.game.tileWidth,
+      tileHeight: this.game.tileHeight,
     })
-  }
-
-  addSceneSprites() {
-    this.addSceneBySpriteName('king', 'kingSprite')
-    const castleDoorScene = this.addSceneBySpriteName(
-      'castleDoor',
-      'castleDoorSprite'
-    )
-    castleDoorScene.backgroundColor = palette.red[3]
-    castleDoorScene.hitType = 'stop'
-  }
-
-  setCamera() {
-    // this.game.camera.width = this.game.width
-    // this.game.camera.height = this.game.height
-    const playerSprite = this.mapGroup.getSpriteByName('player')
-    this.game.camera.follow(playerSprite, {
-      // focusRatio: 2,
-    })
-  }
-
-  bindEventCallback() {
-    const kingSprite = this.getSceneByName('king')
-    const doorSprite = this.getSceneByName('castleDoor')
-
-    kingSprite.hitCallback = sprite => {
-      console.log(sprite)
-      if (!this.game.dialog) {
-        // Only play conversation when there is no dialog right now
-        this.game.playConversation(kingIntroduction(kingSprite, sprite), () => {
-          doorSprite.backgroundColor = palette.green[3]
-          doorSprite.hitType = 'pass'
-        })
-      }
-    }
-
-    doorSprite.hitCallback = sprite => {
-      console.log(sprite)
-      if (doorSprite.hitType === 'pass') {
-        // When we allow to pass, we need to switch to next incident
-        this.game.addIncident(
-          BattleFieldFirstIncident,
-          'BattleFieldFirstIncident'
-        )
-        this.finish()
-      }
-    }
-
-    // TODO: REMOVE IN OFFICIAL GAME
-    doorSprite.backgroundColor = palette.green[3]
-    doorSprite.hitType = 'pass'
   }
 
   update(dt) {
     const playerSprite = this.mapGroup.getSpriteByName('player')
     this.handlePlayerMove(playerSprite, dt)
+  }
+
+  addSceneSprites() {
+    const topDoorScene = this.addSceneBySpriteName('topDoor', 'topDoorSprite')
+    const rightDoorScene = this.addSceneBySpriteName(
+      'rightDoor',
+      'rightDoorSprite'
+    )
+    const bottomDoorScene = this.addSceneBySpriteName(
+      'bottomDoor',
+      'bottomDoorSprite'
+    )
+    const leftDoorScene = this.addSceneBySpriteName(
+      'leftDoor',
+      'leftDoorSprite'
+    )
+
+    rightDoorScene.backgroundColor = palette.red[3]
+    bottomDoorScene.backgroundColor = palette.red[3]
+    leftDoorScene.backgroundColor = palette.red[3]
+
+    // castleDoorScene.backgroundColor = palette.red[3]
+    // castleDoorScene.hitType = 'stop'
+  }
+
+  setCamera() {
+    const playerSprite = this.mapGroup.getSpriteByName('player')
+    this.game.camera.follow(playerSprite)
+  }
+
+  bindEventCallback() {
+    const topDoorScene = this.getSceneByName('topDoor')
+
+    topDoorScene.hitCallback = sprite => {
+      console.log(sprite)
+      if (topDoorScene.hitType === 'pass') {
+        // When we allow to pass, we need to switch to next incident
+        this.game.addIncident(
+          CastleHallBeginIncident,
+          'CastleHallBeginIncident'
+        )
+        this.finish()
+      }
+    }
+
+    // // TODO: REMOVE IN OFFICIAL GAME
+    // doorSprite.backgroundColor = palette.green[3]
+    // doorSprite.hitType = 'pass'
   }
 
   handlePlayerMove(playerSprite, dt) {

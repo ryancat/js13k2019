@@ -14,8 +14,11 @@ const EMPTY_SPRITE = 0
 const BACKGROUND_SPRITE = 1
 const GROUND_SPRITE = 2
 const WALL_SPRITE = 3
-const DOOR_SPRITE = 4
-const WALL_TOP_SPRITE = 5
+const TOP_DOOR_SPRITE = 4
+const RIGHT_DOOR_SPRITE = 5
+const BOTTOM_DOOR_SPRITE = 6
+const LEFT_DOOR_SPRITE = 7
+const WALL_TOP_SPRITE = 8
 
 // object id
 // TODO: remove object id. Adding objects dynamically in map!
@@ -142,13 +145,18 @@ function generateTileLayerData(
           const isRightDoor =
             c === width - 1 &&
             (r >= (height - DOOR_WIDTH) / 2 && r < (height + DOOR_WIDTH) / 2)
-          layerData[spriteIndex] =
-            (doors.indexOf('top') >= 0 && isTopDoor) ||
-            (doors.indexOf('bottom') >= 0 && isBottomDoor) ||
-            (doors.indexOf('left') >= 0 && isLeftDoor) ||
-            (doors.indexOf('right') >= 0 && isRightDoor)
-              ? DOOR_SPRITE
-              : 0
+
+          if (doors.indexOf('top') >= 0 && isTopDoor) {
+            layerData[spriteIndex] = TOP_DOOR_SPRITE
+          } else if (doors.indexOf('bottom') >= 0 && isBottomDoor) {
+            layerData[spriteIndex] = BOTTOM_DOOR_SPRITE
+          } else if (doors.indexOf('left') >= 0 && isLeftDoor) {
+            layerData[spriteIndex] = LEFT_DOOR_SPRITE
+          } else if (doors.indexOf('right') >= 0 && isRightDoor) {
+            layerData[spriteIndex] = RIGHT_DOOR_SPRITE
+          } else {
+            layerData[spriteIndex] = EMPTY_SPRITE
+          }
           break
 
         case 'wallTop':
@@ -293,7 +301,16 @@ export function generateMapJson({
       WALL_SPRITE: {
         backgroundColor: wallColor,
       },
-      DOOR_SPRITE: {
+      TOP_DOOR_SPRITE: {
+        backgroundColor: doorColor,
+      },
+      RIGHT_DOOR_SPRITE: {
+        backgroundColor: doorColor,
+      },
+      BOTTOM_DOOR_SPRITE: {
+        backgroundColor: doorColor,
+      },
+      LEFT_DOOR_SPRITE: {
         backgroundColor: doorColor,
       },
       WALL_TOP_SPRITE: {
@@ -338,7 +355,10 @@ export function generateMapData({
   tileSpriteMap[EMPTY_SPRITE] = 'EmptySprite'
   tileSpriteMap[BACKGROUND_SPRITE] = 'BackgroundSprite'
   tileSpriteMap[GROUND_SPRITE] = 'GroundSprite'
-  tileSpriteMap[DOOR_SPRITE] = 'DoorSprite'
+  tileSpriteMap[TOP_DOOR_SPRITE] = 'TopDoorSprite'
+  tileSpriteMap[RIGHT_DOOR_SPRITE] = 'RightDoorSprite'
+  tileSpriteMap[BOTTOM_DOOR_SPRITE] = 'BottomDoorSprite'
+  tileSpriteMap[LEFT_DOOR_SPRITE] = 'LeftDoorSprite'
   tileSpriteMap[WALL_SPRITE] = 'WallSprite'
   tileSpriteMap[WALL_TOP_SPRITE] = 'WallTopSprite'
 

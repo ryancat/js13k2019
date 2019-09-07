@@ -41,7 +41,7 @@ export class WallSprite extends RectSprite {
   }
 }
 
-export class DoorSprite extends RectSprite {
+export class CastleDoorSprite extends RectSprite {
   constructor(options = {}) {
     // Update sprite details
     options.backgroundColor = options.backgroundColor || palette.green[3]
@@ -50,6 +50,54 @@ export class DoorSprite extends RectSprite {
     super(options)
 
     this.name = 'castleDoorSprite'
+  }
+}
+
+export class TopDoorSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.green[3]
+
+    // construct sprite using base sprite
+    super(options)
+
+    this.name = 'topDoorSprite'
+  }
+}
+
+export class BottomDoorSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.green[3]
+
+    // construct sprite using base sprite
+    super(options)
+
+    this.name = 'bottomDoorSprite'
+  }
+}
+
+export class LeftDoorSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.green[3]
+
+    // construct sprite using base sprite
+    super(options)
+
+    this.name = 'leftDoorSprite'
+  }
+}
+
+export class RightDoorSprite extends RectSprite {
+  constructor(options = {}) {
+    // Update sprite details
+    options.backgroundColor = options.backgroundColor || palette.green[3]
+
+    // construct sprite using base sprite
+    super(options)
+
+    this.name = 'rightDoorSprite'
   }
 }
 

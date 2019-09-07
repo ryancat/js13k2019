@@ -9,6 +9,10 @@ const DEFAULT_GAME_WIDTH = 1280
 const DEFAULT_GAME_HEIGHT = 1280
 const DEFAULT_NUM_TILE_WIDTH = 32
 const DEFAULT_NUM_TILE_HEIGHT = 32
+
+const DEFAULT_TILE_WIDTH = 20
+const DEFAULT_TILE_HEIGHT = 20
+
 // Can be 'fit', 'fixed'
 const DEFAULT_SCALE_MODE = 'fit'
 const DEFAULT_BACKGROUND_COLOR = '#000'
@@ -17,8 +21,8 @@ const DEFAULT_RENDERER = new CanvasRenderer()
 
 export class Game {
   constructor({
-    width = DEFAULT_GAME_WIDTH,
-    height = DEFAULT_GAME_HEIGHT,
+    tileWidth = DEFAULT_TILE_WIDTH,
+    tileHeight = DEFAULT_TILE_HEIGHT,
     scaleMode = DEFAULT_SCALE_MODE,
     backgroundColor = DEFAULT_BACKGROUND_COLOR,
     fps = DEFAULT_FPS,
@@ -29,8 +33,8 @@ export class Game {
     cameraY,
   }) {
     Object.assign(this, {
-      width,
-      height,
+      tileWidth,
+      tileHeight,
       scaleMode,
       backgroundColor,
       sprites: [],
@@ -132,17 +136,28 @@ export class Game {
   /**
    * Add game incident function
    */
-  addIncident(incidentClass = BaseIncident, key = Date.now().toString()) {
-    const incident = new incidentClass({
-      key,
-      game: this,
-    })
+  addIncident(
+    incidentClass = BaseIncident,
+    key = Date.now().toString(),
+    isForced = false
+  ) {
+    const incidentRecord =
+      !isForced && this.incidentMap[key]
+        ? this.incidentMap[key]
+        : {
+            timeStamps: [],
+            incident: new incidentClass({
+              key,
+              game: this,
+            }),
+          }
 
-    this.incidentMap[key] = {
-      timeStamp: Date.now(),
-      incident,
-    }
+    incidentRecord.timeStamps.push(Date.now())
+    this.incidentMap[key] = incidentRecord
 
+    // Start/Restart the incident
+    const incident = incidentRecord.incident
+    incident.restart()
     this.incidentPlays.push(incident.play.bind(incident))
   }
 

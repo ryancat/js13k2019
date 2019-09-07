@@ -2,23 +2,34 @@ import { Group } from '../sprites/Group'
 import { SceneSprite } from '../sprites/SceneSprite'
 import { palette } from '../../utils/colors'
 
+const DEFAULT_INCIDENT_MAP_ROW_COUNT = 32
+const DEFAULT_INCIDENT_MAP_COL_COUNT = 32
+
 export class BaseIncident {
-  constructor({ game, key } = {}) {
-    Object.assign(this, {
-      game,
-      key,
-      flag: {
-        finished: false,
-        initState: false,
-        bindEventCallback: false,
-        addSceneSprites: false,
-        setCamera: false,
-        renderBackground: false,
-        layerDirtyArr: [],
-        layerClearDirtyArr: [],
+  constructor(options = {}) {
+    Object.assign(
+      this,
+      {
+        key: 'BaseIncident',
+        flag: {
+          finished: false,
+          initState: false,
+          bindEventCallback: false,
+          addSceneSprites: false,
+          setCamera: false,
+          renderBackground: false,
+          layerDirtyArr: [],
+          layerClearDirtyArr: [],
+        },
+        sceneSprites: [],
+        rowNum: DEFAULT_INCIDENT_MAP_ROW_COUNT,
+        colNum: DEFAULT_INCIDENT_MAP_COL_COUNT,
       },
-      sceneSprites: [],
-    })
+      options
+    )
+
+    this.game.width = this.game.tileWidth * this.colNum
+    this.game.height = this.game.tileHeight * this.rowNum
   }
 
   play(dt) {
@@ -80,10 +91,18 @@ export class BaseIncident {
     this.flag.finished = true
   }
 
+  restart() {
+    this.flag.finished = false
+  }
+
   createMapData() {}
 
   initMapGroup() {
     this.createMapData()
+
+    // Update game size with loaded map
+    this.game.width = this.game.tileWidth * this.mapData.width
+    this.game.height = this.game.tileHeight * this.mapData.height
 
     // init map group
     this.mapGroup = new Group({
@@ -91,8 +110,8 @@ export class BaseIncident {
       rowNum: this.mapData.height,
       width: this.game.width,
       height: this.game.height,
-      tileWidthScale: this.mapData.tileWidthScale,
-      tileHeightScale: this.mapData.tileHeightScale,
+      tileWidthScale: this.game.tileWidth / this.mapData.tilewidth,
+      tileHeightScale: this.game.tileHeight / this.mapData.tileheight,
       tileSpriteMap: this.mapData.tileSpriteMap,
       objectSpriteMap: this.mapData.objectSpriteMap,
       layers: this.mapData.layers,

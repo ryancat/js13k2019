@@ -12,8 +12,8 @@ import { CastleHallBeginIncident } from './incidents/CastleHallBeginIncident'
 // Use default values for now
 const game = new Game({
   container: document.getElementById('root'),
-  width: 1280,
-  height: 1280,
+  tileWidth: 20,
+  tileHeight: 20,
   cameraWidth: window.innerWidth,
   cameraHeight: window.innerHeight,
 })
@@ -21,7 +21,7 @@ const game = new Game({
 // The update function will be getting called each animation
 // frame. It will go through dirty flags to move game forward.
 function update(dt) {
-  // Step 1: load game assets
+  // Step 1: load game assetsaw
   if (!game.flag.isLoadAssets) {
     // Load sprites
     game.loadSprites()
