@@ -1,202 +1,108 @@
 import { RectSprite } from '../engine/sprites/RectSprite'
 import { FrameSprite } from '../engine/sprites/FrameSprite'
 import { palette } from '../utils/colors'
-import { Game } from '../engine/Game'
 
-export class EmptySprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.opacity = 0
+function createRectSprite({
+  backgroundColor = palette.red[3],
+  opacity = 1,
+  name = 'placeholder',
+  hitType = 'pass',
+  render,
+}) {
+  return class extends RectSprite {
+    constructor(options = {}) {
+      super(
+        Object.assign(
+          {
+            opacity,
+            backgroundColor,
+            name,
+            hitType,
+          },
+          options
+        )
+      )
 
-    // construct sprite using base sprite
-    super(options)
-
-    this.name = 'empty'
-  }
-
-  // empty sprite don't render anything
-  render() {}
-}
-
-export class GroundSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.gunmetal[3]
-
-    // construct sprite using base sprite
-    super(options)
-  }
-}
-
-export class WallSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.brown[3]
-
-    // construct sprite using base sprite
-    super(options)
-
-    this.name = 'wall'
-    this.hitType = 'stop'
+      if (render) {
+        this.render = render
+      }
+    }
   }
 }
 
-export class CastleDoorSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.green[3]
+export const EmptySprite = createRectSprite({
+  opacity: 0,
+  name: 'empty',
+  render: () => {},
+})
 
-    // construct sprite using base sprite
-    super(options)
+export const GroundSprite = createRectSprite({
+  name: 'ground',
+  backgroundColor: palette.gunmetal[3],
+})
 
-    this.name = 'castleDoorSprite'
-  }
-}
+export const WallSprite = createRectSprite({
+  name: 'wall',
+  backgroundColor: palette.brown[3],
+  hitType: 'stop',
+})
 
-export class TopDoorSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.green[3]
+export const CastleDoorSprite = createRectSprite({
+  name: 'castleDoorSprite',
+  backgroundColor: palette.green[3],
+})
 
-    // construct sprite using base sprite
-    super(options)
+export const TopDoorSprite = createRectSprite({
+  name: 'topDoorSprite',
+  backgroundColor: palette.green[3],
+})
 
-    this.name = 'topDoorSprite'
-  }
-}
+export const BottomDoorSprite = createRectSprite({
+  name: 'bottomDoorSprite',
+  backgroundColor: palette.green[3],
+})
 
-export class BottomDoorSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.green[3]
+export const LeftDoorSprite = createRectSprite({
+  name: 'leftDoorSprite',
+  backgroundColor: palette.green[3],
+})
 
-    // construct sprite using base sprite
-    super(options)
+export const RightDoorSprite = createRectSprite({
+  name: 'rightDoorSprite',
+  backgroundColor: palette.green[3],
+})
 
-    this.name = 'bottomDoorSprite'
-  }
-}
+export const WallTopSprite = createRectSprite({
+  name: 'wallTopSprite',
+  backgroundColor: palette.brown[1],
+})
 
-export class LeftDoorSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.green[3]
+export const BackgroundSprite = createRectSprite({
+  name: 'backgroundSprite',
+  backgroundColor: palette.gunmetal[4],
+  opacity: 0,
+})
 
-    // construct sprite using base sprite
-    super(options)
+export const KingSprite = createRectSprite({
+  name: 'king',
+  backgroundColor: palette.blue[2],
+  hitType: 'stop',
+})
 
-    this.name = 'leftDoorSprite'
-  }
-}
+export const KingDialogSprite = createRectSprite({
+  name: 'kingDialogSprite',
+  backgroundColor: palette.blue[2],
+})
 
-export class RightDoorSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.green[3]
+const PlayerSprite1 = createRectSprite({
+  name: 'playerSprite1',
+  backgroundColor: palette.brown[0],
+})
 
-    // construct sprite using base sprite
-    super(options)
-
-    this.name = 'rightDoorSprite'
-  }
-}
-
-export class WallTopSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.brown[1]
-
-    // construct sprite using base sprite
-    super(options)
-  }
-}
-
-export class PlaceholderSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.gunmetal[0]
-
-    // construct sprite using base sprite
-    super(options)
-  }
-}
-
-export class BackgroundSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.gunmetal[4]
-    options.opacity = options.opacity || 0
-
-    // construct sprite using base sprite
-    super(options)
-  }
-}
-
-// TODO: the king has multiple sprites, which is not ideal for hit detection.
-// We should either use object layer, or create a group and allow hit detection
-// happen in group level.
-// The problem is the map json data already split king into several sprites,
-// which makes it hard to describe which sprites should be grouped together.
-// I think I need to change the tileSpriteMap on mapData to do that.
-export class KingSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.blue[2]
-
-    // construct sprite using base sprite
-    super(options)
-
-    this.name = 'kingSprite'
-    this.hitType = 'stop'
-  }
-}
-
-export class KingDialogSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.blue[2]
-
-    // construct sprite using base sprite
-    super(options)
-
-    this.name = 'kingDialogSprite'
-  }
-}
-
-// Object sprite frames
-export class PlayerSprite1 extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.brown[0]
-
-    // construct sprite using base sprite
-    super(options)
-
-    this.setHitArea({
-      localX: 0,
-      localY: this.height / 2,
-      localWidth: this.width,
-      localHeight: this.height / 2,
-    })
-  }
-}
-
-export class PlayerSprite2 extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.red[4]
-
-    // construct sprite using base sprite
-    super(options)
-
-    this.setHitArea({
-      localX: 0,
-      localY: this.height / 2,
-      localWidth: this.width,
-      localHeight: this.height / 2,
-    })
-  }
-}
+const PlayerSprite2 = createRectSprite({
+  name: 'playerSprite2',
+  backgroundColor: palette.red[4],
+})
 
 // TODO: add factory code for creating RectSprite for player
 export class PlayerSprite extends FrameSprite {
@@ -216,17 +122,17 @@ export class PlayerSprite extends FrameSprite {
     // sqrt rule applies here
     // pixel per 1 ms
     this.vMax = this.width / 4
+
+    this.setHitArea({
+      localX: 0,
+      localY: this.height / 2,
+      localWidth: this.width,
+      localHeight: this.height / 2,
+    })
   }
 }
 
-export class PlayerDialogSprite extends RectSprite {
-  constructor(options = {}) {
-    // Update sprite details
-    options.backgroundColor = options.backgroundColor || palette.brown[2]
-
-    // construct sprite using base sprite
-    super(options)
-
-    this.name = 'kingDialogSprite'
-  }
-}
+export const PlayerDialogSprite = createRectSprite({
+  name: 'playerDialogSprite',
+  backgroundColor: palette.brown[2],
+})

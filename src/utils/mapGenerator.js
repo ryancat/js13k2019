@@ -51,7 +51,6 @@ const objectSchema = {
   id: 3,
   name: 'player',
   rotation: 0,
-  type: 'controllable',
   visible: true,
   width: 32,
   x: 240,
@@ -66,10 +65,6 @@ const mapSchema = {
   tilewidth: DEFAULT_TILE_WIDTH,
   version: 1.2,
   type: 'map',
-  infinite: false,
-  orientation: 'orthogonal',
-  renderorder: 'right-down',
-  tiledversion: '1.2.4',
 }
 
 let layerId = Math.ceil(random.nextFloat() * 100)
@@ -272,22 +267,6 @@ export function generateMapJson({
           name: layerConfig.name,
           type: layerConfig.type,
         })
-
-        // // Add player only for now
-        // // TODO: add enemies with object id++
-        // const playerObj = Object.assign({}, objectSchema, {
-        //   id: PLAYER_ID,
-        //   name: 'player',
-        // })
-
-        // layer = Object.assign({}, objectLayerSchema, {
-        //   x,
-        //   y,
-        //   objects: [playerObj],
-        //   id: layerId++,
-        //   name: layerConfig.name,
-        //   type: layerConfig.type,
-        // })
         break
 
       default:

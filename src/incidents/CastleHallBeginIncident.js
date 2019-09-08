@@ -1,9 +1,7 @@
 // import { generateMapData } from '../maps/castle/createCastleHall'
 import { generateMapData } from '../utils/mapGenerator'
-import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
-import { BattleFieldFirstIncident } from './BattleFieldPrepIncident'
 import { GameIncident } from './GameIncident'
 import { BattleFieldIncident } from './BattleFieldIncident'
 
@@ -38,7 +36,6 @@ export class CastleHallBeginIncident extends GameIncident {
   }
 
   addSceneSprites() {
-    this.addSceneBySpriteName('king', 'kingSprite')
     const castleDoorScene = this.addSceneBySpriteName(
       'castleDoor',
       'bottomDoorSprite'
@@ -48,8 +45,6 @@ export class CastleHallBeginIncident extends GameIncident {
   }
 
   setCamera() {
-    // this.game.camera.width = this.game.width
-    // this.game.camera.height = this.game.height
     const playerSprite = this.mapGroup.getSpriteByName('player')
     this.game.camera.follow(playerSprite, {
       // focusRatio: 2,
@@ -57,7 +52,7 @@ export class CastleHallBeginIncident extends GameIncident {
   }
 
   bindEventCallback() {
-    const kingSprite = this.getSceneByName('king')
+    const kingSprite = this.mapGroup.getSpriteByName('king')
     const doorSprite = this.getSceneByName('castleDoor')
 
     kingSprite.hitCallback = sprite => {

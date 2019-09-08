@@ -23,12 +23,6 @@ export class GameIncident extends BaseIncident {
     })
   }
 
-  static generateRandomDoors() {
-    // TODO replace this with a determinastic random method
-    // See https://stackoverflow.com/questions/424292/seedable-javascript-random-number-generator
-    return this.hashDoor(Math.floor(random.nextFloat() * 16).toString(2))
-  }
-
   static getOppositeDoor(door) {
     switch (door) {
       case 'top':

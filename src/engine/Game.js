@@ -20,41 +20,36 @@ const DEFAULT_FPS = 60
 const DEFAULT_RENDERER = new CanvasRenderer()
 
 export class Game {
-  constructor({
-    tileWidth = DEFAULT_TILE_WIDTH,
-    tileHeight = DEFAULT_TILE_HEIGHT,
-    scaleMode = DEFAULT_SCALE_MODE,
-    backgroundColor = DEFAULT_BACKGROUND_COLOR,
-    fps = DEFAULT_FPS,
-    container = document.createElement('div'),
-    cameraWidth,
-    cameraHeight,
-    cameraX,
-    cameraY,
-  }) {
-    Object.assign(this, {
-      tileWidth,
-      tileHeight,
-      scaleMode,
-      backgroundColor,
-      sprites: [],
-      container,
-      flag: {},
-      incidentPlays: [],
-      incidentMap: {},
-      layerMap: {},
-      keyMap: {},
-      loop: new GameLoop({
-        fps,
-      }),
+  constructor(options = {}) {
+    Object.assign(
+      this,
+      {
+        tileWidth: DEFAULT_TILE_WIDTH,
+        tileHeight: DEFAULT_TILE_HEIGHT,
+        scaleMode: DEFAULT_SCALE_MODE,
+        backgroundColor: DEFAULT_BACKGROUND_COLOR,
+        fps: DEFAULT_FPS,
+        flag: {},
+        container: document.createElement('div'),
+        incidentPlays: [],
+        incidentMap: {},
+        sprites: [],
+        layerMap: {},
+        keyMap: {},
+      },
+      options
+    )
+
+    this.loop = new GameLoop({
+      fps: this.fps,
     })
 
     this.camera = new Camera({
       game: this,
-      width: cameraWidth,
-      height: cameraHeight,
-      x: cameraX,
-      y: cameraY,
+      width: options.cameraWidth,
+      height: options.cameraHeight,
+      x: options.cameraX,
+      y: options.cameraY,
     })
   }
 
@@ -180,10 +175,6 @@ export class Game {
   }
 
   playConversation(contentObjs = [], callback = () => {}) {
-    // this.startDialog()
-    // contentObjs.forEach(this.updateDialog.bind(this))
-    // this.endDialog(callback)
-
     this.dialog = new Dialog(contentObjs, this)
     this.dialog.start()
     this.dialog.endCallbacks.push(
@@ -202,12 +193,4 @@ export class Game {
   resume() {
     this.loop.start()
   }
-
-  startDialog() {}
-
-  updateDialog(contentObj = {}) {
-    const { from = '', content = '', contentCallback = () => {} } = contentObj
-  }
-
-  endDialog(callback = () => {}) {}
 }

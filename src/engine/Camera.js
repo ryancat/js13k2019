@@ -23,13 +23,6 @@ export class Camera {
 
   // camera will follow the given sprite from now
   follow(sprite, options = {}) {
-    // const { focusRatio } = options
-
-    // if (focusRatio) {
-    //   this.width = sprite.width * focusRatio
-    //   this.height = sprite.height * focusRatio
-    // }
-
     this.followingSprite = sprite
 
     if (this.followingCallback) {
