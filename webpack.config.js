@@ -16,16 +16,9 @@ module.exports = function(env, argv) {
     new webpack.DefinePlugin({
       IS_DEV_MODE: mode === 'development',
     }),
-    // Copy the index.html to the public folder
-    new CopyWebpackPlugin([
-      {
-        from: './src/index.html',
-        to: './index.html',
-      },
-    ]),
-  ]
-
-  plugins.push(
+    // Remove unnecessary module getter calls in webpack
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    // Analyze the bundle
     new BundleAnalyzerPlugin({
       // Generate static report file
       analyzerMode: 'static',
@@ -39,8 +32,15 @@ module.exports = function(env, argv) {
       generateStatsFile: true,
       // JSON stats location
       statsFilename: './reports/bundleAnalyzer/bundleStats.json',
-    })
-  )
+    }),
+    // Copy the index.html to the public folder
+    new CopyWebpackPlugin([
+      {
+        from: './src/index.html',
+        to: './index.html',
+      },
+    ]),
+  ]
 
   if (mode === 'production') {
     plugins.push(
@@ -82,7 +82,7 @@ module.exports = function(env, argv) {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [['@babel/preset-env', { modules: false }]],
             },
           },
           exclude: /node_modules/,

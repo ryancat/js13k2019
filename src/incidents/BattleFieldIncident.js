@@ -16,7 +16,6 @@ export class BattleFieldIncident extends GameIncident {
 
   // TODO: generate random map
   createMapData() {
-    // this.doors = GameIncident.generateRandomDoors()
     this.doors = GameIncident.hashDoor(
       this.game.maze.cells[this.cellRow][this.cellCol]
     )
