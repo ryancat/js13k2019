@@ -6,15 +6,20 @@ import { generateMapData } from '../utils/mapGenerator'
 import { CastleHallBeginIncident } from './CastleHallBeginIncident'
 import { GameIncident } from './GameIncident'
 
-export class BattleFieldFirstIncident extends GameIncident {
+export class BattleFieldIncident extends GameIncident {
   constructor(options = {}) {
     super(options)
+
+    this.cellRow = parseInt(this.key.split('-')[1])
+    this.cellCol = parseInt(this.key.split('-')[2])
   }
 
   // TODO: generate random map
   createMapData() {
+    this.doors = GameIncident.generateRandomDoors()
+
     this.mapData = generateMapData({
-      doors: ['top', 'left', 'right', 'bottom'],
+      doors: this.doors.filter(door => door !== ''),
       width: 32,
       height: 32,
       tileWidth: this.game.tileWidth,
@@ -37,19 +42,11 @@ export class BattleFieldFirstIncident extends GameIncident {
   }
 
   addSceneSprites() {
-    const topDoorScene = this.addSceneBySpriteName('topDoor', 'topDoorSprite')
-    const rightDoorScene = this.addSceneBySpriteName(
-      'rightDoor',
-      'rightDoorSprite'
-    )
-    const bottomDoorScene = this.addSceneBySpriteName(
-      'bottomDoor',
-      'bottomDoorSprite'
-    )
-    const leftDoorScene = this.addSceneBySpriteName(
-      'leftDoor',
-      'leftDoorSprite'
-    )
+    this.doorScenes = this.doors.map(door => {
+      return door !== ''
+        ? this.addSceneBySpriteName(`${door}Door`, `${door}DoorSprite`)
+        : null
+    })
   }
 
   setCamera() {
@@ -58,22 +55,35 @@ export class BattleFieldFirstIncident extends GameIncident {
   }
 
   bindEventCallback() {
-    const topDoorScene = this.getSceneByName('topDoor')
-
-    topDoorScene.hitCallback = sprite => {
-      if (topDoorScene.hitType === 'pass') {
-        this.finish()
-
-        // When we allow to pass, we need to switch to next incident
-        this.game.addIncident({
-          incidentClass: CastleHallBeginIncident,
-          key: 'CastleHallBeginIncident',
-          playerStatus: {
-            fromDoor: 'bottom',
-          },
-        })
+    this.doorScenes.forEach((doorScene, doorIndex) => {
+      if (!doorScene) {
+        return
       }
-    }
+
+      const lrIncrement = doorIndex === 1 ? 1 : doorIndex === 3 ? -1 : 0
+      const tbIncrement = doorIndex === 0 ? -1 : doorIndex === 2 ? 1 : 0
+
+      doorScene.hitCallback = sprite => {
+        if (doorScene.hitType === 'pass') {
+          this.finish()
+
+          // When we allow to pass, we need to switch to next incident
+          this.game.addIncident({
+            incidentClass: BattleFieldIncident,
+            key: `BattleFieldIncident-${this.cellRow + tbIncrement}-${this
+              .cellCol + lrIncrement}`,
+            playerStatus: {
+              fromDoor: GameIncident.getOppositeDoor(this.doors[doorIndex]),
+            },
+          })
+
+          console.log(
+            `enter battlefield row: ${this.cellRow + tbIncrement}, col: ${this
+              .cellCol + lrIncrement}`
+          )
+        }
+      }
+    })
 
     // // TODO: REMOVE IN OFFICIAL GAME
     // doorSprite.backgroundColor = palette.green[3]

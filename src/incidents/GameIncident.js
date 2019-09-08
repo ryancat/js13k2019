@@ -5,6 +5,46 @@ export class GameIncident extends BaseIncident {
     super(options)
   }
 
+  // Hash function from binary string to array of doors.
+  // For example, '1101' -> ['top', 'right', 'left']
+  static hashDoor(hashStr = '') {
+    const doorMap = ['top', 'right', 'bottom', 'left']
+    // hashStr.split('').forEach((doorIndicator, index) => {
+    //   if (doorIndicator === '1') {
+    //     result.push(doorMap[index])
+    //   }
+    // })
+
+    return hashStr.split('').map((doorIndicator, index) => {
+      if (doorIndicator === '1') {
+        return doorMap[index]
+      } else {
+        return ''
+      }
+    })
+  }
+
+  static generateRandomDoors(randomSeed) {
+    // TODO replace this with a determinastic random method
+    // See https://stackoverflow.com/questions/424292/seedable-javascript-random-number-generator
+    return this.hashDoor(Math.floor(Math.random() * 16).toString(2))
+  }
+
+  static getOppositeDoor(door) {
+    switch (door) {
+      case 'top':
+        return 'bottom'
+      case 'right':
+        return 'left'
+      case 'bottom':
+        return 'top'
+      case 'left':
+        return 'right'
+      default:
+        throw new Error(`invalid door: ${door}`)
+    }
+  }
+
   setPlayerStatus() {
     const playerSprite = this.mapGroup.getSpriteByName('player')
 

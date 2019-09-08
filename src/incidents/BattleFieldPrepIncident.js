@@ -1,30 +1,30 @@
-// import { generateMapData } from '../maps/castle/createCastleHall'
-import { generateMapData } from '../utils/mapGenerator'
 import { SceneSprite } from '../engine/sprites/SceneSprite'
 import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
-import { BattleFieldFirstIncident } from './BattleFieldPrepIncident'
-import { GameIncident } from './GameIncident'
 
-export class CastleHallBeginIncident extends GameIncident {
+import { generateMapData } from '../utils/mapGenerator'
+import { CastleHallBeginIncident } from './CastleHallBeginIncident'
+import { GameIncident } from './GameIncident'
+import { BattleFieldIncident } from './BattleFieldIncident'
+
+export class BattleFieldFirstIncident extends GameIncident {
   constructor(options = {}) {
     super(options)
+
+    // The start cell
+    this.cellCol = 5
+    this.cellRow = 0
   }
 
+  // TODO: generate random map
   createMapData() {
     this.mapData = generateMapData({
+      doors: ['top', 'left', 'right', 'bottom'],
       width: 32,
       height: 32,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
       objects: [
-        {
-          x: 240,
-          y: 100,
-          width: 32,
-          height: 48,
-          name: 'king',
-        },
         {
           x: 240,
           y: 224,
@@ -36,47 +36,63 @@ export class CastleHallBeginIncident extends GameIncident {
     })
   }
 
+  update(dt) {
+    const playerSprite = this.mapGroup.getSpriteByName('player')
+    this.handlePlayerMove(playerSprite, dt)
+  }
+
   addSceneSprites() {
-    this.addSceneBySpriteName('king', 'kingSprite')
-    const castleDoorScene = this.addSceneBySpriteName(
-      'castleDoor',
+    const topDoorScene = this.addSceneBySpriteName('topDoor', 'topDoorSprite')
+    const rightDoorScene = this.addSceneBySpriteName(
+      'rightDoor',
+      'rightDoorSprite'
+    )
+    const bottomDoorScene = this.addSceneBySpriteName(
+      'bottomDoor',
       'bottomDoorSprite'
     )
-    castleDoorScene.backgroundColor = palette.red[3]
-    castleDoorScene.hitType = 'stop'
+    const leftDoorScene = this.addSceneBySpriteName(
+      'leftDoor',
+      'leftDoorSprite'
+    )
   }
 
   setCamera() {
-    // this.game.camera.width = this.game.width
-    // this.game.camera.height = this.game.height
     const playerSprite = this.mapGroup.getSpriteByName('player')
-    this.game.camera.follow(playerSprite, {
-      // focusRatio: 2,
-    })
+    this.game.camera.follow(playerSprite)
   }
 
   bindEventCallback() {
-    const kingSprite = this.getSceneByName('king')
-    const doorSprite = this.getSceneByName('castleDoor')
+    const topDoorScene = this.getSceneByName('topDoor')
 
-    kingSprite.hitCallback = sprite => {
-      if (!this.game.dialog) {
-        // Only play conversation when there is no dialog right now
-        this.game.playConversation(kingIntroduction(kingSprite, sprite), () => {
-          doorSprite.backgroundColor = palette.green[3]
-          doorSprite.hitType = 'pass'
-        })
-      }
-    }
-
-    doorSprite.hitCallback = sprite => {
-      if (doorSprite.hitType === 'pass') {
+    topDoorScene.hitCallback = sprite => {
+      if (topDoorScene.hitType === 'pass') {
         this.finish()
 
         // When we allow to pass, we need to switch to next incident
         this.game.addIncident({
-          incidentClass: BattleFieldFirstIncident,
-          key: 'BattleFieldFirstIncident',
+          incidentClass: CastleHallBeginIncident,
+          key: 'CastleHallBeginIncident',
+          playerStatus: {
+            fromDoor: 'bottom',
+          },
+        })
+      }
+    }
+
+    const bottomDoorScene = this.getSceneByName('bottomDoor')
+    const lrIncrement = 0
+    const tbIncrement = 1
+
+    bottomDoorScene.hitCallback = sprite => {
+      if (bottomDoorScene.hitType === 'pass') {
+        this.finish()
+
+        // When we allow to pass, we need to switch to next incident
+        this.game.addIncident({
+          incidentClass: BattleFieldIncident,
+          key: `BattleFieldIncident-${this.cellRow + tbIncrement}-${this
+            .cellCol + lrIncrement}`,
           playerStatus: {
             fromDoor: 'top',
           },
@@ -84,14 +100,9 @@ export class CastleHallBeginIncident extends GameIncident {
       }
     }
 
-    // TODO: REMOVE IN OFFICIAL GAME
-    doorSprite.backgroundColor = palette.green[3]
-    doorSprite.hitType = 'pass'
-  }
-
-  update(dt) {
-    const playerSprite = this.mapGroup.getSpriteByName('player')
-    this.handlePlayerMove(playerSprite, dt)
+    // // TODO: REMOVE IN OFFICIAL GAME
+    // doorSprite.backgroundColor = palette.green[3]
+    // doorSprite.hitType = 'pass'
   }
 
   handlePlayerMove(playerSprite, dt) {
