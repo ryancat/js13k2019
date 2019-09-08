@@ -89,14 +89,18 @@ game.addInteractionKey('enter', Game.createKeyInteraction([13]))
 game.addInteractionKey('space', Game.createKeyInteraction([32]))
 
 // Generate maze
-game.maze = generateMaze()
-console.log(game.maze)
+game.maze = generateMaze({
+  rowNum: 8,
+  colNum: 8,
+  startSide: 'top',
+  endSide: 'bottom',
+})
 
 // Add first game incident
 // game.addIncident(castleHallGameStart, 'castleHallGameStart')
 game.addIncident({
   incidentClass: CastleHallBeginIncident,
-  key: 'CastleHallBeginIncident',
+  key: `BattleFieldIncident@${game.maze.startRow - 1}@${game.maze.startCol}`,
 })
 
 // For debug

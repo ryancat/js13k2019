@@ -10,11 +10,9 @@ export class GameIncident extends BaseIncident {
   // For example, '1101' -> ['top', 'right', '', 'left']
   static hashDoor(hashStr = '') {
     const doorMap = ['top', 'right', 'bottom', 'left']
-    // hashStr.split('').forEach((doorIndicator, index) => {
-    //   if (doorIndicator === '1') {
-    //     result.push(doorMap[index])
-    //   }
-    // })
+
+    // Make sure hashStr has four digits
+    hashStr = '0000'.substring(hashStr.length) + hashStr
 
     return hashStr.split('').map((doorIndicator, index) => {
       if (doorIndicator === '1') {

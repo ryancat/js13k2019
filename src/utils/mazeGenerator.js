@@ -64,13 +64,18 @@ function getColRowByCellIndex(
 
 // Make the two cells pass by break the wall in cells
 function breakWall(firstCellIndex = 0, secondCellIndex = 1, cells = [[], []]) {
-  if (getAdjacentCells(firstCellIndex).indexOf(secondCellIndex) === -1) {
-    // The two cells are not adjacent
-    return
-  }
-
   const rowNum = cells.length
   const colNum = cells[0].length
+
+  if (
+    getAdjacentCells(firstCellIndex, colNum, rowNum).indexOf(
+      secondCellIndex
+    ) === -1
+  ) {
+    // The two cells are not adjacent
+    return false
+  }
+
   const { col: firstCol, row: firstRow } = getColRowByCellIndex(
     firstCellIndex,
     colNum,
@@ -84,7 +89,7 @@ function breakWall(firstCellIndex = 0, secondCellIndex = 1, cells = [[], []]) {
 
   if (cells[firstRow][firstCol] && cells[secondRow][secondCol]) {
     // Both cells are visited
-    return
+    return false
   }
 
   if (firstCol + 1 === secondCol && firstRow === secondRow) {
@@ -132,6 +137,8 @@ function breakWall(firstCellIndex = 0, secondCellIndex = 1, cells = [[], []]) {
       '1000'
     )
   }
+
+  return true
 }
 
 // Generate a maze using randomized prim's algorithm
@@ -165,51 +172,29 @@ export function generateMaze({
     case 'top':
       startRow = 0
       startCol = Math.floor(random.nextFloat() * colNum)
+      cells[startRow][startCol] = '1000'
       break
 
     case 'bottom':
       startRow = rowNum - 1
       startCol = Math.floor(random.nextFloat() * colNum)
+      cells[startRow][startCol] = '0010'
       break
 
     case 'left':
       startRow = Math.floor(random.nextFloat() * rowNum)
       startCol = 0
+      cells[startRow][startCol] = '0001'
       break
 
     case 'right':
       startRow = Math.floor(random.nextFloat() * rowNum)
       startCol = colNum - 1
+      cells[startRow][startCol] = '0100'
       break
 
     default:
       throw new Error(`invalid start side: ${startSide}`)
-  }
-
-  // Choose end point
-  switch (endSide) {
-    case 'top':
-      endRow = 0
-      endCol = Math.floor(random.nextFloat() * colNum)
-      break
-
-    case 'bottom':
-      endRow = rowNum - 1
-      endCol = Math.floor(random.nextFloat() * colNum)
-      break
-
-    case 'left':
-      endRow = Math.floor(random.nextFloat() * rowNum)
-      endCol = 0
-      break
-
-    case 'right':
-      endRow = Math.floor(random.nextFloat() * rowNum)
-      endCol = colNum - 1
-      break
-
-    default:
-      throw new Error(`invalid end side: ${endSide}`)
   }
 
   const cellIndex = getCellIndexByColRow(startCol, startRow, colNum, rowNum)
@@ -223,41 +208,73 @@ export function generateMaze({
   })
 
   while (wallList.length) {
-    const nextWallIndex = wallList.splice(
+    const nextWallKey = wallList.splice(
       Math.floor(random.nextFloat() * wallList.length),
       1
     )[0]
-    const fromCellIndex = parseInt(nextWallIndex.split('-')[0])
-    const toCellIndex = parseInt(nextWallIndex.split('-')[1])
+    const fromCellIndex = parseInt(nextWallKey.split('-')[0])
+    const toCellIndex = parseInt(nextWallKey.split('-')[1])
 
     // Break the wall between the from cell and to cell
-    breakWall(fromCellIndex, toCellIndex, cells)
+    if (breakWall(fromCellIndex, toCellIndex, cells)) {
+      // Add new walls from the new cell if we successfully break wall
+      getAdjacentCells(toCellIndex, colNum, rowNum).forEach(
+        adjacentCellIndex => {
+          if (adjacentCellIndex === -1 || adjacentCellIndex === fromCellIndex) {
+            // Invalid adjacent cell index or the same cell we already considered
+            return
+          }
 
-    // Add new walls from the new cell
-    getAdjacentCells(toCellIndex, colNum, rowNum).forEach(adjacentCellIndex => {
-      if (adjacentCellIndex === -1 || adjacentCellIndex === fromCellIndex) {
-        // Invalid adjacent cell index or the same cell we already considered
-        return
-      }
+          const adjacentWallKey = `${toCellIndex}-${adjacentCellIndex}`
+          const sameAdjacentWallKey = `${adjacentCellIndex}-${toCellIndex}`
+          if (
+            wallList.indexOf(adjacentWallKey) === -1 &&
+            wallList.indexOf(sameAdjacentWallKey) === -1
+          ) {
+            wallList.push(adjacentWallKey)
+          }
+        }
+      )
+    }
+  }
 
-      const {
-        col: adjacentCellCol,
-        row: adjacentCellRow,
-      } = getColRowByCellIndex(adjacentCellIndex, colNum, rowNum)
-      if (cells[adjacentCellRow][adjacentCellCol]) {
-        // adjacent cell is visited
-        return
-      }
+  // Choose end point
+  switch (endSide) {
+    case 'top':
+      endRow = 0
+      endCol = Math.floor(random.nextFloat() * colNum)
+      cells[endRow][endCol] = addBinary(cells[endRow][endCol], '1000')
+      break
 
-      wallList.push(`${toCellIndex}-${adjacentCellIndex}`)
-    })
+    case 'bottom':
+      endRow = rowNum - 1
+      endCol = Math.floor(random.nextFloat() * colNum)
+      cells[endRow][endCol] = addBinary(cells[endRow][endCol], '0010')
+      break
+
+    case 'left':
+      endRow = Math.floor(random.nextFloat() * rowNum)
+      endCol = 0
+      cells[endRow][endCol] = addBinary(cells[endRow][endCol], '0001')
+      break
+
+    case 'right':
+      endRow = Math.floor(random.nextFloat() * rowNum)
+      endCol = colNum - 1
+      cells[endRow][endCol] = addBinary(cells[endRow][endCol], '0100')
+      break
+
+    default:
+      throw new Error(`invalid end side: ${endSide}`)
   }
 
   return {
     rowNum,
     colNum,
     cells,
-    startIndex: startRow * colNum + startCol,
-    endIndex: endRow * colNum + endCol,
+    startRow,
+    startCol,
+    endRow,
+    endCol,
   }
 }

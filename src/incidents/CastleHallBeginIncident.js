@@ -5,6 +5,7 @@ import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
 import { BattleFieldFirstIncident } from './BattleFieldPrepIncident'
 import { GameIncident } from './GameIncident'
+import { BattleFieldIncident } from './BattleFieldIncident'
 
 export class CastleHallBeginIncident extends GameIncident {
   constructor(options = {}) {
@@ -75,8 +76,8 @@ export class CastleHallBeginIncident extends GameIncident {
 
         // When we allow to pass, we need to switch to next incident
         this.game.addIncident({
-          incidentClass: BattleFieldFirstIncident,
-          key: 'BattleFieldFirstIncident',
+          incidentClass: BattleFieldIncident,
+          key: `BattleFieldIncident@${this.game.maze.startRow}@${this.game.maze.startCol}`,
           playerStatus: {
             fromDoor: 'top',
           },

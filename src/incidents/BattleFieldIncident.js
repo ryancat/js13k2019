@@ -10,13 +10,16 @@ export class BattleFieldIncident extends GameIncident {
   constructor(options = {}) {
     super(options)
 
-    this.cellRow = parseInt(this.key.split('-')[1])
-    this.cellCol = parseInt(this.key.split('-')[2])
+    this.cellRow = parseInt(this.key.split('@')[1])
+    this.cellCol = parseInt(this.key.split('@')[2])
   }
 
   // TODO: generate random map
   createMapData() {
-    this.doors = GameIncident.generateRandomDoors()
+    // this.doors = GameIncident.generateRandomDoors()
+    this.doors = GameIncident.hashDoor(
+      this.game.maze.cells[this.cellRow][this.cellCol]
+    )
 
     this.mapData = generateMapData({
       doors: this.doors.filter(door => door !== ''),
@@ -70,7 +73,7 @@ export class BattleFieldIncident extends GameIncident {
           // When we allow to pass, we need to switch to next incident
           this.game.addIncident({
             incidentClass: BattleFieldIncident,
-            key: `BattleFieldIncident-${this.cellRow + tbIncrement}-${this
+            key: `BattleFieldIncident@${this.cellRow + tbIncrement}@${this
               .cellCol + lrIncrement}`,
             playerStatus: {
               fromDoor: GameIncident.getOppositeDoor(this.doors[doorIndex]),
