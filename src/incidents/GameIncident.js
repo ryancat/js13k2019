@@ -1,4 +1,5 @@
 import { BaseIncident } from '../engine/incidents/BaseIncident'
+import { random } from '../utils/random'
 
 export class GameIncident extends BaseIncident {
   constructor(options = {}) {
@@ -6,7 +7,7 @@ export class GameIncident extends BaseIncident {
   }
 
   // Hash function from binary string to array of doors.
-  // For example, '1101' -> ['top', 'right', 'left']
+  // For example, '1101' -> ['top', 'right', '', 'left']
   static hashDoor(hashStr = '') {
     const doorMap = ['top', 'right', 'bottom', 'left']
     // hashStr.split('').forEach((doorIndicator, index) => {
@@ -24,10 +25,10 @@ export class GameIncident extends BaseIncident {
     })
   }
 
-  static generateRandomDoors(randomSeed) {
+  static generateRandomDoors() {
     // TODO replace this with a determinastic random method
     // See https://stackoverflow.com/questions/424292/seedable-javascript-random-number-generator
-    return this.hashDoor(Math.floor(Math.random() * 16).toString(2))
+    return this.hashDoor(Math.floor(random.nextFloat() * 16).toString(2))
   }
 
   static getOppositeDoor(door) {

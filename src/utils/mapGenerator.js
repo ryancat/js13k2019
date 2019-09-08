@@ -1,4 +1,5 @@
 import { palette } from './colors'
+import { random } from './random'
 
 // layer dimension
 const DEFAULT_WIDTH = 32
@@ -71,8 +72,8 @@ const mapSchema = {
   tiledversion: '1.2.4',
 }
 
-let layerId = Math.ceil(Math.random() * 100)
-let objectId = Math.ceil(Math.random() * 100)
+let layerId = Math.ceil(random.nextFloat() * 100)
+let objectId = Math.ceil(random.nextFloat() * 100)
 const objectSpriteMap = {}
 
 function generateTileLayerData(

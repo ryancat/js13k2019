@@ -8,6 +8,7 @@
 // 4. Try not to use tileset when possible to reduce size
 import { Game } from './engine/Game'
 import { CastleHallBeginIncident } from './incidents/CastleHallBeginIncident'
+import { generateMaze } from './utils/mazeGenerator'
 
 // Use default values for now
 const game = new Game({
@@ -86,6 +87,10 @@ game.addInteractionKey('left', Game.createKeyInteraction([65, 37]))
 game.addInteractionKey('right', Game.createKeyInteraction([68, 39]))
 game.addInteractionKey('enter', Game.createKeyInteraction([13]))
 game.addInteractionKey('space', Game.createKeyInteraction([32]))
+
+// Generate maze
+game.maze = generateMaze()
+console.log(game.maze)
 
 // Add first game incident
 // game.addIncident(castleHallGameStart, 'castleHallGameStart')
