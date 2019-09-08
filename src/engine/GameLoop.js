@@ -18,7 +18,11 @@ export class GameLoop {
   }
 
   add(...callbacks) {
-    Array.prototype.push.apply(this.callbacks, callbacks)
+    callbacks.forEach(callback => {
+      if (this.callbacks.indexOf(callback) === -1) {
+        this.callbacks.push(callback)
+      }
+    })
   }
 
   remove(callback) {

@@ -38,7 +38,7 @@ export class Group {
   }
 
   clear(dt, renderer = this.renderer) {
-    this.renderer.clearRect()
+    renderer.clearRect()
   }
 
   render(dt, renderer = this.renderer) {

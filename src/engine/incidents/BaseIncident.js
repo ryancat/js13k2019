@@ -51,12 +51,6 @@ export class BaseIncident {
       return false
     }
 
-    if (!this.flag.addSceneSprites) {
-      this.addSceneSprites()
-      this.flag.addSceneSprites = true
-      return false
-    }
-
     if (!this.flag.setPlayerStatus) {
       this.setPlayerStatus()
       this.flag.setPlayerStatus = true
@@ -66,6 +60,12 @@ export class BaseIncident {
     if (!this.flag.setCamera) {
       this.setCamera()
       this.flag.setCamera = true
+      return false
+    }
+
+    if (!this.flag.addSceneSprites) {
+      this.addSceneSprites()
+      this.flag.addSceneSprites = true
       return false
     }
 

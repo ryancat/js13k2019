@@ -17,11 +17,22 @@ export class CastleHallBeginIncident extends GameIncident {
       height: 32,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
-      // objects: {
-      //   player: {
-      //     fromDoor: this.data.playerFromDoor,
-      //   },
-      // },
+      objects: [
+        {
+          x: 240,
+          y: 100,
+          width: 32,
+          height: 48,
+          name: 'king',
+        },
+        {
+          x: 240,
+          y: 224,
+          width: 32,
+          height: 48,
+          name: 'player',
+        },
+      ],
     })
   }
 
@@ -49,7 +60,6 @@ export class CastleHallBeginIncident extends GameIncident {
     const doorSprite = this.getSceneByName('castleDoor')
 
     kingSprite.hitCallback = sprite => {
-      console.log(sprite)
       if (!this.game.dialog) {
         // Only play conversation when there is no dialog right now
         this.game.playConversation(kingIntroduction(kingSprite, sprite), () => {
@@ -60,7 +70,6 @@ export class CastleHallBeginIncident extends GameIncident {
     }
 
     doorSprite.hitCallback = sprite => {
-      console.log(sprite)
       if (doorSprite.hitType === 'pass') {
         this.finish()
 

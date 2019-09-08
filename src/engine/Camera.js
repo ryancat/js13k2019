@@ -16,6 +16,8 @@ export class Camera {
       y,
       width,
       height,
+      followingSprite: null,
+      followingCallback: null,
     })
   }
 
@@ -28,13 +30,22 @@ export class Camera {
     //   this.height = sprite.height * focusRatio
     // }
 
-    const leftMargin = (this.width - sprite.width) / 2
-    const topMargin = (this.height - sprite.height) / 2
+    this.followingSprite = sprite
 
-    this.currentFollowCallback = () => {
-      this.x = sprite.x - leftMargin
-      this.y = sprite.y - topMargin
+    if (this.followingCallback) {
+      this.game.loop.remove(this.followingCallback)
     }
-    this.game.loop.add(this.currentFollowCallback.bind(this))
+
+    this.followingCallback = this.updateCameraByFollow.bind(this)
+    this.game.loop.add(this.followingCallback)
+
+    this.updateCameraByFollow()
+  }
+
+  updateCameraByFollow() {
+    const leftMargin = (this.width - this.followingSprite.width) / 2
+    const topMargin = (this.height - this.followingSprite.height) / 2
+    this.x = this.followingSprite.x - leftMargin
+    this.y = this.followingSprite.y - topMargin
   }
 }

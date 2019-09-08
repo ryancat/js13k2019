@@ -20,10 +20,6 @@ const BOTTOM_DOOR_SPRITE = 6
 const LEFT_DOOR_SPRITE = 7
 const WALL_TOP_SPRITE = 8
 
-// object id
-// TODO: remove object id. Adding objects dynamically in map!
-const PLAYER_ID = 3
-
 const tileLayerSchema = {
   width: DEFAULT_WIDTH,
   height: DEFAULT_HEIGHT,
@@ -75,10 +71,9 @@ const mapSchema = {
   tiledversion: '1.2.4',
 }
 
-let layerId = Math.floor(Math.random() * 100)
-let objectId = Math.floor(Math.random() * 100)
-
-function generateSpriteMetaData({}) {}
+let layerId = Math.ceil(Math.random() * 100)
+let objectId = Math.ceil(Math.random() * 100)
+const objectSpriteMap = {}
 
 function generateTileLayerData(
   width = DEFAULT_WIDTH,
@@ -208,7 +203,7 @@ export function generateMapJson({
   wallColor = palette.brown[3], // can be any color in palette
   wallTopColor = palette.brown[1], // can be any color in palette
   backgroundColor = palette.gunmetal[4], // can be any color in palette
-  objects = {},
+  objects = [],
 }) {
   const layerConfigs = [
     {
@@ -264,21 +259,34 @@ export function generateMapJson({
         break
 
       case 'objectgroup':
-        // Add player only for now
-        // TODO: add enemies with object id++
-        const playerObj = Object.assign({}, objectSchema, {
-          id: PLAYER_ID,
-          name: 'player',
-        })
-
         layer = Object.assign({}, objectLayerSchema, {
           x,
           y,
-          objects: [playerObj],
+          objects: objects.map(obj => {
+            const id = objectId++
+            objectSpriteMap[obj.name] = id
+            return Object.assign({}, objectSchema, obj, { id })
+          }),
           id: layerId++,
           name: layerConfig.name,
           type: layerConfig.type,
         })
+
+        // // Add player only for now
+        // // TODO: add enemies with object id++
+        // const playerObj = Object.assign({}, objectSchema, {
+        //   id: PLAYER_ID,
+        //   name: 'player',
+        // })
+
+        // layer = Object.assign({}, objectLayerSchema, {
+        //   x,
+        //   y,
+        //   objects: [playerObj],
+        //   id: layerId++,
+        //   name: layerConfig.name,
+        //   type: layerConfig.type,
+        // })
         break
 
       default:
@@ -335,7 +343,7 @@ export function generateMapData({
   backgroundColor = palette.gunmetal[4], // can be any color in palette
   tileWidth,
   tileHeight,
-  objects = {},
+  objects = [],
 }) {
   const tiledMapJson = generateMapJson({
     type,
@@ -367,13 +375,18 @@ export function generateMapData({
 
   Object.assign(tiledMapJson, {
     tileSpriteMap,
-    // TODO: Remove object and add dynamically!
-    objectSpriteMap: {
-      3: 'PlayerSprite',
-    },
+    objectSpriteMap: {},
     tileWidthScale: tileWidth / tiledMapJson.tilewidth,
     tileHeightScale: tileHeight / tiledMapJson.tileheight,
   })
+
+  if (objectSpriteMap['king']) {
+    tiledMapJson.objectSpriteMap[objectSpriteMap['king']] = 'KingSprite'
+  }
+
+  if (objectSpriteMap['player']) {
+    tiledMapJson.objectSpriteMap[objectSpriteMap['player']] = 'PlayerSprite'
+  }
 
   // TODO: Hard-coded map for now. Should be automatically generated.
   return tiledMapJson
