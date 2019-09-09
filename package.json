@@ -1,7 +1,7 @@
 {
   "name": "gem-of-love",
   "version": "0.0.1",
-  "description": "A 2D game of a story about fighting dragons and bring back the gem of love",
+  "description": "A 2D game of a story about solving maze puzzles, fighting dragons and bring back the three gems",
   "main": "webpack.config.js",
   "scripts": {
     "start": "npm-run-all --parallel pretty:watch dev:server",
