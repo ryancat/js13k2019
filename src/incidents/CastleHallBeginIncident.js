@@ -4,6 +4,7 @@ import { kingIntroduction } from './conversations/king'
 import { palette } from '../utils/colors'
 import { GameIncident } from './GameIncident'
 import { BattleFieldIncident } from './BattleFieldIncident'
+import { random } from '../utils/random'
 
 export class CastleHallBeginIncident extends GameIncident {
   constructor(options = {}) {
@@ -18,15 +19,15 @@ export class CastleHallBeginIncident extends GameIncident {
       tileHeight: this.game.tileHeight,
       objects: [
         {
-          x: (this.game.width - this.objectWidth.m) / 2,
-          y: (this.game.height - this.objectHeight.l) / 4,
+          x: (this.width - this.objectWidth.m) / 2,
+          y: (this.height - this.objectHeight.l) / 4,
           width: this.objectWidth.m,
           height: this.objectHeight.l,
           name: 'king',
         },
         {
-          x: (this.game.width - this.objectWidth.m) / 2,
-          y: (this.game.height - this.objectHeight.l) / 2,
+          x: (this.width - this.objectWidth.m) / 2,
+          y: (this.height - this.objectHeight.l) / 2,
           width: this.objectWidth.m,
           height: this.objectHeight.l,
           name: 'player',
@@ -74,9 +75,15 @@ export class CastleHallBeginIncident extends GameIncident {
         this.finish()
 
         // When we allow to pass, we need to switch to next incident
+        const rowNum = Math.floor(random.nextFloat() * 32 + 16)
+        const colNum = Math.floor(random.nextFloat() * 32 + 16)
+        const newIncidentWidth = colNum * this.game.tileWidth
+        const newIncidentHeight = rowNum * this.game.tileHeight
         this.game.addIncident({
           incidentClass: BattleFieldIncident,
           key: `BattleFieldIncident@${this.game.maze.startRow}@${this.game.maze.startCol}`,
+          rowNum,
+          colNum,
           playerStatus: {
             fromDoor: 'top',
           },
@@ -95,8 +102,8 @@ export class CastleHallBeginIncident extends GameIncident {
                 name: 'john',
                 width: this.objectWidth.m,
                 height: this.objectHeight.l,
-                x: (this.game.width - this.objectWidth.m) / 2,
-                y: (this.game.height - this.objectHeight.l) / 2,
+                x: (newIncidentWidth - this.objectWidth.m) / 2,
+                y: (newIncidentHeight - this.objectHeight.l) / 2,
               },
             ],
           },

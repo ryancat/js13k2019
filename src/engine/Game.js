@@ -133,10 +133,10 @@ export class Game {
    */
   addIncident({
     incidentClass = BaseIncident,
-    key = Date.now().toString(),
     isForced = false,
+    key = '',
     playerStatus = {},
-    incidentStatus = {},
+    ...options
   }) {
     const incidentRecord =
       !isForced && this.incidentMap[key]
@@ -144,10 +144,10 @@ export class Game {
         : {
             timeStamps: [],
             incident: new incidentClass({
-              key,
               game: this,
+              key,
               playerStatus,
-              incidentStatus,
+              ...options,
             }),
           }
 
@@ -159,7 +159,17 @@ export class Game {
     // Make sure incident has updated playerStatus
     incident.playerStatus = playerStatus
     incident.restart()
-    this.incidentPlays.push(incident.play.bind(incident))
+
+    // Add play method into incident plays queue and dedupe
+    incidentRecord.playIncident =
+      incidentRecord.playIncident || incident.play.bind(incident)
+    const incidentPlayIndex = this.incidentPlays.indexOf(
+      incidentRecord.playIncident
+    )
+    if (incidentPlayIndex >= 0) {
+      this.incidentPlays.splice(incidentPlayIndex, 1)
+    }
+    this.incidentPlays.push(incidentRecord.playIncident)
   }
 
   /**

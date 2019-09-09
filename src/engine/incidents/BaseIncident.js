@@ -25,17 +25,22 @@ export class BaseIncident {
         sceneSprites: [],
         rowNum: DEFAULT_INCIDENT_MAP_ROW_COUNT,
         colNum: DEFAULT_INCIDENT_MAP_COL_COUNT,
+        playerStatus: {},
+        incidentStatus: {},
       },
       options
     )
-
-    this.game.width = this.game.tileWidth * this.colNum
-    this.game.height = this.game.tileHeight * this.rowNum
   }
 
   play(dt) {
     if (this.flag.finished) {
       return true
+    }
+
+    if (!this.flag.setIncidentStatus) {
+      this.setIncidentStatus()
+      this.flag.setIncidentStatus = true
+      return false
     }
 
     // init or update incident
@@ -109,16 +114,12 @@ export class BaseIncident {
   initMapGroup() {
     this.createMapData()
 
-    // Update game size with loaded map
-    // this.game.width = this.game.tileWidth * this.mapData.width
-    // this.game.height = this.game.tileHeight * this.mapData.height
-
     // init map group
     this.mapGroup = new Group({
       colNum: this.mapData.width,
       rowNum: this.mapData.height,
-      width: this.game.width,
-      height: this.game.height,
+      width: this.width,
+      height: this.height,
       tileSpriteMap: this.mapData.tileSpriteMap,
       objectSpriteMap: this.mapData.objectSpriteMap,
       layers: this.mapData.layers,
@@ -220,6 +221,11 @@ export class BaseIncident {
   }
 
   setPlayerStatus() {}
+
+  setIncidentStatus() {
+    this.width = this.colNum * this.game.tileWidth
+    this.height = this.rowNum * this.game.tileHeight
+  }
 
   renderBackground() {
     this.game.layerMap['background'].drawRect({

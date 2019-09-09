@@ -6,6 +6,7 @@ import { generateMapData } from '../utils/mapGenerator'
 import { CastleHallBeginIncident } from './CastleHallBeginIncident'
 import { GameIncident } from './GameIncident'
 import * as npcConversation from './conversations/npc'
+import { random } from '../utils/random'
 
 export class BattleFieldIncident extends GameIncident {
   constructor(options = {}) {
@@ -23,14 +24,14 @@ export class BattleFieldIncident extends GameIncident {
 
     this.mapData = generateMapData({
       doors: this.doors.filter(door => door !== ''),
-      width: 32,
-      height: 32,
+      width: this.colNum,
+      height: this.rowNum,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
       objects: (this.incidentStatus.npcs || []).concat([
         {
-          x: (this.game.width - this.objectWidth.m) / 2,
-          y: (this.game.height - this.objectHeight.l) / 2,
+          x: (this.width - this.objectWidth.m) / 2,
+          y: (this.height - this.objectHeight.l) / 2,
           width: this.objectWidth.m,
           height: this.objectHeight.l,
           name: 'player',
@@ -98,6 +99,8 @@ export class BattleFieldIncident extends GameIncident {
             incidentClass: BattleFieldIncident,
             key: `BattleFieldIncident@${this.cellRow + tbIncrement}@${this
               .cellCol + lrIncrement}`,
+            rowNum: Math.floor(random.nextFloat() * 32 + 16),
+            colNum: Math.floor(random.nextFloat() * 32 + 16),
             playerStatus: {
               fromDoor: GameIncident.getOppositeDoor(this.doors[doorIndex]),
             },
