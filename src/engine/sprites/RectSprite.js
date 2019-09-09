@@ -59,6 +59,22 @@ export class RectSprite extends Sprite {
       backgroundColor: this.backgroundColor,
     })
 
+    if (this.showName) {
+      // Will show name on top of character
+      renderer.drawText({
+        text: this.name,
+        x: transformX + this.width / 2,
+        y: transformY,
+        baseline: 'bottom',
+        align: 'center',
+        width: this.width,
+        height: this.height,
+        shouldFill: true,
+        shouldStroke: false,
+        color: this.backgroundColor,
+      })
+    }
+
     if (localStorage.getItem('GAME_DEBUG_MODE')) {
       renderer.drawRect({
         x: transformX + this.hitArea.localX,

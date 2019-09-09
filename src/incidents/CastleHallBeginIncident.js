@@ -18,17 +18,17 @@ export class CastleHallBeginIncident extends GameIncident {
       tileHeight: this.game.tileHeight,
       objects: [
         {
-          x: 240,
-          y: 100,
-          width: 32,
-          height: 48,
+          x: (this.game.width - this.objectWidth.m) / 2,
+          y: (this.game.height - this.objectHeight.l) / 4,
+          width: this.objectWidth.m,
+          height: this.objectHeight.l,
           name: 'king',
         },
         {
-          x: 240,
-          y: 224,
-          width: 32,
-          height: 48,
+          x: (this.game.width - this.objectWidth.m) / 2,
+          y: (this.game.height - this.objectHeight.l) / 2,
+          width: this.objectWidth.m,
+          height: this.objectHeight.l,
           name: 'player',
         },
       ],
@@ -75,6 +75,26 @@ export class CastleHallBeginIncident extends GameIncident {
           key: `BattleFieldIncident@${this.game.maze.startRow}@${this.game.maze.startCol}`,
           playerStatus: {
             fromDoor: 'top',
+          },
+          incidentStatus: {
+            // rowNum: 32,
+            // colNum: 32,
+            // doorColor = palette.red[3], // can be any color in palette
+            // groundColor = palette.green[4], // can be any color in palette
+            // wallColor = palette.brown[3], // can be any color in palette
+            // wallTopColor = palette.brown[1], // can be any color in palette
+            // backgroundColor = palette.gunmetal[4], // can be any color in palette
+
+            // npc object status for map
+            npc: [
+              {
+                name: 'john',
+                width: this.objectWidth.m,
+                height: this.objectHeight.l,
+                x: (this.game.width - this.objectWidth.m) / 2,
+                y: (this.game.height - this.objectHeight.l) / 2,
+              },
+            ],
           },
         })
       }

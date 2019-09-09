@@ -76,7 +76,8 @@ export class CanvasRenderer {
   drawText({
     x = 0,
     y = 0,
-    align = 'center',
+    align = 'left',
+    baseline = 'alphabetic',
     text = 'PLACE_HOLDER',
     fontSize = '16',
     color = DEFAULT_DRAW_BACKGROUND_COLOR,
@@ -86,7 +87,7 @@ export class CanvasRenderer {
     context.font = `${fontSize}px serif`
     context.fillStyle = color
     context.textAlign = align
-    context.textBaseline = 'middle'
+    context.textBaseline = baseline
     context.fillText(text, x, y)
 
     context.restore()

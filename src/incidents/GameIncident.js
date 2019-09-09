@@ -4,6 +4,23 @@ import { random } from '../utils/random'
 export class GameIncident extends BaseIncident {
   constructor(options = {}) {
     super(options)
+
+    // TODO: use object width height to calculate player size and npc size!
+    this.objectWidth = {
+      xs: this.game.tileWidth / 2,
+      s: this.game.tileWidth,
+      m: this.game.tileWidth * 2,
+      l: this.game.tileWidth * 3,
+      xl: this.game.tileWidth * 4,
+    }
+
+    this.objectHeight = {
+      xs: this.game.tileHeight / 2,
+      s: this.game.tileHeight,
+      m: this.game.tileHeight * 2,
+      l: this.game.tileHeight * 3,
+      xl: this.game.tileHeight * 4,
+    }
   }
 
   // Hash function from binary string to array of doors.

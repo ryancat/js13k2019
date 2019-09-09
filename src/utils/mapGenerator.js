@@ -199,6 +199,8 @@ export function generateMapJson({
   wallColor = palette.brown[3], // can be any color in palette
   wallTopColor = palette.brown[1], // can be any color in palette
   backgroundColor = palette.gunmetal[4], // can be any color in palette
+  tileWidth = DEFAULT_TILE_WIDTH,
+  tileHeight = DEFAULT_TILE_HEIGHT,
   objects = [],
 }) {
   const layerConfigs = [
@@ -280,6 +282,8 @@ export function generateMapJson({
     layers,
     width,
     height,
+    tilewidth: tileWidth,
+    tileheight: tileHeight,
     spriteMetaMap: {
       BACKGROUND_SPRITE: {
         backgroundColor: backgroundColor,
@@ -337,10 +341,10 @@ export function generateMapData({
     wallColor,
     wallTopColor,
     backgroundColor,
+    tileWidth,
+    tileHeight,
     objects,
   })
-  tileWidth = tileWidth || tiledMapJson.tilewidth
-  tileHeight = tileHeight || tiledMapJson.tileheight
 
   const tileSpriteMap = {}
   tileSpriteMap[EMPTY_SPRITE] = 'EmptySprite'
@@ -356,16 +360,14 @@ export function generateMapData({
   Object.assign(tiledMapJson, {
     tileSpriteMap,
     objectSpriteMap: {},
-    tileWidthScale: tileWidth / tiledMapJson.tilewidth,
-    tileHeightScale: tileHeight / tiledMapJson.tileheight,
   })
 
-  if (objectSpriteMap['king']) {
-    tiledMapJson.objectSpriteMap[objectSpriteMap['king']] = 'KingSprite'
-  }
-
-  if (objectSpriteMap['player']) {
-    tiledMapJson.objectSpriteMap[objectSpriteMap['player']] = 'PlayerSprite'
+  // Add object sprite map
+  for (let objSpriteKey in objectSpriteMap) {
+    tiledMapJson.objectSpriteMap[objectSpriteMap[objSpriteKey]] =
+      objSpriteKey.charAt(0).toUpperCase() +
+      objSpriteKey.substring(1) +
+      'Sprite'
   }
 
   // TODO: Hard-coded map for now. Should be automatically generated.

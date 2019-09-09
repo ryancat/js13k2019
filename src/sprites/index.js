@@ -7,6 +7,7 @@ function createRectSprite({
   opacity = 1,
   name = 'placeholder',
   hitType = 'pass',
+  showName = false,
   render,
 }) {
   return class extends RectSprite {
@@ -18,6 +19,7 @@ function createRectSprite({
             backgroundColor,
             name,
             hitType,
+            showName,
           },
           options
         )
@@ -87,6 +89,7 @@ export const KingSprite = createRectSprite({
   name: 'king',
   backgroundColor: palette.blue[2],
   hitType: 'stop',
+  showName: true,
 })
 
 export const KingDialogSprite = createRectSprite({
@@ -97,11 +100,13 @@ export const KingDialogSprite = createRectSprite({
 const PlayerSprite1 = createRectSprite({
   name: 'playerSprite1',
   backgroundColor: palette.brown[0],
+  showName: true,
 })
 
 const PlayerSprite2 = createRectSprite({
   name: 'playerSprite2',
   backgroundColor: palette.red[4],
+  showName: true,
 })
 
 // TODO: add factory code for creating RectSprite for player
@@ -135,4 +140,11 @@ export class PlayerSprite extends FrameSprite {
 export const PlayerDialogSprite = createRectSprite({
   name: 'playerDialogSprite',
   backgroundColor: palette.brown[2],
+})
+
+export const JohnSprite = createRectSprite({
+  name: 'john',
+  backgroundColor: palette.green[1],
+  hitType: 'stop',
+  showName: true,
 })

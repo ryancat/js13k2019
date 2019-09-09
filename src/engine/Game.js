@@ -136,6 +136,7 @@ export class Game {
     key = Date.now().toString(),
     isForced = false,
     playerStatus = {},
+    incidentStatus = {},
   }) {
     const incidentRecord =
       !isForced && this.incidentMap[key]
@@ -146,6 +147,7 @@ export class Game {
               key,
               game: this,
               playerStatus,
+              incidentStatus,
             }),
           }
 

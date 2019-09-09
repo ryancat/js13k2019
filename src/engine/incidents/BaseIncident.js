@@ -110,8 +110,8 @@ export class BaseIncident {
     this.createMapData()
 
     // Update game size with loaded map
-    this.game.width = this.game.tileWidth * this.mapData.width
-    this.game.height = this.game.tileHeight * this.mapData.height
+    // this.game.width = this.game.tileWidth * this.mapData.width
+    // this.game.height = this.game.tileHeight * this.mapData.height
 
     // init map group
     this.mapGroup = new Group({
@@ -119,8 +119,6 @@ export class BaseIncident {
       rowNum: this.mapData.height,
       width: this.game.width,
       height: this.game.height,
-      tileWidthScale: this.game.tileWidth / this.mapData.tilewidth,
-      tileHeightScale: this.game.tileHeight / this.mapData.tileheight,
       tileSpriteMap: this.mapData.tileSpriteMap,
       objectSpriteMap: this.mapData.objectSpriteMap,
       layers: this.mapData.layers,
@@ -176,10 +174,10 @@ export class BaseIncident {
               this.game.createObjectSprite(
                 this.mapGroup.objectSpriteMap[gameObject.id],
                 {
-                  x: gameObject.x * this.mapGroup.tileWidthScale,
-                  y: gameObject.y * this.mapGroup.tileHeightScale,
-                  width: gameObject.width * this.mapGroup.tileWidthScale,
-                  height: gameObject.height * this.mapGroup.tileHeightScale,
+                  x: gameObject.x,
+                  y: gameObject.y,
+                  width: gameObject.width,
+                  height: gameObject.height,
                   name: gameObject.name,
                   layer: layerGroup,
                   map: this.mapGroup,
