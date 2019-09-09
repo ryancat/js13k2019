@@ -29,7 +29,7 @@ export class Dialog {
 
   start() {
     // Pause game
-    this.game.pause()
+    this.game.pauseMove()
   }
 
   update(dt) {
@@ -145,6 +145,6 @@ export class Dialog {
     this.endCallbacks.forEach(callback => callback())
 
     // Resume game
-    this.game.resume()
+    this.game.resumeMove()
   }
 }

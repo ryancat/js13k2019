@@ -2,6 +2,11 @@ import { RectSprite } from '../engine/sprites/RectSprite'
 // import { FrameSprite } from '../engine/sprites/FrameSprite'
 import { palette } from '../utils/colors'
 
+// Color for sprites
+const playerColor = palette.brown[2]
+const kingColor = palette.blue[2]
+const npcJohnColor = palette.green[1]
+
 function createRectSprite({
   backgroundColor = palette.red[3],
   opacity = 1,
@@ -90,19 +95,14 @@ export const BackgroundSprite = createRectSprite({
 
 export const KingSprite = createRectSprite({
   name: 'king',
-  backgroundColor: palette.blue[2],
+  backgroundColor: kingColor,
   hitType: 'stop',
   showName: true,
 })
 
-export const KingDialogSprite = createRectSprite({
-  name: 'kingDialogSprite',
-  backgroundColor: palette.blue[2],
-})
-
 export const PlayerSprite = createRectSprite({
   name: 'player',
-  backgroundColor: palette.brown[2],
+  backgroundColor: playerColor,
   showName: true,
   callback: function() {
     // set velocity
@@ -155,14 +155,25 @@ export const PlayerSprite = createRectSprite({
 //   }
 // }
 
-export const PlayerDialogSprite = createRectSprite({
-  name: 'playerDialogSprite',
-  backgroundColor: palette.brown[2],
-})
-
 export const JohnSprite = createRectSprite({
   name: 'john',
-  backgroundColor: palette.green[1],
+  backgroundColor: npcJohnColor,
   hitType: 'stop',
   showName: true,
+})
+
+// Dialog Sprites
+export const KingDialogSprite = createRectSprite({
+  name: 'kingDialogSprite',
+  backgroundColor: kingColor,
+})
+
+export const PlayerDialogSprite = createRectSprite({
+  name: 'playerDialogSprite',
+  backgroundColor: playerColor,
+})
+
+export const NpcJohnDialogSprite = createRectSprite({
+  name: 'npcJohnDialogSprite',
+  backgroundColor: npcJohnColor,
 })

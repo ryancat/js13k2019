@@ -5,6 +5,7 @@ import { palette } from '../utils/colors'
 import { generateMapData } from '../utils/mapGenerator'
 import { CastleHallBeginIncident } from './CastleHallBeginIncident'
 import { GameIncident } from './GameIncident'
+import * as npcConversation from './conversations/npc'
 
 export class BattleFieldIncident extends GameIncident {
   constructor(options = {}) {
@@ -26,7 +27,7 @@ export class BattleFieldIncident extends GameIncident {
       height: 32,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
-      objects: (this.incidentStatus.npc || []).concat([
+      objects: (this.incidentStatus.npcs || []).concat([
         {
           x: (this.game.width - this.objectWidth.m) / 2,
           y: (this.game.height - this.objectHeight.l) / 2,
@@ -49,6 +50,24 @@ export class BattleFieldIncident extends GameIncident {
         ? this.addSceneBySpriteName(`${door}Door`, `${door}DoorSprite`)
         : null
     })
+
+    if (
+      this.cellRow === this.game.maze.startRow &&
+      this.cellCol === this.game.maze.startCol
+    ) {
+      // If this is the start cell, we need to handle introduction
+      const johnSprite = this.mapGroup.getSpriteByName('john')
+      if (!johnSprite.state.hasIntroduced) {
+        this.doorScenes.forEach(doorScene => {
+          if (doorScene.name === 'topDoor') {
+            return
+          }
+
+          doorScene.backgroundColor = palette.red[3]
+          doorScene.hitType = 'stop'
+        })
+      }
+    }
   }
 
   setCamera() {
@@ -57,6 +76,11 @@ export class BattleFieldIncident extends GameIncident {
   }
 
   bindEventCallback() {
+    this.handleDoors()
+    this.handleNpcs()
+  }
+
+  handleDoors() {
     this.doorScenes.forEach((doorScene, doorIndex) => {
       if (!doorScene) {
         return
@@ -90,6 +114,22 @@ export class BattleFieldIncident extends GameIncident {
     // // TODO: REMOVE IN OFFICIAL GAME
     // doorSprite.backgroundColor = palette.green[3]
     // doorSprite.hitType = 'pass'
+  }
+
+  handleNpcs() {
+    const npcs = this.incidentStatus.npcs || []
+
+    npcs.forEach(npc => {
+      const npcSprite = this.mapGroup.getSpriteByName(npc.name)
+      npcSprite.hitCallback = sprite => {
+        if (!this.game.dialog) {
+          // Only play conversation when there is no dialog right now
+          this.game.playConversation(
+            npcConversation[npc.name](npcSprite, sprite, this)
+          )
+        }
+      }
+    })
   }
 
   handlePlayerMove(playerSprite, dt) {

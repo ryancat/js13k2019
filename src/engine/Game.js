@@ -195,4 +195,13 @@ export class Game {
   resume() {
     this.loop.start()
   }
+
+  // Nothing can move now
+  pauseMove() {
+    this.flag.disableMove = true
+  }
+
+  resumeMove() {
+    this.flag.disableMove = false
+  }
 }

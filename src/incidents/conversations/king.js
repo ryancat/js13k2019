@@ -5,31 +5,33 @@ export function kingIntroduction(kingSprite, playerSprite) {
     kingSprite.state.hasIntroduced = true
     return [
       {
-        content: 'Hello warrior, welcome to the land of three gem!',
+        content: 'Hello warrior, welcome to the land of three gems!',
       },
       {
         content: 'I am the real king. You know, I run this place.',
       },
       {
         content:
-          "However, that's until 5 years ago, when the dragon king took the gem of peace!",
+          "However, that's until 5 years ago, when the dragons took our gems!",
       },
       {
-        content: 'The world is suffering without peace...',
+        content: 'The world is suffering in fear...',
       },
       {
-        content: 'Please bring back the gem and restore the peace!',
-      },
-      {
-        fromSpriteKey: 'PlayerDialogSprite',
-        content: 'Sounds great! But where can I find the dragon king?',
-      },
-      {
-        content: 'Well, the dragon king is too powerful for you, I am afraid.',
+        content: 'Please bring back the gems and restore the world peace!',
       },
       {
         fromSpriteKey: 'PlayerDialogSprite',
-        content: '...Pardon?',
+        content:
+          "That sounds great! Kill the dragons and get the gems, that's what I do for a living!",
+      },
+      {
+        content:
+          'Well, the dragon king is too powerful for you at this moment, I am afraid.',
+      },
+      {
+        fromSpriteKey: 'PlayerDialogSprite',
+        content: '...Excuse me?',
       },
       {
         content:

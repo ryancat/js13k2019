@@ -36,12 +36,13 @@ export class CastleHallBeginIncident extends GameIncident {
   }
 
   addSceneSprites() {
-    const castleDoorScene = this.addSceneBySpriteName(
+    this.castleDoorScene = this.addSceneBySpriteName(
       'castleDoor',
       'bottomDoorSprite'
     )
-    castleDoorScene.backgroundColor = palette.red[3]
-    castleDoorScene.hitType = 'stop'
+
+    this.castleDoorScene.backgroundColor = palette.red[3]
+    this.castleDoorScene.hitType = 'stop'
   }
 
   setCamera() {
@@ -53,20 +54,23 @@ export class CastleHallBeginIncident extends GameIncident {
 
   bindEventCallback() {
     const kingSprite = this.mapGroup.getSpriteByName('king')
-    const doorSprite = this.getSceneByName('castleDoor')
 
     kingSprite.hitCallback = sprite => {
       if (!this.game.dialog) {
         // Only play conversation when there is no dialog right now
         this.game.playConversation(kingIntroduction(kingSprite, sprite), () => {
-          doorSprite.backgroundColor = palette.green[3]
-          doorSprite.hitType = 'pass'
+          this.castleDoorScene.backgroundColor = palette.green[3]
+          this.castleDoorScene.hitType = 'pass'
         })
       }
     }
 
-    doorSprite.hitCallback = sprite => {
-      if (doorSprite.hitType === 'pass') {
+    this.handleDoors()
+  }
+
+  handleDoors() {
+    this.castleDoorScene.hitCallback = sprite => {
+      if (this.castleDoorScene.hitType === 'pass') {
         this.finish()
 
         // When we allow to pass, we need to switch to next incident
@@ -86,7 +90,7 @@ export class CastleHallBeginIncident extends GameIncident {
             // backgroundColor = palette.gunmetal[4], // can be any color in palette
 
             // npc object status for map
-            npc: [
+            npcs: [
               {
                 name: 'john',
                 width: this.objectWidth.m,
@@ -101,8 +105,8 @@ export class CastleHallBeginIncident extends GameIncident {
     }
 
     // TODO: REMOVE IN OFFICIAL GAME
-    doorSprite.backgroundColor = palette.green[3]
-    doorSprite.hitType = 'pass'
+    this.castleDoorScene.backgroundColor = palette.green[3]
+    this.castleDoorScene.hitType = 'pass'
   }
 
   update(dt) {

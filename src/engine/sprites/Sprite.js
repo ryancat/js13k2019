@@ -188,6 +188,11 @@ export class Sprite {
 
   // Move the sprite with current speed, and hit detection
   move() {
+    if (this.game.flag.disableMove) {
+      // We cannot move when game is pause move
+      return
+    }
+
     if (this.type === 'tileSprite') {
       // Tile sprites cannot move
       return
