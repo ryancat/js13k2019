@@ -6,6 +6,7 @@ import { palette } from '../utils/colors'
 const playerColor = palette.brown[2]
 const kingColor = palette.blue[2]
 const npcJohnColor = palette.green[1]
+const npcFireDragonColor = palette.red[2]
 
 function createRectSprite({
   backgroundColor = palette.red[3],
@@ -162,6 +163,13 @@ export const JohnSprite = createRectSprite({
   showName: true,
 })
 
+export const FireDragonSprite = createRectSprite({
+  name: 'john',
+  backgroundColor: npcFireDragonColor,
+  hitType: 'stop',
+  showName: true,
+})
+
 // Dialog Sprites
 export const KingDialogSprite = createRectSprite({
   name: 'kingDialogSprite',
@@ -176,4 +184,9 @@ export const PlayerDialogSprite = createRectSprite({
 export const NpcJohnDialogSprite = createRectSprite({
   name: 'npcJohnDialogSprite',
   backgroundColor: npcJohnColor,
+})
+
+export const NpcFireDragonDialogSprite = createRectSprite({
+  name: 'npcFireDragonDialogSprite',
+  backgroundColor: npcFireDragonColor,
 })

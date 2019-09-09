@@ -47,7 +47,7 @@ export function john(npcJohnSprite, playerSprite, incident) {
             'The land of three gems is not what it used to be. The dragons have taken all the three gems!',
         },
         {
-          content: 'They say the gem of fire will give you strenth...',
+          content: 'They say the gem of fire will give you strength...',
         },
         {
           content: 'the gem of ice will give you dexterity...',
@@ -68,6 +68,10 @@ export function john(npcJohnSprite, playerSprite, incident) {
             'I have cleared this room for you. You are welcome! Now the doors are opened!',
           contentCallback: () => {
             incident.doorScenes.forEach(doorScene => {
+              if (!doorScene) {
+                return
+              }
+
               doorScene.backgroundColor = palette.green[3]
               doorScene.hitType = 'pass'
             })
@@ -97,5 +101,64 @@ export function john(npcJohnSprite, playerSprite, incident) {
         },
       ]
     }
+  }
+}
+
+export function fireDragon(npcFireDragonSprite, playerSprite, incident) {
+  if (!npcFireDragonSprite.state.hasIntroduced) {
+    npcFireDragonSprite.state.hasIntroduced = true
+
+    return [
+      {
+        content: 'You found me! I am the fire dragon! ROOOAAAAARRRR!!!!!',
+      },
+      {
+        fromSpriteKey: 'PlayerDialogSprite',
+        content: 'I come here to get the gem of fire',
+      },
+      {
+        content: "I don't think so! That is not possible for now",
+      },
+      {
+        fromSpriteKey: 'PlayerDialogSprite',
+        content: 'What...?',
+      },
+      {
+        content:
+          "It's kinda embarrassing... The developer is still working on fight logics, so we cannot fight yet... for now.",
+      },
+      {
+        fromSpriteKey: 'PlayerDialogSprite',
+        content: "That's a bummer! I came all these way here!",
+      },
+      {
+        content: 'How about I declare you won the game?',
+      },
+      {
+        fromSpriteKey: 'PlayerDialogSprite',
+        content: 'Wait, what??',
+      },
+      {
+        content: 'You heard me right. You won!!! And nobody died! Yay!',
+        options: {
+          color: palette.green[2],
+        },
+      },
+    ].map(conversation => {
+      if (!conversation.fromSpriteKey) {
+        conversation.fromSpriteKey = 'NpcFireDragonDialogSprite'
+      }
+      return conversation
+    })
+  } else {
+    return [
+      {
+        fromSpriteKey: 'NpcFireDragonDialogSprite',
+        content: 'You won!!! And nobody died! Yay! (Refresh to play again!)',
+        options: {
+          color: palette.green[2],
+        },
+      },
+    ]
   }
 }

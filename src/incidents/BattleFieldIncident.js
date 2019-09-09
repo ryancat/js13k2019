@@ -60,6 +60,10 @@ export class BattleFieldIncident extends GameIncident {
       const johnSprite = this.mapGroup.getSpriteByName('john')
       if (!johnSprite.state.hasIntroduced) {
         this.doorScenes.forEach(doorScene => {
+          if (!doorScene) {
+            return
+          }
+
           if (doorScene.name === 'topDoor') {
             return
           }
@@ -68,6 +72,21 @@ export class BattleFieldIncident extends GameIncident {
           doorScene.hitType = 'stop'
         })
       }
+    }
+
+    if (
+      this.cellRow === this.game.maze.endRow &&
+      this.cellCol === this.game.maze.endCol
+    ) {
+      // If this is the end cell, we need to stop player at exit (for now)
+      this.doorScenes.forEach(doorScene => {
+        if (!doorScene) {
+          return
+        }
+
+        doorScene.backgroundColor = palette.red[3]
+        doorScene.hitType = 'stop'
+      })
     }
   }
 
@@ -95,17 +114,49 @@ export class BattleFieldIncident extends GameIncident {
           this.finish()
 
           // When we allow to pass, we need to switch to next incident
-          this.game.addIncident({
+          const rowNum = Math.floor(random.nextFloat() * 32 + 16)
+          const colNum = Math.floor(random.nextFloat() * 32 + 16)
+          const newIncidentWidth = colNum * this.game.tileWidth
+          const newIncidentHeight = rowNum * this.game.tileHeight
+          const nextCellRow = this.cellRow + tbIncrement
+          const nextCellCol = this.cellCol + lrIncrement
+          const nextIncidentConfig = {
             incidentClass: BattleFieldIncident,
-            key: `BattleFieldIncident@${this.cellRow + tbIncrement}@${this
-              .cellCol + lrIncrement}`,
-            rowNum: Math.floor(random.nextFloat() * 32 + 16),
-            colNum: Math.floor(random.nextFloat() * 32 + 16),
+            key: `BattleFieldIncident@${nextCellRow}@${nextCellCol}`,
+            rowNum,
+            colNum,
             playerStatus: {
               fromDoor: GameIncident.getOppositeDoor(this.doors[doorIndex]),
             },
-          })
+          }
 
+          if (
+            nextCellCol === this.game.maze.endCol &&
+            nextCellRow === this.game.maze.endRow
+          ) {
+            nextIncidentConfig.incidentStatus = {
+              // rowNum: 32,
+              // colNum: 32,
+              // doorColor = palette.red[3], // can be any color in palette
+              // groundColor = palette.green[4], // can be any color in palette
+              // wallColor = palette.brown[3], // can be any color in palette
+              // wallTopColor = palette.brown[1], // can be any color in palette
+              // backgroundColor = palette.gunmetal[4], // can be any color in palette
+
+              // npc object status for map
+              npcs: [
+                {
+                  name: 'fireDragon',
+                  width: this.objectWidth.l,
+                  height: this.objectHeight.xl,
+                  x: (newIncidentWidth - this.objectWidth.l) / 2,
+                  y: (newIncidentHeight - this.objectHeight.xl) / 2,
+                },
+              ],
+            }
+          }
+
+          this.game.addIncident(nextIncidentConfig)
           console.log(
             `enter battlefield row: ${this.cellRow + tbIncrement}, col: ${this
               .cellCol + lrIncrement}`
@@ -125,11 +176,14 @@ export class BattleFieldIncident extends GameIncident {
     npcs.forEach(npc => {
       const npcSprite = this.mapGroup.getSpriteByName(npc.name)
       npcSprite.hitCallback = sprite => {
-        if (!this.game.dialog) {
-          // Only play conversation when there is no dialog right now
-          this.game.playConversation(
-            npcConversation[npc.name](npcSprite, sprite, this)
-          )
+        if (npcConversation[npc.name]) {
+          // NPC has something to say
+          if (!this.game.dialog) {
+            // Only play conversation when there is no dialog right now
+            this.game.playConversation(
+              npcConversation[npc.name](npcSprite, sprite, this)
+            )
+          }
         }
       }
     })

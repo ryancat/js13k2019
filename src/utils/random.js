@@ -30,4 +30,5 @@ class Random {
 
 // Use Date.now() for random run every time
 // To keep things consistant, use a hard-coded seed
-export const random = new Random(1234567)
+// The seed will change every 5 minutes
+export const random = new Random(Math.floor(Date.now() / 1000 / 60 / 5))

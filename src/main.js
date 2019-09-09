@@ -90,8 +90,8 @@ game.addInteractionKey('space', Game.createKeyInteraction([32]))
 
 // Generate maze
 game.maze = generateMaze({
-  rowNum: 8,
-  colNum: 8,
+  rowNum: 3,
+  colNum: 3,
   startSide: 'top',
   endSide: 'bottom',
 })
