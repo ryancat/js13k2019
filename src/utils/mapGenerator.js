@@ -313,38 +313,8 @@ export function generateMapJson({
   })
 }
 
-export function generateMapData({
-  type = 'normal', // can be 'normal', 'boss'
-  x = 0,
-  y = 0,
-  width = DEFAULT_WIDTH, // power of 2
-  height = DEFAULT_HEIGHT, // power of 2
-  doors = ['bottom'], // can be 'top', 'right', 'bottom', 'left'
-  doorColor = palette.red[3], // can be any color in palette
-  groundColor = palette.gunmetal[1], // can be any color in palette
-  wallColor = palette.brown[3], // can be any color in palette
-  wallTopColor = palette.brown[1], // can be any color in palette
-  backgroundColor = palette.gunmetal[4], // can be any color in palette
-  tileWidth,
-  tileHeight,
-  objects = [],
-}) {
-  const tiledMapJson = generateMapJson({
-    type,
-    x,
-    y,
-    width,
-    height,
-    doors,
-    doorColor,
-    groundColor,
-    wallColor,
-    wallTopColor,
-    backgroundColor,
-    tileWidth,
-    tileHeight,
-    objects,
-  })
+export function generateMapData(options = {}) {
+  const tiledMapJson = generateMapJson(options)
 
   const tileSpriteMap = {}
   tileSpriteMap[EMPTY_SPRITE] = 'EmptySprite'

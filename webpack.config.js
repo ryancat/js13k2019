@@ -17,7 +17,7 @@ module.exports = function(env, argv) {
       IS_DEV_MODE: mode === 'development',
     }),
     // Remove unnecessary module getter calls in webpack
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    // new webpack.optimize.ModuleConcatenationPlugin(),
     // Analyze the bundle
     new BundleAnalyzerPlugin({
       // Generate static report file
