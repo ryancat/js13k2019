@@ -1,5 +1,5 @@
 import { RectSprite } from '../engine/sprites/RectSprite'
-import { FrameSprite } from '../engine/sprites/FrameSprite'
+// import { FrameSprite } from '../engine/sprites/FrameSprite'
 import { palette } from '../utils/colors'
 
 function createRectSprite({
@@ -9,6 +9,7 @@ function createRectSprite({
   hitType = 'pass',
   showName = false,
   render,
+  callback = () => {},
 }) {
   return class extends RectSprite {
     constructor(options = {}) {
@@ -28,6 +29,8 @@ function createRectSprite({
       if (render) {
         this.render = render
       }
+
+      callback.call(this)
     }
   }
 }
@@ -97,30 +100,11 @@ export const KingDialogSprite = createRectSprite({
   backgroundColor: palette.blue[2],
 })
 
-const PlayerSprite1 = createRectSprite({
-  name: 'playerSprite1',
-  backgroundColor: palette.brown[0],
+export const PlayerSprite = createRectSprite({
+  name: 'player',
+  backgroundColor: palette.brown[2],
   showName: true,
-})
-
-const PlayerSprite2 = createRectSprite({
-  name: 'playerSprite2',
-  backgroundColor: palette.red[4],
-  showName: true,
-})
-
-// TODO: add factory code for creating RectSprite for player
-export class PlayerSprite extends FrameSprite {
-  constructor(options = {}) {
-    // construct sprite using base sprite
-    super({
-      ...options,
-      frameMap: {
-        stand1: new PlayerSprite1({ ...options }),
-        stand2: new PlayerSprite2({ ...options }),
-      },
-    })
-
+  callback: function() {
     // set velocity
     this.vx = 0
     this.vy = 0
@@ -134,8 +118,42 @@ export class PlayerSprite extends FrameSprite {
       localWidth: this.width,
       localHeight: this.height / 2,
     })
-  }
-}
+  },
+})
+
+// const PlayerSprite2 = createRectSprite({
+//   name: 'playerSprite2',
+//   backgroundColor: palette.red[4],
+//   showName: true,
+// })
+
+// TODO: add factory code for creating RectSprite for player
+// export class PlayerSprite extends FrameSprite {
+//   constructor(options = {}) {
+//     // construct sprite using base sprite
+//     super({
+//       ...options,
+//       frameMap: {
+//         stand1: new PlayerSprite1({ ...options }),
+//         stand2: new PlayerSprite2({ ...options }),
+//       },
+//     })
+
+//     // set velocity
+//     this.vx = 0
+//     this.vy = 0
+//     // sqrt rule applies here
+//     // pixel per 1 ms
+//     this.vMax = this.width / 4
+
+//     this.setHitArea({
+//       localX: 0,
+//       localY: this.height / 2,
+//       localWidth: this.width,
+//       localHeight: this.height / 2,
+//     })
+//   }
+// }
 
 export const PlayerDialogSprite = createRectSprite({
   name: 'playerDialogSprite',

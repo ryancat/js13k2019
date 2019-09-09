@@ -26,7 +26,7 @@ export class BattleFieldIncident extends GameIncident {
       height: 32,
       tileWidth: this.game.tileWidth,
       tileHeight: this.game.tileHeight,
-      objects: this.incidentStatus.npc.concat([
+      objects: (this.incidentStatus.npc || []).concat([
         {
           x: (this.game.width - this.objectWidth.m) / 2,
           y: (this.game.height - this.objectHeight.l) / 2,
