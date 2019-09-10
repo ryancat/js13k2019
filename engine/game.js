@@ -1,20 +1,23 @@
 function game_factory(props = []) {
-  return util_assignArr([], [
-    document.createElement('div'),
-    20,
-    20,
-    innerWidth,
-    innerHeight,
-    palette_gunmetal[4],
-    false,
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ], props) 
+  return util_assignArr(
+    [
+      document.createElement('div'),
+      20,
+      20,
+      innerWidth,
+      innerHeight,
+      palette_gunmetal[4],
+      false,
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ],
+    props
+  )
 }
 
 function _game_createKeyInteraction(keyCodes = []) {
@@ -30,7 +33,8 @@ function _game_createKeyInteraction(keyCodes = []) {
     if (!interaction[INTERACTION_PRESS_START_TIME]) {
       interaction[INTERACTION_PRESS_START_TIME] = now
     } else {
-      interaction[INTERACTION_PRESS_DURATION] = now - interaction[INTERACTION_PRESS_START_TIME]
+      interaction[INTERACTION_PRESS_DURATION] =
+        now - interaction[INTERACTION_PRESS_START_TIME]
     }
 
     evt.preventDefault()
@@ -67,10 +71,19 @@ function game_addLayer(game, layerId = -1, renderer = []) {
   game[GAME_LAYERS][layerId] = renderer
 }
 
-function game_addIncident(game, incidentId = -1, incidentFactory = EMPTY_FN, incidentProps = [], isForced = false) {
+function game_addIncident(
+  game,
+  incidentId = -1,
+  incidentFactory = EMPTY_FN,
+  incidentProps = [],
+  isForced = false
+) {
   const cachedIncidentRecord = game[GAME_INCIDENTS][incidentId]
-  const incidentRecord = !isForced && cachedIncidentRecord ? cachedIncidentRecord : [[], incidentFactory(game, incidentProps)]
-  
+  const incidentRecord =
+    !isForced && cachedIncidentRecord
+      ? cachedIncidentRecord
+      : [[], incidentFactory(game, incidentProps)]
+
   incidentRecord[INCIDENT_RECORD_TIMESTAMPS].push(Date.now())
   game[GAME_INCIDENTS][incidentId] = incidentRecord
 
@@ -81,26 +94,47 @@ function game_addIncident(game, incidentId = -1, incidentFactory = EMPTY_FN, inc
   incident_restart()
 
   // add play method into incident plays queue and dedupe
-  incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT] = incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT] || incident[INCIDENT_PLAY].bind(null, incident)
-  const incidentPlayIndex = game[GAME_INCIDENT_PLAYS].indexOf(incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT])
+  incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT] =
+    incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT] ||
+    incident[INCIDENT_PLAY].bind(null, incident)
+  const incidentPlay = incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT]
+  const incidentPlayIndex = game[GAME_INCIDENT_PLAYS].indexOf(incidentPlay)
   if (incidentPlayIndex >= 0) {
     game[GAME_INCIDENT_PLAYS].splice(incidentPlayIndex, 1)
   }
-  game[GAME_INCIDENT_PLAYS].push(incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT])
+  game[GAME_INCIDENT_PLAYS].push(incidentPlay)
 }
 
-function game_createTileSprite(game, spriteId = -1, spriteFactory = EMPTY_FN, tileSpriteProps = []) {
+function game_createTileSprite(
+  game,
+  spriteId = -1,
+  spriteFactory = EMPTY_FN,
+  tileSpriteProps = []
+) {
   game[GAME_SPRITES][spriteId] = spriteFactory(tileSpriteProps)
 }
 
-function game_createObjectSprite(game, spriteId = -1, spriteFactory = EMPTY_FN, objectSpriteProps = []) {
+function game_createObjectSprite(
+  game,
+  spriteId = -1,
+  spriteFactory = EMPTY_FN,
+  objectSpriteProps = []
+) {
   game[GAME_SPRITES][spriteId] = spriteFactory(objectSpriteProps)
 }
 
-function game_playConversation(game, dialogFactory = EMPTY_FN, dialogProps = [], callback = EMPTY_FN) { 
-  game[GAME_DIALOG] = dialogFactory(dialogProps)
-  game[GAME_DIALOG][DIALOG_START]()
-  game[GAME_DIALOG][DIALOG_END_CALLBACKS].push(callback, (() => game_setDialog(game, null)))
+function game_playConversation(
+  game,
+  dialogFactory = EMPTY_FN,
+  dialogProps = [],
+  callback = EMPTY_FN
+) {
+  const gameDialog = dialogFactory(dialogProps)
+  game[GAME_DIALOG] = gameDialog
+  gameDialog[DIALOG_START]()
+  gameDialog[DIALOG_END_CALLBACKS].push(callback, () =>
+    game_setDialog(game, null)
+  )
 }
 
 function game_setDialog(game, dialog = null) {
