@@ -1,3 +1,22 @@
+// const [
+//   GAME_CONTAINER,
+//   GAME_TILE_WIDTH,
+//   GAME_TILE_HEIGHT,
+//   GAME_CAMERA_WIDTH,
+//   GAME_CAMERA_HEIGHT,
+//   GAME_BACKGROUND_COLOR,
+//   GAME_FLAG_DISABLE_MOVE,
+//   GAME_INCIDENT_PLAYS,
+//   GAME_INCIDENTS,
+//   GAME_LAYERS,
+//   GAME_KEY_INTERACTIONS,
+//   GAME_LOOP,
+//   GAME_CAMERA,
+//   GAME_SPRITE_FACTORIES,
+//   GAME_SOUNDS,
+//   GAME_DIALOG,
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
 function game_factory(props = []) {
   return util_assignArr(
     [
@@ -55,8 +74,8 @@ function _game_createKeyInteraction(keyCodes = []) {
   return interaction
 }
 
-function game_loadSprites(game, sprites = []) {
-  game[GAME_SPRITES] = sprites
+function game_loadSprites(game, spriteFactories = []) {
+  game[GAME_SPRITE_FACTORIES] = spriteFactories
 }
 
 function game_loadSounds(game, sounds = []) {
@@ -105,22 +124,20 @@ function game_addIncident(
   game[GAME_INCIDENT_PLAYS].push(incidentPlay)
 }
 
-function game_createTileSprite(
-  game,
-  spriteId = -1,
-  spriteFactory = EMPTY_FN,
-  tileSpriteProps = []
-) {
-  game[GAME_SPRITES][spriteId] = spriteFactory(tileSpriteProps)
+function game_createTileSprite(game, spriteId = -1, tileSpriteProps = []) {
+  const defaultProps = []
+  defaultProps[SPRITE_TYPE] = 'tileSprite'
+  return game[GAME_SPRITE_FACTORIES][spriteId](
+    util_assignArr(defaultProps, tileSpriteProps)
+  )
 }
 
-function game_createObjectSprite(
-  game,
-  spriteId = -1,
-  spriteFactory = EMPTY_FN,
-  objectSpriteProps = []
-) {
-  game[GAME_SPRITES][spriteId] = spriteFactory(objectSpriteProps)
+function game_createObjectSprite(game, spriteId = -1, objectSpriteProps = []) {
+  const defaultProps = []
+  defaultProps[SPRITE_TYPE] = 'objectSprite'
+  return game[GAME_SPRITE_FACTORIES][spriteId](
+    util_assignArr(defaultProps, objectSpriteProps)
+  )
 }
 
 function game_playConversation(

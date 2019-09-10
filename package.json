@@ -16,6 +16,7 @@
     "copy": "cp ./game/index.html ./public",
     "zip": "rm main.zip && zip -r -X main.zip ./public && wc -c main.zip",
     "minify": "terser ./public/main.js --compress drop_console --mangle --toplevel --verbose --wrap THREE_GEM -o ./public/main.js",
+    "minify-test": "terser --compress drop_console --mangle --toplevel --verbose --wrap THREE_GEM -o ./public/main.js",
     "pretty": "pretty-quick",
     "pretty:watch": "nodemon --exec 'npm run pretty || exit 1'",
     "server": "http-server",
