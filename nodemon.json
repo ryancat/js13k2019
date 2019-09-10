@@ -1,4 +1,4 @@
 {
-  "watch": ["./src"],
+  "watch": ["./engine", "./game"],
   "ext": "js,json"
 }

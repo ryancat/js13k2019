@@ -30,7 +30,8 @@ const [
   INTERACTION_IS_DOWN,
 ] = [0, 1, 2, 3]
 
-// sprite object
+// sprite
+const [SPRITE_X, SPRITE_Y, SPRITE_WIDTH, SPRITE_HEIGHT] = [0, 1, 2, 3]
 // sound object
 // renderer object
 // incidentRecord
@@ -53,3 +54,14 @@ const [
   LOOP_CALLBACKS,
   LOOP_LAST_RUN,
 ] = [0, 1, 2, 3, 4]
+
+// camera
+const [
+  CAMERA_GAME,
+  CAMERA_X,
+  CAMERA_Y,
+  CAMERA_WIDTH,
+  CAMERA_HEIGHT,
+  CAMERA_FOLLOWING_SPRITE,
+  CAMERA_FOLLOWING_CALLBACK,
+] = [0, 1, 2, 3, 4, 5, 6]
