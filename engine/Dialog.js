@@ -43,16 +43,16 @@ function dialog_update(dialog, dt) {
   const game = dialog[DIALOG_GAME]
 
   // draw dialog box
-  const drawProps = []
-  drawProps[DRAW_X] = 0
-  drawProps[DRAW_Y] = cameraHeight * 0.8
-  drawProps[DRAW_WIDTH] = cameraWidth
-  drawProps[DRAW_HEIGHT] = Math.floor(cameraHeight * 0.2)
-  drawProps[DRAW_OPACITY] = 0.95
-  drawProps[DRAW_SHOULD_FILL] = true
-  drawProps[DRAW_SHOULD_STROKE] = false
-  drawProps[DRAW_BACKGROUND_COLOR] = PALETTE_BLUE[3]
-  renderer_drawRect(dialog[DIALOG_RENDERER], drawProps)
+  renderer_drawRect(dialog[DIALOG_RENDERER], [
+    0,
+    cameraHeight * 0.8,
+    cameraWidth,
+    Math.floor(cameraHeight * 0.2),
+    0.95,
+    true,
+    false,
+    PALETTE_BLUE[3],
+  ])
 
   // draw dialog from character sprite
   const spriteProps = []
