@@ -114,10 +114,15 @@ function game_addSprite(game, spriteId = -1, spriteFactory = EMPTY_FN) {
   if (!game[GAME_SPRITE_FACTORIES][spriteId]) {
     game[GAME_SPRITE_FACTORIES][spriteId] = spriteFactory
   }
+
+  return spriteFactory
 }
 
-function game_loadSprites(game) {
-  sprites_init(game)
+function game_getSpriteFactory(game, spriteId) {
+  return (
+    game[GAME_SPRITE_FACTORIES][spriteId] ||
+    game_addSprite(game, spriteId, sprite_factory)
+  )
 }
 
 function game_loadSounds(game, sounds = []) {
@@ -178,7 +183,7 @@ function game_createTileSprite(game, spriteId = -1, tileSpriteProps = []) {
   const defaultProps = []
   defaultProps[SPRITE_ID] = spriteId
   defaultProps[SPRITE_TYPE] = SPRITE_TYPE_TILE
-  return game[GAME_SPRITE_FACTORIES][spriteId](
+  return game_getSpriteFactory(game, spriteId)(
     util_assignArr(defaultProps, tileSpriteProps)
   )
 }

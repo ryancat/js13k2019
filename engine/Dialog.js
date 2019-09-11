@@ -57,7 +57,7 @@ function dialog_update(dialog, dt) {
   // draw dialog from character sprite
   sprite_render(
     // create sprite for dialog
-    game[GAME_SPRITE_FACTORIES][activeContent[DIALOG_CONTENT_FROM_SPRITE_ID]]([
+    game_getSpriteFactory(game, activeContent[DIALOG_CONTENT_FROM_SPRITE_ID])([
       ,
       Math.floor(camera[CAMERA_WIDTH] * 0.2),
       Math.floor(camera[CAMERA_HEIGHT] * 0.2),

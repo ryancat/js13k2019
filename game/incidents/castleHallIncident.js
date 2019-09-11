@@ -37,8 +37,16 @@ function castleHallIncident_createMapData(incident) {
     incidentGame[GAME_TILE_WIDTH], // tileWidth
     incidentGame[GAME_TILE_HEIGHT], // tileHeight
     [
+      // king object
+      [
+        KING_SPRITE, // object id
+        gameObjectWidths[GAME_OBJ_WIDTH_M], // width
+        gameObjectHeights[GAME_OBJ_WIDTH_L], // height
+        Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
+        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 4), // y
+        GAME_PLAYER_NAME, // player (default) name
+      ],
       // player object
-      // OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME
       [
         PLAYER_SPRITE, // object id
         gameObjectWidths[GAME_OBJ_WIDTH_M], // width

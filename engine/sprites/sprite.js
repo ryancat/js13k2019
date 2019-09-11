@@ -43,8 +43,8 @@ function sprite_factory(props = []) {
 }
 
 function sprite_render(sprite, dt, camera, renderer) {
-  const transformX = sprite[SPRITE_X] - camera[CAMERA_X]
-  const transformY = sprite[SPRITE_Y] - camera[CAMERA_Y]
+  const transformX = Math.floor(sprite[SPRITE_X] - camera[CAMERA_X])
+  const transformY = Math.floor(sprite[SPRITE_Y] - camera[CAMERA_Y])
 
   if (
     transformX < -sprite[SPRITE_WIDTH] ||
@@ -55,16 +55,6 @@ function sprite_render(sprite, dt, camera, renderer) {
     // Out of camera. no need to render
     return
   }
-
-  // renderer.drawRect({
-  //   x: transformX,
-  //   y: transformY,
-  //   width: this.width,
-  //   height: this.height,
-  //   shouldFill: true,
-  //   shouldStroke: false,
-  //   backgroundColor: this.backgroundColor,
-  // })
 
   renderer_drawRect(renderer, [
     transformX, // x

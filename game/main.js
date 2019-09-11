@@ -2,9 +2,10 @@
 const game = game_factory([document.getElementById('root')])
 
 // Init game
-game_loadSprites(game)
 // TODO add sound
 game_loadSounds(game)
+
+// Add game layer
 game_addLayer(game, RENDERER_LAYER_BACKGROUND)
 game_addLayer(game, RENDERER_LAYER_MAIN)
 game_addLayer(game, RENDERER_LAYER_FOREGROUND)
@@ -50,6 +51,9 @@ const incident_addScene = [EMPTY_FN, EMPTY_FN]
 const incident_setCamera = [EMPTY_FN, castleHallIncident_setCamera]
 const incident_addSceneSprites = [EMPTY_FN, EMPTY_FN]
 const incident_bindEventCallback = [EMPTY_FN, EMPTY_FN]
+
+// Add sprites in game
+sprites_init(game)
 
 // Add first incidents
 game_addIncident(
