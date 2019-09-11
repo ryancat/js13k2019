@@ -19,24 +19,29 @@ const [MG_LAYER_NAME, MG_LAYER_TYPE, MG_LAYER_DOORS] = [0, 1, 2]
 //   MAP_PROPS_OBJECTS,
 // ] = [0, 1, 2, 3, 4, 5, 6, 7]
 
-function mg_generateMapData(mapProps) {
-  const layers = _mg_generateMapLayers(
-    util_assignArr(
-      [
-        DEFAULT_X, // x
-        DEFAULT_Y, // y
-        DEFAULT_COL_NUM, // colNum
-        DEFAULT_ROW_NUM, // rowNum
-        [DOOR_BOTTOM], // doors
-        DEFAULT_TILE_WIDTH, // tileWidth
-        DEFAULT_TILE_HEIGHT, // tileHeight
-        [], // objects
-      ],
-      mapProps
-    )
+function mg_generateMapData(mapProps = []) {
+  const mapLayerProps = util_assignArr(
+    [
+      DEFAULT_X, // x
+      DEFAULT_Y, // y
+      DEFAULT_COL_NUM, // colNum
+      DEFAULT_ROW_NUM, // rowNum
+      [DOOR_BOTTOM], // doors
+      DEFAULT_TILE_WIDTH, // tileWidth
+      DEFAULT_TILE_HEIGHT, // tileHeight
+      [], // objects
+    ],
+    mapProps
   )
+  const layers = _mg_generateMapLayers(mapLayerProps)
 
-  return [colNum, rowNum, tileWidth, tileHeight, layers]
+  return [
+    mapLayerProps[MAP_DATA_PROP_COL_NUM], // map data col num
+    mapLayerProps[MAP_DATA_PROP_ROW_NUM], // map data row num
+    mapLayerProps[MAP_DATA_PROP_TILE_WIDTH], // map data tile width
+    mapLayerProps[MAP_DATA_PROP_TILE_HEIGHT], // map data tile height
+    layers, // map data layers
+  ]
 }
 
 function _mg_generateTileLayerData(
@@ -47,9 +52,9 @@ function _mg_generateTileLayerData(
   const [name, , doors = [DOOR_BOTTOM]] = layerProps
   const layerData = []
 
-  for (let r = 0; r < rowNum; r++) {
-    for (let c = 0; c < colNum; c++) {
-      const spriteIndex = r * colNum + c
+  for (let row = 0; row < rowNum; row++) {
+    for (let col = 0; col < colNum; col++) {
+      const spriteIndex = row * colNum + col
 
       switch (name) {
         case LAYER_BACKGROUND:
@@ -57,7 +62,7 @@ function _mg_generateTileLayerData(
           break
 
         case LAYER_GROUND:
-          layerData[spriteIndex] = r >= 2 ? GROUND_SPRITE : EMPTY_SPRITE
+          layerData[spriteIndex] = row >= 2 ? GROUND_SPRITE : EMPTY_SPRITE
           break
 
         case LAYER_OBSTACLES:
@@ -190,7 +195,8 @@ function _mg_isLeftWall(
   col = 0,
   rowNum = DEFAULT_ROW_NUM,
   colNum = DEFAULT_COL_NUM,
-  doors = []
+  doors = [],
+  isWallTop = false
 ) {
   const rowFilter = isWallTop
     ? col === 0 && (row >= 0 && row <= rowNum - 3)
@@ -205,7 +211,8 @@ function _mg_isRightWall(
   col = 0,
   rowNum = DEFAULT_ROW_NUM,
   colNum = DEFAULT_COL_NUM,
-  doors = []
+  doors = [],
+  isWallTop = false
 ) {
   const rowFilter = isWallTop
     ? col === colNum - 1 && (row >= 0 && row <= rowNum - 3)

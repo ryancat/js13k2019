@@ -170,6 +170,7 @@ function game_addIncident(
 
 function game_createTileSprite(game, spriteId = -1, tileSpriteProps = []) {
   const defaultProps = []
+  defaultProps[SPRITE_ID] = spriteId
   defaultProps[SPRITE_TYPE] = SPRITE_TYPE_TILE
   return game[GAME_SPRITE_FACTORIES][spriteId](
     util_assignArr(defaultProps, tileSpriteProps)
@@ -179,6 +180,7 @@ function game_createTileSprite(game, spriteId = -1, tileSpriteProps = []) {
 function game_createObjectSprite(game, spriteId = -1, objectSpriteProps = []) {
   const defaultProps = []
   defaultProps[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
+  defaultProps[SPRITE_ID] = spriteId
   return game[GAME_SPRITE_FACTORIES][spriteId](
     util_assignArr(defaultProps, objectSpriteProps)
   )

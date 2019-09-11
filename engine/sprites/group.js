@@ -14,6 +14,13 @@ function group_factory(props = []) {
   return util_assignArr(['', 32, 32, 0, 0, [], [], [], []], props)
 }
 
+function group_addLayerGroup(group, layerGroup) {
+  const layerGroups = group[GROUP_LAYER_GROUP]
+  if (layerGroups.indexOf(layerGroup) === -1) {
+    layerGroups.push(layerGroup)
+  }
+}
+
 function group_addSprite(group, sprite = []) {
   const children = group[GROUP_CHILDREN]
   if (children.indexOf(sprite) === -1) {

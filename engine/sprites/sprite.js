@@ -42,7 +42,7 @@ function sprite_factory(props = []) {
   )
 }
 
-function sprite_render(sprite, renderer) {
+function sprite_render(sprite, dt, renderer) {
   renderer_drawRect(renderer, [
     sprite[SPRITE_X],
     sprite[SPRITE_Y],

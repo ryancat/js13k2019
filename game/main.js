@@ -48,6 +48,7 @@ const incident_renderBackground = [
 const incident_update = [EMPTY_FN, castleHallIncident_update]
 const incident_addScene = [EMPTY_FN, EMPTY_FN]
 const incident_setCamera = [EMPTY_FN, castleHallIncident_setCamera]
+const incident_addSceneSprites = [EMPTY_FN, EMPTY_FN]
 const incident_bindEventCallback = [EMPTY_FN, EMPTY_FN]
 
 // Add first incidents

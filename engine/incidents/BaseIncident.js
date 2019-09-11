@@ -83,7 +83,7 @@ function baseIncident_play(incident, dt) {
     (isLayerClearDirty, layerIndex) => {
       if (isLayerClearDirty) {
         group_clear(
-          incident[INCIDENT_MAP_GROUP][GROUP_CHILDREN][layerIndex],
+          incident[INCIDENT_MAP_GROUP][GROUP_LAYER_GROUP][layerIndex],
           dt
         )
       }
@@ -94,7 +94,7 @@ function baseIncident_play(incident, dt) {
     (isLayerDirty, layerIndex) => {
       if (isLayerDirty) {
         group_render(
-          incident[INCIDENT_MAP_GROUP][GROUP_CHILDREN][layerIndex],
+          incident[INCIDENT_MAP_GROUP][GROUP_LAYER_GROUP][layerIndex],
           dt
         )
       }
@@ -133,7 +133,7 @@ function baseIncident_initMapGroup(incident) {
     incidentWidth, // group width
     incidentHeight, // group height
     [], // group children
-    mapData[MAP_LAYERS], // group layers
+    [], // group layers
     [], // group maps
     incidentGame[GAME_LAYERS][RENDERER_LAYER_MAIN], // group renderer
   ])
@@ -156,19 +156,19 @@ function baseIncident_initMapGroup(incident) {
     // ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     const layerGroup = group_factory([
-      GROUP_TYPE_LAYER,
-      mapGroup[GROUP_COL_NUM],
-      mapGroup[GROUP_ROW_NUM],
-      mapGroup[GROUP_WIDTH],
-      mapGroup[GROUP_HEIGHT],
-      [],
-      [],
-      mapGroup,
-      mapGroup[GROUP_RENDERER],
+      GROUP_TYPE_LAYER, // group type
+      mapGroup[GROUP_COL_NUM], // group col num
+      mapGroup[GROUP_ROW_NUM], // group row num
+      mapGroup[GROUP_WIDTH], // group width
+      mapGroup[GROUP_HEIGHT], // group height
+      [], // group children
+      [], // group layer group
+      mapGroup, // group map group
+      mapGroup[GROUP_RENDERER], // group renderer
     ])
 
-    const tileWidth = incident[INCIDENT_GAME][GAME_TILE_WIDTH]
-    const tileHeight = incident[INCIDENT_GAME][GAME_TILE_HEIGHT]
+    const tileWidth = incidentGame[GAME_TILE_WIDTH]
+    const tileHeight = incidentGame[GAME_TILE_HEIGHT]
     const colNum = layerGroup[GROUP_COL_NUM]
     const rowNum = layerGroup[GROUP_ROW_NUM]
     switch (layerData[MAP_LAYER_TYPE]) {
@@ -178,7 +178,40 @@ function baseIncident_initMapGroup(incident) {
         layerData[MAP_LAYER_DATA].forEach((tileId, tileIndex) => {
           const colIndex = tileIndex % colNum
           const rowIndex = Math.floor(tileIndex / colNum)
-          group_addSprite(layerGroup, game_createTileSprite(incidentGame))
+          const spriteProps = []
+          spriteProps[SPRITE_X] = colIndex * tileWidth
+          spriteProps[SPRITE_Y] = rowIndex * tileHeight
+          spriteProps[SPRITE_WIDTH] = tileWidth
+          spriteProps[SPRITE_HEIGHT] = tileHeight
+          spriteProps[SPRITE_COL] = colIndex
+          spriteProps[SPRITE_ROW] = rowIndex
+          spriteProps[SPRITE_TILE_INDEX] = tileIndex
+
+          group_addSprite(
+            layerGroup,
+            game_createTileSprite(incidentGame, tileId, spriteProps)
+            // [
+            //           SPRITE_ID,
+            // SPRITE_X,
+            // SPRITE_Y,
+            // SPRITE_WIDTH,
+            // SPRITE_HEIGHT,
+            // SPRITE_NAME,
+            // SPRITE_HITTYPE,
+            // SPRITE_SHOW_NAME,
+            // SPRITE_DISABLE_HIT,
+            // SPRITE_BACKGROUND_COLOR,
+            // SPRITE_BORDER_COLOR,
+            // SPRITE_OPACITY,
+            // SPRITE_TILE_INDEX,
+            // SPRITE_COL,
+            // SPRITE_ROW,
+            // SPRITE_VX,
+            // SPRITE_VY,
+            // SPRITE_VMAX,
+            // SPRITE_TYPE,
+            // ])
+          )
           // layerGroup.add(
           //   this.game.createTileSprite(this.mapGroup.tileSpriteMap[tileId], {
           //     x: colIndex * width,
@@ -198,7 +231,17 @@ function baseIncident_initMapGroup(incident) {
       case LAYER_TYPE_OBJECT:
         break
     }
+
+    group_addLayerGroup(mapGroup, layerGroup)
   })
+
+  // Dirty all layer afte init
+  incident[INCIDENT_FLAG_LAYER_CLEAR_DIRTY_ARR] = mapGroup[
+    GROUP_LAYER_GROUP
+  ].map(() => true)
+  incident[INCIDENT_FLAG_LAYER_DIRTY_ARR] = mapGroup[GROUP_LAYER_GROUP].map(
+    () => true
+  )
 }
 
 function baseIncident_getSceneById(incident, sceneId) {
@@ -228,6 +271,6 @@ function baseIncident_renderBackground(incident) {
   const drawProps = []
   renderer_drawRect(
     incident[INCIDENT_GAME][GAME_LAYERS][RENDERER_LAYER_BACKGROUND],
-    [, , , , , , , palette.gunmetal[4], palette.gunmetal[4]]
+    [, , , , , , , PALETTE_GUNMETAL[4], PALETTE_GUNMETAL[4]]
   )
 }
