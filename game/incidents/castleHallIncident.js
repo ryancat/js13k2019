@@ -26,6 +26,8 @@ function castleHallIncident_createMapData(incident) {
     incident[INCIDENT_COL_NUM] * incidentGame[GAME_TILE_WIDTH]
   const incidentHeight =
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
+  const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
+  const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x
     0, // y
@@ -38,10 +40,11 @@ function castleHallIncident_createMapData(incident) {
       // player object
       // OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME
       [
-        incidentGame[GAME_OBJ_WIDTH_M], // width
-        incidentGame[GAME_OBJ_WIDTH_L], // height
-        Math.floor((incidentWidth - incidentGame[GAME_OBJ_WIDTH_M]) / 2), // x
-        Math.floor((incidentHeight - incidentGame[GAME_OBJ_HEIGHT_L]) / 4), // y
+        PLAYER_SPRITE, // object id
+        gameObjectWidths[GAME_OBJ_WIDTH_M], // width
+        gameObjectHeights[GAME_OBJ_WIDTH_L], // height
+        Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
+        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 4), // y
         GAME_PLAYER_NAME, // player (default) name
       ],
     ],

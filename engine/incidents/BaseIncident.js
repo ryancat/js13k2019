@@ -142,19 +142,6 @@ function baseIncident_initMapGroup(incident) {
   // init layers in map
   mapData[MAP_LAYERS].forEach(layerData => {
     // create layer group to holde sprites
-
-    // const [
-    //   GROUP_TYPE,
-    //   GROUP_COL_NUM,
-    //   GROUP_ROW_NUM,
-    //   GROUP_WIDTH,
-    //   GROUP_HEIGHT,
-    //   GROUP_CHILDREN,
-    //   GROUP_LAYER_GROUP,
-    //   GROUP_MAP_GROUP,
-    //   GROUP_RENDERER,
-    // ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
     const layerGroup = group_factory([
       GROUP_TYPE_LAYER, // group type
       mapGroup[GROUP_COL_NUM], // group col num
@@ -190,45 +177,28 @@ function baseIncident_initMapGroup(incident) {
           group_addSprite(
             layerGroup,
             game_createTileSprite(incidentGame, tileId, spriteProps)
-            // [
-            //           SPRITE_ID,
-            // SPRITE_X,
-            // SPRITE_Y,
-            // SPRITE_WIDTH,
-            // SPRITE_HEIGHT,
-            // SPRITE_NAME,
-            // SPRITE_HITTYPE,
-            // SPRITE_SHOW_NAME,
-            // SPRITE_DISABLE_HIT,
-            // SPRITE_BACKGROUND_COLOR,
-            // SPRITE_BORDER_COLOR,
-            // SPRITE_OPACITY,
-            // SPRITE_TILE_INDEX,
-            // SPRITE_COL,
-            // SPRITE_ROW,
-            // SPRITE_VX,
-            // SPRITE_VY,
-            // SPRITE_VMAX,
-            // SPRITE_TYPE,
-            // ])
           )
-          // layerGroup.add(
-          //   this.game.createTileSprite(this.mapGroup.tileSpriteMap[tileId], {
-          //     x: colIndex * width,
-          //     y: rowIndex * height,
-          //     width,
-          //     height,
-          //     colIndex,
-          //     rowIndex,
-          //     tileIndex,
-          //     layer: layerGroup,
-          //     map: this.mapGroup,
-          //     game: this.game,
-          //   })
-          // )
         })
         break
       case LAYER_TYPE_OBJECT:
+        layerData[MAP_LAYER_OBJECTS].forEach(layerObject => {
+          const spriteProps = []
+          // OBJ_ID, OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME
+          spriteProps[SPRITE_X] = layerObject[OBJ_X]
+          spriteProps[SPRITE_Y] = layerObject[OBJ_Y]
+          spriteProps[SPRITE_WIDTH] = layerObject[OBJ_WIDTH]
+          spriteProps[SPRITE_HEIGHT] = layerObject[OBJ_HEIGHT]
+          spriteProps[SPRITE_NAME] = layerObject[OBJ_NAME]
+          group_addSprite(
+            layerGroup,
+            game_createTileSprite(
+              incidentGame,
+              layerObject[OBJ_ID],
+              spriteProps
+            )
+          )
+        })
+
         break
     }
 

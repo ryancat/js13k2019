@@ -138,7 +138,6 @@ function _mg_generateMapLayers(mapProps = []) {
         break
 
       case LAYER_TYPE_OBJECT:
-        // const [OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME] = [0, 1, 2, 3, 4, 5]
         layer = [
           layerConfig[MG_LAYER_TYPE], // layer type
           layerConfig[MG_LAYER_NAME], // layer name

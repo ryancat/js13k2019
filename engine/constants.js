@@ -155,7 +155,14 @@ const [
 ] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 // map object item
-const [OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME] = [0, 1, 2, 3, 4, 5]
+const [OBJ_ID, OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME] = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+]
 
 // map data
 const [
