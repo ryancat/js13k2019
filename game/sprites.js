@@ -67,6 +67,7 @@ function sprites_init(game) {
     props[SPRITE_NAME] = 'player'
     props[SPRITE_BACKGROUND_COLOR] = playerColor
     props[SPRITE_SHOW_NAME] = true
+    props[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
     const playerSprite = sprite_factory(props)
 
     // set player max speed (per 1 ms)

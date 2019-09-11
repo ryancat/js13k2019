@@ -54,8 +54,8 @@ function renderer_drawRect(renderer, drawProps = []) {
   const [
     x = 0,
     y = 0,
-    width = 100,
-    height = 100,
+    width = renderer[RENDERER_WIDTH],
+    height = renderer[RENDERER_HEIGHT],
     opacity = 1,
     shouldFill = true,
     shouldStroke = false,

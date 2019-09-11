@@ -15,6 +15,8 @@
 //   GAME_SPRITE_FACTORIES,
 //   GAME_SOUNDS,
 //   GAME_DIALOG,
+// GAME_OBJECT_WIDTHS,
+//   GAME_OBJECT_HEIGHTS,
 // ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
 function game_factory(props = []) {
@@ -36,10 +38,29 @@ function game_factory(props = []) {
       [],
       [],
       [],
+      [],
+      [],
     ],
     props
   )
 
+  // init object size
+  const tileWidth = game[GAME_TILE_WIDTH]
+  const tileHeight = game[GAME_TILE_HEIGHT]
+  game[GAME_OBJECT_WIDTHS] = [
+    tileWidth / 2,
+    tileWidth,
+    tileWidth * 2,
+    tileWidth * 3,
+    tileWidth * 4,
+  ]
+  game[GAME_OBJECT_HEIGHTS] = [
+    tileHeight / 2,
+    tileHeight,
+    tileHeight * 2,
+    tileHeight * 3,
+    tileHeight * 4,
+  ]
   // init camera
   game[GAME_CAMERA] = camera_factory([game])
   // init loop
@@ -121,7 +142,10 @@ function game_addIncident(
   const incidentRecord =
     !isForced && cachedIncidentRecord
       ? cachedIncidentRecord
-      : [[], incidentFactory(game, incidentProps)]
+      : [
+          [], // time stamps
+          incidentFactory(incidentProps), // incident instance
+        ]
 
   incidentRecord[INCIDENT_RECORD_TIMESTAMPS].push(Date.now())
   game[GAME_INCIDENTS][incidentId] = incidentRecord
@@ -130,12 +154,12 @@ function game_addIncident(
   const incident = incidentRecord[INCIDENT_RECORD_INCIDENT]
   // make sure incident has updated playerStatus
   incident[INCIDENT_PLAYER_STATUS] = incidentProps[INCIDENT_PLAYER_STATUS]
-  incident_restart()
+  incident_restart[incidentId](incident)
 
   // add play method into incident plays queue and dedupe
   incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT] =
     incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT] ||
-    incident[INCIDENT_PLAY].bind(null, incident)
+    incident_play[incidentId].bind(null, incident)
   const incidentPlay = incidentRecord[INCIDENT_RECORD_PLAY_INCIDENT]
   const incidentPlayIndex = game[GAME_INCIDENT_PLAYS].indexOf(incidentPlay)
   if (incidentPlayIndex >= 0) {
@@ -146,7 +170,7 @@ function game_addIncident(
 
 function game_createTileSprite(game, spriteId = -1, tileSpriteProps = []) {
   const defaultProps = []
-  defaultProps[SPRITE_TYPE] = 'tileSprite'
+  defaultProps[SPRITE_TYPE] = SPRITE_TYPE_TILE
   return game[GAME_SPRITE_FACTORIES][spriteId](
     util_assignArr(defaultProps, tileSpriteProps)
   )
@@ -154,7 +178,7 @@ function game_createTileSprite(game, spriteId = -1, tileSpriteProps = []) {
 
 function game_createObjectSprite(game, spriteId = -1, objectSpriteProps = []) {
   const defaultProps = []
-  defaultProps[SPRITE_TYPE] = 'objectSprite'
+  defaultProps[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
   return game[GAME_SPRITE_FACTORIES][spriteId](
     util_assignArr(defaultProps, objectSpriteProps)
   )

@@ -55,3 +55,21 @@ function sprite_render(sprite, renderer) {
     sprite[SPRITE_BORDER_COLOR],
   ])
 }
+
+function sprite_move(sprite, isDisableMove) {
+  if (isDisableMove) {
+    // We cannot move when game is pause move
+    return
+  }
+
+  if (sprite[SPRITE_TYPE] === SPRITE_TYPE_TILE) {
+    // Tile sprites cannot move
+    return
+  }
+
+  sprite[SPRITE_X] += sprite[SPRITE_VX]
+  // this.checkHitSprites()
+
+  sprite[SPRITE_Y] += sprite[SPRITE_VY]
+  // this.checkHitSprites()
+}
