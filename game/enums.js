@@ -9,6 +9,7 @@ const [
   LEFT_DOOR_SPRITE,
   WALL_TOP_SPRITE,
   PLAYER_SPRITE,
+  PLAYER_DIALOG_SPRITE,
 ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 const [DOOR_TOP, DOOR_RIGHT, DOOR_BOTTOM, DOOR_LEFT] = [0, 1, 2, 3]
@@ -29,3 +30,14 @@ const [
   RENDERER_LAYER_MAIN,
   RENDERER_LAYER_FOREGROUND,
 ] = [0, 1, 2]
+
+const [HITTYPE_PASS, HITTYPE_STOP] = [0, 1]
+
+const [KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_ENTER, KEY_SPACE] = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+]

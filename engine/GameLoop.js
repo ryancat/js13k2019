@@ -7,7 +7,11 @@
 // ] = [0, 1, 2, 3, 4]
 
 function loop_factory(props = []) {
-  return util_assignArr([60, true, null, [], Date.now()], props)
+  const loop = util_assignArr([60, true, null, [], Date.now()], props)
+  loop_run(loop)
+  loop[LOOP_LAST_RUN] = Date.now()
+
+  return loop
 }
 
 function loop_add(loop, ...callbacks) {
@@ -34,7 +38,7 @@ function loop_removeAll(loop) {
 function loop_run(loop) {
   loop[LOOP_TIMEOUT_ID] = requestAnimationFrame(loop_run.bind(null, loop))
 
-  const now = Data.now()
+  const now = Date.now()
   const lastRun = loop[LOOP_LAST_RUN]
   loop[LOOP_LAST_RUN] = now
 

@@ -55,16 +55,19 @@ function dialog_update(dialog, dt) {
   ])
 
   // draw dialog from character sprite
-  const spriteProps = []
-  spriteProps[SPRITE_X] = camera[CAMERA_X]
-  spriteProps[SPRITE_Y] = camera[CAMERA_Y] + camera[CAMERA_HEIGHT] * 0.8
-  spriteProps[SPRITE_WIDTH] = Math.floor(camera[CAMERA_WIDTH] * 0.2)
-  spriteProps[SPRITE_HEIGHT] = Math.floor(camera[CAMERA_HEIGHT] * 0.2)
   sprite_render(
     // create sprite for dialog
-    game[GAME_SPRITE_FACTORIES][activeContent[DIALOG_CONTENT_FROM_SPRITE_ID]](
-      spriteProps
-    ),
+    game[GAME_SPRITE_FACTORIES][activeContent[DIALOG_CONTENT_FROM_SPRITE_ID]]([
+      ,
+      Math.floor(camera[CAMERA_WIDTH] * 0.2),
+      Math.floor(camera[CAMERA_HEIGHT] * 0.2),
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+    ]),
     dt,
     dialog[DIALOG_RENDERER]
   )

@@ -1,12 +1,12 @@
-// renderer
-const [
-  RENDERER_KEY,
-  RENDERER_CONTAINER,
-  RENDERER_WIDTH,
-  RENDERER_HEIGHT,
-  RENDERER_CANVAS,
-  RENDERER_CONTEXT,
-] = [0, 1, 2, 3, 4, 5]
+// // renderer
+// const [
+//   RENDERER_KEY,
+//   RENDERER_CONTAINER,
+//   RENDERER_WIDTH,
+//   RENDERER_HEIGHT,
+//   RENDERER_CANVAS,
+//   RENDERER_CONTEXT,
+// ] = [0, 1, 2, 3, 4, 5]
 
 function renderer_factory(props = []) {
   const canvas = document.createElement('canvas')
@@ -35,6 +35,8 @@ function renderer_factory(props = []) {
     renderer[RENDERER_WIDTH],
     renderer[RENDERER_HEIGHT]
   )
+
+  return renderer
 }
 
 function renderer_setSize(renderer, width = 500, height = 500) {

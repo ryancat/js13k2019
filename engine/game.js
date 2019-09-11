@@ -18,18 +18,20 @@
 // ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
 function game_factory(props = []) {
-  return util_assignArr(
+  const game = util_assignArr(
     [
       document.createElement('div'),
       20,
       20,
       innerWidth,
       innerHeight,
-      palette_gunmetal[4],
+      PALETTE_GUNMETAL[4],
       false,
       [],
       [],
       [],
+      [],
+      loop_factory(),
       [],
       [],
       [],
@@ -37,10 +39,17 @@ function game_factory(props = []) {
     ],
     props
   )
+
+  // init camera
+  game[GAME_CAMERA] = camera_factory([game])
+  // init loop
+  game[GAME_LOOP] = loop_factory()
+
+  return game
 }
 
-function _game_createKeyInteraction(keyCodes = []) {
-  const interaction = util_assignArr([[], null, 0, false], keyCodes)
+function _game_createKeyInteraction(interactionProps = []) {
+  const interaction = util_assignArr([[], null, 0, false], interactionProps)
 
   document.addEventListener('keydown', evt => {
     if (interaction[INTERACTION_KEY_CODES].indexOf(evt.keyCode) === -1) {
@@ -74,8 +83,14 @@ function _game_createKeyInteraction(keyCodes = []) {
   return interaction
 }
 
-function game_loadSprites(game, spriteFactories = []) {
-  game[GAME_SPRITE_FACTORIES] = spriteFactories
+function game_addSprite(game, spriteId = -1, spriteFactory = EMPTY_FN) {
+  if (!game[GAME_SPRITE_FACTORIES][spriteId]) {
+    game[GAME_SPRITE_FACTORIES][spriteId] = spriteFactory
+  }
+}
+
+function game_loadSprites(game) {
+  sprites_init(game)
 }
 
 function game_loadSounds(game, sounds = []) {
@@ -83,11 +98,16 @@ function game_loadSounds(game, sounds = []) {
 }
 
 function game_addInteractionKey(game, keyId = -1, keyCodes = []) {
-  game[GAME_KEY_INTERACTIONS][keyId] = _game_createKeyInteraction(keyCodes)
+  game[GAME_KEY_INTERACTIONS][keyId] = _game_createKeyInteraction([keyCodes])
 }
 
-function game_addLayer(game, layerId = -1, renderer = []) {
-  game[GAME_LAYERS][layerId] = renderer
+function game_addLayer(game, layerId = -1) {
+  game[GAME_LAYERS][layerId] = renderer_factory([
+    layerId,
+    game[GAME_CONTAINER],
+    game[GAME_CAMERA_WIDTH],
+    game[GAME_CAMERA_HEIGHT],
+  ])
 }
 
 function game_addIncident(
