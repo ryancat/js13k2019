@@ -95,7 +95,8 @@ function baseIncident_play(incident, dt) {
       if (isLayerDirty) {
         group_render(
           incident[INCIDENT_MAP_GROUP][GROUP_LAYER_GROUP][layerIndex],
-          dt
+          dt,
+          incident[INCIDENT_GAME][GAME_CAMERA]
         )
       }
     }

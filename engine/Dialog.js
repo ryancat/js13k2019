@@ -68,6 +68,7 @@ function dialog_update(dialog, dt) {
       ,
       ,
     ]),
+    game[GAME_CAMERA],
     dt,
     dialog[DIALOG_RENDERER]
   )

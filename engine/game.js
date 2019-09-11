@@ -62,7 +62,13 @@ function game_factory(props = []) {
     tileHeight * 4,
   ]
   // init camera
-  game[GAME_CAMERA] = camera_factory([game])
+  game[GAME_CAMERA] = camera_factory([
+    game, // camera game
+    0, // camera x
+    0, // camera y
+    game[GAME_CAMERA_WIDTH], // camera width
+    game[GAME_CAMERA_HEIGHT], // camera height
+  ])
   // init loop
   game[GAME_LOOP] = loop_factory()
 

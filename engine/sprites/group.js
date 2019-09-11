@@ -32,10 +32,10 @@ function group_clear(group, dt) {
   renderer_clearRect(group[GROUP_RENDERER])
 }
 
-function group_render(group, dt) {
+function group_render(group, dt, camera) {
   // TODO: only support one level group here
   group[GROUP_CHILDREN].forEach(child =>
-    sprite_render(child, dt, group[GROUP_RENDERER])
+    sprite_render(child, dt, camera, group[GROUP_RENDERER])
   )
 }
 

@@ -42,17 +42,40 @@ function sprite_factory(props = []) {
   )
 }
 
-function sprite_render(sprite, dt, renderer) {
+function sprite_render(sprite, dt, camera, renderer) {
+  const transformX = sprite[SPRITE_X] - camera[CAMERA_X]
+  const transformY = sprite[SPRITE_Y] - camera[CAMERA_Y]
+
+  if (
+    transformX < -sprite[SPRITE_WIDTH] ||
+    transformX > camera[CAMERA_WIDTH] ||
+    transformY < -sprite[SPRITE_HEIGHT] ||
+    transformY > camera[CAMERA_HEIGHT]
+  ) {
+    // Out of camera. no need to render
+    return
+  }
+
+  // renderer.drawRect({
+  //   x: transformX,
+  //   y: transformY,
+  //   width: this.width,
+  //   height: this.height,
+  //   shouldFill: true,
+  //   shouldStroke: false,
+  //   backgroundColor: this.backgroundColor,
+  // })
+
   renderer_drawRect(renderer, [
-    sprite[SPRITE_X],
-    sprite[SPRITE_Y],
-    sprite[SPRITE_WIDTH],
-    sprite[SPRITE_HEIGHT],
-    sprite[SPRITE_OPACITY],
-    !!sprite[SPRITE_BACKGROUND_COLOR],
-    !!sprite[SPRITE_BORDER_COLOR],
-    sprite[SPRITE_BACKGROUND_COLOR],
-    sprite[SPRITE_BORDER_COLOR],
+    transformX, // x
+    transformY, // y
+    sprite[SPRITE_WIDTH], // width
+    sprite[SPRITE_HEIGHT], // height
+    sprite[SPRITE_OPACITY], // globalAlpha
+    !!sprite[SPRITE_BACKGROUND_COLOR], // is fill
+    !!sprite[SPRITE_BORDER_COLOR], // is stroke
+    sprite[SPRITE_BACKGROUND_COLOR], // fill
+    sprite[SPRITE_BORDER_COLOR], // stroke
   ])
 }
 
