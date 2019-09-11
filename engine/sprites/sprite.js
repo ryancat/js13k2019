@@ -30,7 +30,7 @@ function sprite_factory(props = []) {
       false,
       false,
       PALETTE_RED[2],
-      PALETTE_GUNMETAL[2],
+      '',
       1,
       -1,
       -1,

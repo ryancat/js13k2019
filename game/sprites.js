@@ -55,7 +55,7 @@ function sprites_init(game) {
     game_addSprite(game, spriteId, props => {
       const defaultProps = []
       defaultProps[SPRITE_ID] = spriteId
-      defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BROWN[3]
+      defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
       return sprite_factory(util_assignArr(defaultProps, props))
     })
   })

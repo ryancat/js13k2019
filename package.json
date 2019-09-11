@@ -4,7 +4,7 @@
   "description": "A 2D game of a story about solving maze puzzles, fighting dragons and bring back the three gems",
   "main": "webpack.config.js",
   "scripts": {
-    "start2": "npm-run-all --parallel pretty:watch dev:server",
+    "start2": "npm-run-all --parallel pretty:watch dev:server2",
     "dev2": "npm run clear && webpack",
     "dev:watch2": "webpack --watch",
     "dev:server2": "webpack-dev-server --open",

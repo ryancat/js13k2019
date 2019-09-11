@@ -157,7 +157,7 @@ function _mg_generateMapLayers(mapProps = []) {
 }
 
 function _mg_isInDoorRange(index, total) {
-  return index >= (total - DOOR_WIDTH) / 2 || index < (total + DOOR_WIDTH) / 2
+  return index >= (total - DOOR_WIDTH) / 2 && index < (total + DOOR_WIDTH) / 2
 }
 
 function _mg_isTopWall(
@@ -198,12 +198,12 @@ function _mg_isLeftWall(
   doors = [],
   isWallTop = false
 ) {
-  const rowFilter = isWallTop
+  const colFilter = isWallTop
     ? col === 0 && (row >= 0 && row <= rowNum - 3)
     : col === 0 && row >= 1
   return doors.indexOf(DOOR_LEFT) === -1
-    ? rowFilter
-    : rowFilter && !_mg_isInDoorRange(row, rowNum)
+    ? colFilter
+    : colFilter && !_mg_isInDoorRange(row, rowNum)
 }
 
 function _mg_isRightWall(
@@ -214,10 +214,10 @@ function _mg_isRightWall(
   doors = [],
   isWallTop = false
 ) {
-  const rowFilter = isWallTop
+  const colFilter = isWallTop
     ? col === colNum - 1 && (row >= 0 && row <= rowNum - 3)
     : col === colNum - 1 && row >= 1
   return doors.indexOf(DOOR_RIGHT) === -1
-    ? rowFilter
-    : rowFilter && !_mg_isInDoorRange(row, rowNum)
+    ? colFilter
+    : colFilter && !_mg_isInDoorRange(row, rowNum)
 }
