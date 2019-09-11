@@ -28,6 +28,10 @@ function castleHallIncident_createMapData(incident) {
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
+
+  // create king object sprite props
+  const kingSpriteProps = []
+  kingSpriteProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BLUE[2]
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x
     0, // y
@@ -44,7 +48,8 @@ function castleHallIncident_createMapData(incident) {
         gameObjectHeights[GAME_OBJ_WIDTH_L], // height
         Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
         Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 4), // y
-        GAME_PLAYER_NAME, // player (default) name
+        GAME_KING_NAME, // king's name,
+        kingSpriteProps,
       ],
       // player object
       [
@@ -53,7 +58,7 @@ function castleHallIncident_createMapData(incident) {
         gameObjectHeights[GAME_OBJ_WIDTH_L], // height
         Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
         Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 2), // y
-        GAME_PLAYER_NAME, // player (default) name
+        GAME_PLAYER_NAME, // player (default) name,
       ],
     ],
   ])

@@ -184,12 +184,16 @@ function baseIncident_initMapGroup(incident) {
       case LAYER_TYPE_OBJECT:
         layerData[MAP_LAYER_OBJECTS].forEach(layerObject => {
           const spriteProps = []
-          // OBJ_ID, OBJ_WIDTH, OBJ_HEIGHT, OBJ_X, OBJ_Y, OBJ_NAME
+          // Attach custom sprite props
+          util_assignArr(spriteProps, layerObject[OBJ_SPRITE_PROPS] || [])
+
+          // Make sure the important information are carried over
           spriteProps[SPRITE_X] = layerObject[OBJ_X]
           spriteProps[SPRITE_Y] = layerObject[OBJ_Y]
           spriteProps[SPRITE_WIDTH] = layerObject[OBJ_WIDTH]
           spriteProps[SPRITE_HEIGHT] = layerObject[OBJ_HEIGHT]
           spriteProps[SPRITE_NAME] = layerObject[OBJ_NAME]
+
           group_addSprite(
             layerGroup,
             game_createTileSprite(
