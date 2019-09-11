@@ -45,26 +45,44 @@ function group_update(group, dt) {
 }
 
 function group_getSpriteById(group, spriteId) {
-  const children = group[GROUP_CHILDREN]
-  for (let i = 0; i < children.length; i++) {
-    let sprite = children[i]
-    if (sprite[SPRITE_ID] === spriteId) {
-      return sprite
+  let layerGroups = []
+  if (group[GROUP_TYPE] === GROUP_TYPE_MAP) {
+    layerGroups = group[GROUP_LAYER_GROUP]
+  } else {
+    layerGroups = [group]
+  }
+
+  for (let i = 0; i < layerGroups.length; i++) {
+    const sprites = layerGroups[i][GROUP_CHILDREN]
+    for (let j = 0; j < sprites.length; j++) {
+      let sprite = sprites[j]
+      if (sprite[SPRITE_ID] === spriteId) {
+        return sprite
+      }
     }
   }
 
   return null
 }
 
-function group_getSpriteById(group, spriteId) {
-  const children = group[GROUP_CHILDREN]
-  const sprites = []
-  for (let i = 0; i < children.length; i++) {
-    let sprite = children[i]
-    if (sprite[SPRITE_ID] === spriteId) {
-      sprites.push(sprite)
+function group_getSpritesById(group, spriteId) {
+  const results = []
+  let layerGroups = []
+  if (group[GROUP_TYPE] === GROUP_TYPE_MAP) {
+    layerGroups = group[GROUP_LAYER_GROUP]
+  } else {
+    layerGroups = [group]
+  }
+
+  for (let i = 0; i < layerGroups.length; i++) {
+    const sprites = layerGroups[i][GROUP_CHILDREN]
+    for (let j = 0; j < sprites.length; j++) {
+      let sprite = sprites[j]
+      if (sprite[SPRITE_ID] === spriteId) {
+        results.push(sprite)
+      }
     }
   }
 
-  return sprites
+  return results
 }
