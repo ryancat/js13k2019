@@ -31,7 +31,34 @@ const [
   GAME_OBJECT_HEIGHTS,
   GAME_MAZE,
   GAME_DOORS,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  GAME_MUSIC_BACKGROUND_READY,
+  GAME_MUSIC_BACKGROUND_BUFFER,
+  GAME_MUSIC_AUDIO_CONTEXT,
+] = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+]
 
 // interaction object
 const [

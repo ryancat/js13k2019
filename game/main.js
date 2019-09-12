@@ -66,29 +66,18 @@ sprites_init(game)
 game_setMaze(game, maze_generateMaze())
 
 // Add first incidents
-function addFirstIncident() {
-  const incidentProps = [
-    BATTLE_FIELD_INCIDENT, // incident id
-    game, // incident game
-    32, // row numbers
-    32, // col numbers
-  ]
-  const gameMaze = game[GAME_MAZE]
-  incidentProps[INCIDENT_CELL_ROW] = gameMaze[MAZE_START_ROW]
-  incidentProps[INCIDENT_CELL_COL] = gameMaze[MAZE_START_COL]
-  game_addIncident(
-    game,
-    BATTLE_FIELD_INCIDENT,
-    `${BATTLE_FIELD_INCIDENT}@${incidentProps[INCIDENT_CELL_ROW]}@${incidentProps[INCIDENT_CELL_COL]}`,
-    incident_factories[BATTLE_FIELD_INCIDENT],
-    incidentProps
-  )
-}
-
-addFirstIncident()
+incident_init(game)
 
 // Start to play incidents
 loop_add(game[GAME_LOOP], dt => {
+  if (!game[GAME_MUSIC_BACKGROUND_READY]) {
+    return
+  }
+
+  if (!noBackgroundMusic) {
+    musicUtil_playBackgroundSong(game)
+  }
+
   // The game will load each play states, which will manage its
   // own map, events, etc
   // TODO: move this into engine
@@ -104,8 +93,10 @@ loop_add(game[GAME_LOOP], dt => {
   // Return true when all incidents are finished
   return i === incidentPlays.length
 })
+
 // Start the game loop
 loop_start(game[GAME_LOOP])
 
-// Some debug constants
-const IS_ALL_DOOR_OPEN = true
+// Some debug states
+let isAllDoorOpen = true
+let noBackgroundMusic = true

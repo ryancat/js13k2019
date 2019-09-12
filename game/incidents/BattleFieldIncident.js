@@ -1,5 +1,4 @@
 function battleFieldIncident_factory(props) {
-  console.log('enter room', props[INCIDENT_CELL_ROW], props[INCIDENT_CELL_COL])
   return baseIncident_factory(props)
 }
 
@@ -51,7 +50,7 @@ function battleFieldIncident_bindEventCallback(incident) {
     incident[INCIDENT_DOORS].map(doorId => incidentGame[GAME_DOORS][doorId])
   )
 
-  if (!IS_ALL_DOOR_OPEN) {
+  if (!isAllDoorOpen) {
     doorSprites.forEach(doorSprite => {
       doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
       doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
@@ -211,6 +210,7 @@ function battleFieldIncident_handlePlayerMove(incident, playerSprite, dt) {
   const diagonalSpeed = playerVMax / Math.sqrt(2)
 
   if (upKeyIsDown) {
+    ZZFX.z(40161)
     // up key is pressed
     playerSprite[SPRITE_VY] = -(isDiagonalDirection
       ? diagonalSpeed

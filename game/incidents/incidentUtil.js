@@ -21,3 +21,22 @@ function incidentUtil_hashDoor(hashStr = '') {
     }
   })
 }
+
+function incident_init(game) {
+  const incidentProps = [
+    BATTLE_FIELD_INCIDENT, // incident id
+    game, // incident game
+    32, // row numbers
+    32, // col numbers
+  ]
+  const gameMaze = game[GAME_MAZE]
+  incidentProps[INCIDENT_CELL_ROW] = gameMaze[MAZE_START_ROW]
+  incidentProps[INCIDENT_CELL_COL] = gameMaze[MAZE_START_COL]
+  game_addIncident(
+    game,
+    BATTLE_FIELD_INCIDENT,
+    `${BATTLE_FIELD_INCIDENT}@${incidentProps[INCIDENT_CELL_ROW]}@${incidentProps[INCIDENT_CELL_COL]}`,
+    incident_factories[BATTLE_FIELD_INCIDENT],
+    incidentProps
+  )
+}

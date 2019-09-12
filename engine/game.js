@@ -19,7 +19,10 @@
 //   GAME_OBJECT_HEIGHTS,
 //   GAME_MAZE,
 //   GAME_DOORS,
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+//   GAME_MUSIC_BACKGROUND_READY
+//   GAME_MUSIC_BACKGROUND_BUFFER
+//   GAME_MUSIC_AUDIO_CONTEXT
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 
 function game_factory(props = []) {
   const game = util_assignArr(
@@ -44,6 +47,9 @@ function game_factory(props = []) {
       [],
       null,
       [],
+      false,
+      null,
+      null,
     ],
     props
   )
@@ -129,8 +135,8 @@ function game_getSpriteFactory(game, spriteId) {
   )
 }
 
-function game_loadSounds(game, sounds = []) {
-  game[GAME_SOUNDS] = sounds
+function game_loadSounds(game) {
+  musicUtil_initBackgroundSong(game)
 }
 
 function game_addInteractionKey(game, keyId = -1, keyCodes = []) {
