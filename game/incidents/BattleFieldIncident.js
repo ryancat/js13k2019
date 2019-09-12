@@ -1,39 +1,33 @@
 function battleFieldIncident_factory(props) {
-  const incident = baseIncident_factory(props)
+  return baseIncident_factory(props)
 }
 
 function battleFieldIncident_createMapData(incident) {
   const incidentGame = incident[INCIDENT_GAME]
+  // get door information from maze
+  const incidentMaze = incident[INCIDENT_GAME][GAME_MAZE]
+  incident[INCIDENT_DOORS] = incidentUtil_hashDoor(
+    incidentMaze[MAZE_CELLS][incident[INCIDENT_CELL_ROW]][
+      incident[INCIDENT_CELL_COL]
+    ]
+  )
+
+  // Create map data
   const incidentWidth =
     incident[INCIDENT_COL_NUM] * incidentGame[GAME_TILE_WIDTH]
   const incidentHeight =
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
-
-  // create king object sprite props
-  const kingSpriteProps = []
-  kingSpriteProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BLUE[2]
-  kingSpriteProps[SPRITE_HITTYPE] = HITTYPE_STOP
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x
     0, // y
-    32, // colNum
-    32, // rowNum
-    [DOOR_BOTTOM], // doors
+    incident[INCIDENT_COL_NUM], // colNum
+    incident[INCIDENT_ROW_NUM], // rowNum
+    incident[INCIDENT_DOORS], // doors
     incidentGame[GAME_TILE_WIDTH], // tileWidth
     incidentGame[GAME_TILE_HEIGHT], // tileHeight
     [
-      // king object
-      [
-        KING_SPRITE, // object id
-        gameObjectWidths[GAME_OBJ_WIDTH_M], // width
-        gameObjectHeights[GAME_OBJ_WIDTH_L], // height
-        Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
-        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 4), // y
-        GAME_KING_NAME, // king's name,
-        kingSpriteProps,
-      ],
       // player object
       [
         PLAYER_SPRITE, // object id
@@ -57,8 +51,50 @@ function battleFieldIncident_setCamera(incident) {
   camera_follow(incident[INCIDENT_GAME][GAME_CAMERA], playerSprite)
 }
 
-function battleFieldIncident_bindEventCallback() {
-  // todo finish this
+function battleFieldIncident_bindEventCallback(incident) {
+  const kingSprite = group_getSpriteById(
+    incident[INCIDENT_MAP_GROUP],
+    KING_SPRITE
+  )
+  const incidentGame = incident[INCIDENT_GAME]
+  const doorSprites = group_getSpritesByIds(
+    incident[INCIDENT_MAP_GROUP],
+    incident[INCIDENT_DOORS].map(doorId => incidentGame[GAME_DOORS][doorId])
+  )
+  // const bottomDoorSprites = group_getSpritesById(
+  //   incident[INCIDENT_MAP_GROUP],
+  //   BOTTOM_DOOR_SPRITE
+  // )
+
+  // Close the door when game starts
+  doorSprites.forEach(doorSprite => {
+    doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+    doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
+  })
+
+  // Bind door hit handler
+  // Close the door when game starts
+  doorSprites.forEach(doorSprite => {
+    doorSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
+      // Add battle field scene
+      const battleFieldIncidentProps = [
+        BATTLE_FIELD_INCIDENT, // incident id
+        incidentGame, // incident game
+        32, // row numbers
+        32, // col numbers
+      ]
+      battleFieldIncidentProps[INCIDENT_CELL_ROW] =
+        incidentGame[GAME_MAZE][MAZE_START_ROW]
+      battleFieldIncidentProps[INCIDENT_CELL_COL] =
+        incidentGame[GAME_MAZE][MAZE_START_COL]
+      game_addIncident(
+        game,
+        BATTLE_FIELD_INCIDENT,
+        incident_factories[BATTLE_FIELD_INCIDENT],
+        battleFieldIncidentProps
+      )
+    }
+  })
 }
 
 function battleFieldIncident_handleDoors() {

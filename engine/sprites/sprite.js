@@ -20,8 +20,9 @@
 //   SPRITE_TYPE,
 //   SPRITE_MAP_GROUP,
 //   SPRITE_HIT_CALLBACK,
-//   SPRITE_CONVERSATION_STATES
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+//   SPRITE_CONVERSATION_STATES,
+//   SPRITE_LAYER_GROUP,
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 
 function sprite_factory(props = []) {
   return util_assignArr(
@@ -47,6 +48,7 @@ function sprite_factory(props = []) {
       SPRITE_TYPE_TILE,
       [],
       EMPTY_FN,
+      [],
       [],
     ],
     props
@@ -166,13 +168,24 @@ function sprite_getPossibleHitSprites(sprite) {
       } else {
         // for tiles, we filter on all non-passing sprites
         const tileSprite = layer[GROUP_CHILDREN][spriteIndex]
-        if (tileSprite && tileSprite[SPRITE_HITTYPE] !== HITTYPE_PASS) {
+        if (
+          tileSprite &&
+          tileSprite[SPRITE_ID] !== EMPTY_SPRITE &&
+          [LAYER_ITEMS, LAYER_OBSTACLES].indexOf(
+            tileSprite[SPRITE_LAYER_GROUP][GROUP_LAYER_NAME]
+          ) >= 0
+        ) {
           // Push all tiles in possbile hit sprites
           possibleHitSprites.push(layer[GROUP_CHILDREN][spriteIndex])
         }
       }
     })
   })
+
+  // possibleHitSprites.forEach(possibleHitSprite => {
+  //   renderer_drawRect()
+
+  // })
 
   return possibleHitSprites
 }

@@ -19,9 +19,9 @@ function castleHallIncident_createMapData(incident) {
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x
     0, // y
-    32, // colNum
-    32, // rowNum
-    [DOOR_BOTTOM], // doors
+    incident[INCIDENT_COL_NUM], // colNum
+    incident[INCIDENT_ROW_NUM], // rowNum
+    incident[INCIDENT_DOORS], // doors
     incidentGame[GAME_TILE_WIDTH], // tileWidth
     incidentGame[GAME_TILE_HEIGHT], // tileHeight
     [
@@ -64,15 +64,15 @@ function castleHallIncident_bindEventCallback(incident) {
     KING_SPRITE
   )
   const incidentGame = incident[INCIDENT_GAME]
-  const bottomDoorSprites = group_getSpritesById(
+  const doorSprites = group_getSpritesByIds(
     incident[INCIDENT_MAP_GROUP],
-    BOTTOM_DOOR_SPRITE
+    incident[INCIDENT_DOORS].map(doorId => incidentGame[GAME_DOORS][doorId])
   )
 
   // Close the door when game starts
-  bottomDoorSprites.forEach(bottomDoorSprite => {
-    bottomDoorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
-    bottomDoorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
+  doorSprites.forEach(doorSprite => {
+    doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+    doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
   })
 
   // Bind king sprite hit handler
@@ -84,14 +84,45 @@ function castleHallIncident_bindEventCallback(incident) {
         conv_king(kingSprite, playerSprite),
         () => {
           // open the door
-          bottomDoorSprites.forEach(bottomDoorSprite => {
-            bottomDoorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
-            bottomDoorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+          doorSprites.forEach(doorSprite => {
+            doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+            doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
           })
         }
       )
     }
   }
+
+  // Bind door hit handler
+  // Close the door when game starts
+  doorSprites.forEach(doorSprite => {
+    doorSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
+      if (doorSprite[SPRITE_HITTYPE] !== HITTYPE_PASS) {
+        // cannot pass yet
+        return
+      }
+      // Finish the current incident as we exit
+      incident_finish[incident[INCIDENT_ID]](incident)
+
+      // Add battle field scene
+      const battleFieldIncidentProps = [
+        BATTLE_FIELD_INCIDENT, // incident id
+        incidentGame, // incident game
+        32, // row numbers
+        32, // col numbers
+      ]
+      battleFieldIncidentProps[INCIDENT_CELL_ROW] =
+        incidentGame[GAME_MAZE][MAZE_START_ROW]
+      battleFieldIncidentProps[INCIDENT_CELL_COL] =
+        incidentGame[GAME_MAZE][MAZE_START_COL]
+      game_addIncident(
+        game,
+        BATTLE_FIELD_INCIDENT,
+        incident_factories[BATTLE_FIELD_INCIDENT],
+        battleFieldIncidentProps
+      )
+    }
+  })
 }
 
 function castleHallIncident_handleDoors() {

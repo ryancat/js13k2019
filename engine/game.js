@@ -18,7 +18,8 @@
 //   GAME_OBJECT_WIDTHS,
 //   GAME_OBJECT_HEIGHTS,
 //   GAME_MAZE,
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+//   GAME_DOORS,
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 
 function game_factory(props = []) {
   const game = util_assignArr(
@@ -42,6 +43,7 @@ function game_factory(props = []) {
       [],
       [],
       null,
+      [],
     ],
     props
   )
@@ -241,4 +243,13 @@ function game_resume(game) {
 
 function game_setMaze(game, maze) {
   game[GAME_MAZE] = maze
+}
+
+function game_setDoorSprites(game) {
+  const gameDoors = []
+  gameDoors[DOOR_TOP] = TOP_DOOR_SPRITE
+  gameDoors[DOOR_RIGHT] = RIGHT_DOOR_SPRITE
+  gameDoors[DOOR_BOTTOM] = BOTTOM_DOOR_SPRITE
+  gameDoors[DOOR_LEFT] = LEFT_DOOR_SPRITE
+  game[GAME_DOORS] = gameDoors
 }

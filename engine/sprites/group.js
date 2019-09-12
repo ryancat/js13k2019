@@ -8,10 +8,11 @@
 //   GROUP_LAYER_GROUP,
 //   GROUP_MAP_GROUP,
 //   GROUP_RENDERER,
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+//   GROUP_LAYER_NAME
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 function group_factory(props = []) {
-  return util_assignArr(['', 32, 32, 0, 0, [], [], [], []], props)
+  return util_assignArr(['', 32, 32, 0, 0, [], [], [], [], -1], props)
 }
 
 function group_addLayerGroup(group, layerGroup) {
@@ -80,6 +81,30 @@ function group_getSpritesById(group, spriteId) {
       let sprite = sprites[j]
       if (sprite[SPRITE_ID] === spriteId) {
         results.push(sprite)
+      }
+    }
+  }
+
+  return results
+}
+
+function group_getSpritesByIds(group, spriteIds) {
+  const results = []
+  let layerGroups = []
+  if (group[GROUP_TYPE] === GROUP_TYPE_MAP) {
+    layerGroups = group[GROUP_LAYER_GROUP]
+  } else {
+    layerGroups = [group]
+  }
+
+  for (let i = 0; i < layerGroups.length; i++) {
+    const sprites = layerGroups[i][GROUP_CHILDREN]
+    for (let j = 0; j < sprites.length; j++) {
+      let sprite = sprites[j]
+      for (let k = 0; k < spriteIds.length; k++) {
+        if (sprite[SPRITE_ID] === spriteIds[k]) {
+          results.push(sprite)
+        }
       }
     }
   }

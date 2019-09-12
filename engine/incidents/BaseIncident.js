@@ -1,3 +1,51 @@
+// const [
+//   INCIDENT_ID,
+//   INCIDENT_GAME,
+//   INCIDENT_ROW_NUM,
+//   INCIDENT_COL_NUM,
+//   INCIDENT_PLAYER_STATUS,
+//   INCIDENT_INCIDENT_STATUS,
+//   INCIDENT_MAP_GROUP,
+//   INCIDENT_MAP_DATA,
+//   INCIDENT_SCENES,
+//   INCIDENT_FLAG_FINISHED,
+//   INCIDENT_FLAG_SET_INCIDENT_STATUS,
+//   INCIDENT_FLAG_SET_PLAYER_STATUS,
+//   INCIDENT_FLAG_INIT,
+//   INCIDENT_FLAG_SET_CAMERA,
+//   INCIDENT_FLAG_ADD_SCENE_SPRITES,
+//   INCIDENT_FLAG_BIND_EVENT_CALLBACKS,
+//   INCIDENT_FLAG_RENDER_BACKGROUND,
+//   INCIDENT_FLAG_LAYER_CLEAR_DIRTY_ARR,
+//   INCIDENT_FLAG_LAYER_DIRTY_ARR,
+//   INCIDENT_CELL_ROW,
+//   INCIDENT_CELL_COL,
+//   INCIDENT_DOORS,
+// ] = [
+//   0,
+//   1,
+//   2,
+//   3,
+//   4,
+//   5,
+//   6,
+//   7,
+//   8,
+//   9,
+//   10,
+//   11,
+//   12,
+//   13,
+//   14,
+//   15,
+//   16,
+//   17,
+//   18,
+//   19,
+//   20,
+//   21,
+// ]
+
 // incident
 function baseIncident_factory(props = []) {
   return util_assignArr(
@@ -23,6 +71,7 @@ function baseIncident_factory(props = []) {
       [],
       -1,
       -1,
+      [],
     ],
     props
   )
@@ -155,6 +204,7 @@ function baseIncident_initMapGroup(incident) {
       [], // group layer group
       mapGroup, // group map group
       mapGroup[GROUP_RENDERER], // group renderer
+      layerData[MAP_LAYER_NAME], // group layer name
     ])
 
     const tileWidth = incidentGame[GAME_TILE_WIDTH]
@@ -177,6 +227,7 @@ function baseIncident_initMapGroup(incident) {
           spriteProps[SPRITE_ROW] = rowIndex
           spriteProps[SPRITE_TILE_INDEX] = tileIndex
           spriteProps[SPRITE_MAP_GROUP] = mapGroup
+          spriteProps[SPRITE_LAYER_GROUP] = layerGroup
 
           group_addSprite(
             layerGroup,
@@ -197,6 +248,7 @@ function baseIncident_initMapGroup(incident) {
           spriteProps[SPRITE_HEIGHT] = layerObject[OBJ_HEIGHT]
           spriteProps[SPRITE_NAME] = layerObject[OBJ_NAME]
           spriteProps[SPRITE_MAP_GROUP] = mapGroup
+          spriteProps[SPRITE_LAYER_GROUP] = layerGroup
 
           group_addSprite(
             layerGroup,

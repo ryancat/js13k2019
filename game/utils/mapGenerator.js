@@ -136,6 +136,7 @@ function _mg_generateMapLayers(mapProps = []) {
           1, // opacity
           _mg_generateTileLayerData(rowNum, colNum, layerConfig), // tile sprite data
           [], // objects
+          layerConfig[0],
         ]
         break
 
@@ -150,6 +151,7 @@ function _mg_generateMapLayers(mapProps = []) {
           1, // opacity
           [], // tile sprite data
           objects, // objects
+          layerConfig[0],
         ]
         break
     }

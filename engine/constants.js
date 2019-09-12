@@ -30,7 +30,8 @@ const [
   GAME_OBJECT_WIDTHS,
   GAME_OBJECT_HEIGHTS,
   GAME_MAZE,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+  GAME_DOORS,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 
 // interaction object
 const [
@@ -84,7 +85,31 @@ const [
   INCIDENT_FLAG_LAYER_DIRTY_ARR,
   INCIDENT_CELL_ROW,
   INCIDENT_CELL_COL,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  INCIDENT_DOORS,
+] = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+]
 
 // tile sprite
 // object sprite
@@ -144,6 +169,7 @@ const [
   SPRITE_MAP_GROUP,
   SPRITE_HIT_CALLBACK,
   SPRITE_CONVERSATION_STATES,
+  SPRITE_LAYER_GROUP,
 ] = [
   0,
   1,
@@ -167,6 +193,7 @@ const [
   19,
   20,
   21,
+  22,
 ]
 
 // group
@@ -180,7 +207,8 @@ const [
   GROUP_LAYER_GROUP,
   GROUP_MAP_GROUP,
   GROUP_RENDERER,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  GROUP_LAYER_NAME,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // map layer
 const [
