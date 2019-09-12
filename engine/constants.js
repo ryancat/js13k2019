@@ -49,7 +49,8 @@ const [
   RENDERER_HEIGHT,
   RENDERER_CANVAS,
   RENDERER_CONTEXT,
-] = [0, 1, 2, 3, 4, 5]
+  RENDERER_DOM,
+] = [0, 1, 2, 3, 4, 5, 6]
 
 // incidentRecord
 const [

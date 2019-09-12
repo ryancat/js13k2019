@@ -9,6 +9,7 @@ game_loadSounds(game)
 game_addLayer(game, RENDERER_LAYER_BACKGROUND)
 game_addLayer(game, RENDERER_LAYER_MAIN)
 game_addLayer(game, RENDERER_LAYER_FOREGROUND)
+game_addLayer(game, RENDERER_LAYER_TEXT, true)
 
 // Add interaction controls
 game_addInteractionKey(game, KEY_UP, [87, 38])

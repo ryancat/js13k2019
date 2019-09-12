@@ -36,13 +36,15 @@ function dialog_update(dialog, dt) {
   const cameraWidth = camera[CAMERA_WIDTH]
   const cameraHeight = camera[CAMERA_HEIGHT]
   const game = dialog[DIALOG_GAME]
+  const gameObjectWidths = game[GAME_OBJECT_WIDTHS]
+  const gameObjectHeights = game[GAME_OBJECT_HEIGHTS]
 
   // draw dialog box
   renderer_drawRect(dialog[DIALOG_RENDERER], [
     0,
     cameraHeight * 0.8,
     cameraWidth,
-    Math.floor(cameraHeight * 0.2),
+    cameraHeight * 0.2,
     0.95,
     true,
     false,
@@ -52,13 +54,39 @@ function dialog_update(dialog, dt) {
   // draw dialog from character sprite
   sprite_render(
     // create sprite for dialog
+    // SPRITE_ID,
+    //   SPRITE_X,
+    //   SPRITE_Y,
+    //   SPRITE_WIDTH,
+    //   SPRITE_HEIGHT,
+    //   SPRITE_NAME,
+    //   SPRITE_HITTYPE,
+    //   SPRITE_SHOW_NAME,
+    //   SPRITE_DISABLE_HIT,
+    //   SPRITE_BACKGROUND_COLOR,
+    //   SPRITE_BORDER_COLOR,
+    //   SPRITE_OPACITY,
+    //   SPRITE_TILE_INDEX,
+    //   SPRITE_COL,
+    //   SPRITE_ROW,
+    //   SPRITE_VX,
+    //   SPRITE_VY,
+    //   SPRITE_VMAX,
+    //   SPRITE_TYPE,
+    //   SPRITE_MAP_GROUP,
+    //   SPRITE_HIT_CALLBACK,
+    //   SPRITE_CONVERSATION_STATES
     game_getSpriteFactory(game, activeContent[DIALOG_CONTENT_FROM_SPRITE_ID])([
-      ,
-      Math.floor(camera[CAMERA_WIDTH] * 0.2),
-      Math.floor(camera[CAMERA_HEIGHT] * 0.2),
+      activeContent[DIALOG_CONTENT_FROM_SPRITE_ID],
+      camera[CAMERA_X] + gameObjectWidths[GAME_OBJ_WIDTH_XS],
+      camera[CAMERA_Y] +
+        cameraHeight * 0.8 -
+        gameObjectHeights[GAME_OBJ_HEIGHT_XS],
+      camera[CAMERA_WIDTH] * 0.2,
+      camera[CAMERA_HEIGHT] * 0.2 - gameObjectHeights[GAME_OBJ_HEIGHT_XS],
     ]),
-    game[GAME_CAMERA],
     dt,
+    game[GAME_CAMERA],
     dialog[DIALOG_RENDERER]
   )
 

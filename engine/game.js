@@ -15,9 +15,10 @@
 //   GAME_SPRITE_FACTORIES,
 //   GAME_SOUNDS,
 //   GAME_DIALOG,
-// GAME_OBJECT_WIDTHS,
+//   GAME_OBJECT_WIDTHS,
 //   GAME_OBJECT_HEIGHTS,
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+//   GAME_MAZE,
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 
 function game_factory(props = []) {
   const game = util_assignArr(
@@ -40,6 +41,7 @@ function game_factory(props = []) {
       null,
       [],
       [],
+      null,
     ],
     props
   )
@@ -133,13 +135,22 @@ function game_addInteractionKey(game, keyId = -1, keyCodes = []) {
   game[GAME_KEY_INTERACTIONS][keyId] = _game_createKeyInteraction([keyCodes])
 }
 
-function game_addLayer(game, layerId = -1) {
-  game[GAME_LAYERS][layerId] = renderer_factory([
-    layerId,
-    game[GAME_CONTAINER],
-    game[GAME_CAMERA_WIDTH],
-    game[GAME_CAMERA_HEIGHT],
-  ])
+function game_addLayer(game, layerId = -1, isDom) {
+  if (isDom) {
+    game[GAME_LAYERS][layerId] = dom_renderer_factory([
+      layerId,
+      game[GAME_CONTAINER],
+      game[GAME_CAMERA_WIDTH],
+      game[GAME_CAMERA_HEIGHT],
+    ])
+  } else {
+    game[GAME_LAYERS][layerId] = renderer_factory([
+      layerId,
+      game[GAME_CONTAINER],
+      game[GAME_CAMERA_WIDTH],
+      game[GAME_CAMERA_HEIGHT],
+    ])
+  }
 }
 
 function game_addIncident(
