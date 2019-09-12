@@ -87,18 +87,30 @@ function battleFieldIncident_bindEventCallback(incident) {
       }
 
       const doorSpriteId = doorSprite[SPRITE_ID]
-      const lrIncrement =
-        doorSpriteId === RIGHT_DOOR_SPRITE
-          ? 1
-          : doorSpriteId === LEFT_DOOR_SPRITE
-          ? -1
-          : 0
-      const tbIncrement =
-        doorSpriteId === BOTTOM_DOOR_SPRITE
-          ? 1
-          : doorSpriteId === TOP_DOOR_SPRITE
-          ? -1
-          : 0
+      let lrIncrement = 0
+      let tbIncrement = 0
+      let playerFromDoor
+      switch (doorSpriteId) {
+        case TOP_DOOR_SPRITE:
+          tbIncrement = -1
+          playerFromDoor = DOOR_BOTTOM
+          break
+
+        case RIGHT_DOOR_SPRITE:
+          lrIncrement = 1
+          playerFromDoor = DOOR_LEFT
+          break
+
+        case BOTTOM_DOOR_SPRITE:
+          tbIncrement = 1
+          playerFromDoor = DOOR_TOP
+          break
+
+        case LEFT_DOOR_SPRITE:
+          lrIncrement = -1
+          playerFromDoor = DOOR_RIGHT
+          break
+      }
 
       // Finish the current incident as we exit
       incident_finish[incident[INCIDENT_ID]](incident)
@@ -114,6 +126,7 @@ function battleFieldIncident_bindEventCallback(incident) {
       const nextMazeCellCol = incident[INCIDENT_CELL_COL] + lrIncrement
       battleFieldIncidentProps[INCIDENT_CELL_ROW] = nextMazeCellRow
       battleFieldIncidentProps[INCIDENT_CELL_COL] = nextMazeCellCol
+      battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] = [playerFromDoor]
       game_addIncident(
         game,
         BATTLE_FIELD_INCIDENT,
@@ -213,6 +226,7 @@ function battleFieldIncident_createRandomCell(incident) {
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
+
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x
     0, // y
@@ -241,6 +255,52 @@ function battleFieldIncident_playRandomCell(incident) {
 
 function battleFieldIncident_handleDoors() {
   // todo finish this
+}
+
+// Set player status when entering battle field
+function baseIncident_setPlayerStatus(incident) {
+  const playerSprite = group_getSpriteById(
+    incident[INCIDENT_MAP_GROUP],
+    PLAYER_SPRITE
+  )
+  const playerFromDoor = incident[INCIDENT_PLAYER_STATUS][PLAYER_FROM_DOOR]
+  const incidentGame = incident[INCIDENT_GAME]
+  const incidentWidth =
+    incident[INCIDENT_COL_NUM] * incidentGame[GAME_TILE_WIDTH]
+  const incidentHeight =
+    incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
+  const tileWidth = incidentGame[GAME_TILE_WIDTH]
+  const tileHeight = incidentGame[GAME_TILE_HEIGHT]
+  if (typeof playerFromDoor !== 'undefined') {
+    // Set player position to be next to the from door
+    switch (playerFromDoor) {
+      case DOOR_TOP:
+        playerSprite[SPRITE_X] =
+          (incidentWidth - playerSprite[SPRITE_WIDTH]) / 2
+        playerSprite[SPRITE_Y] = 3 * tileHeight
+        break
+
+      case DOOR_RIGHT:
+        playerSprite[SPRITE_X] =
+          incidentWidth - tileWidth - playerSprite[SPRITE_WIDTH]
+        playerSprite[SPRITE_Y] =
+          (incidentHeight - playerSprite[SPRITE_HEIGHT]) / 2
+        break
+
+      case DOOR_BOTTOM:
+        playerSprite[SPRITE_X] =
+          (incidentWidth - playerSprite[SPRITE_WIDTH]) / 2
+        playerSprite[SPRITE_Y] =
+          incidentHeight - tileHeight - playerSprite[SPRITE_HEIGHT]
+        break
+
+      case DOOR_LEFT:
+        playerSprite[SPRITE_X] = tileWidth
+        playerSprite[SPRITE_Y] =
+          (incidentHeight - playerSprite[SPRITE_HEIGHT]) / 2
+        break
+    }
+  }
 }
 
 function battleFieldIncident_update(incident, dt) {

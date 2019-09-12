@@ -38,7 +38,7 @@ const incident_addSpritesToScene = [
   baseIncident_addSpritesToScene,
   battleFieldIncident_addSpritesToScene,
 ]
-const incident_setPlayerStatus = [EMPTY_FN, EMPTY_FN]
+const incident_setPlayerStatus = [EMPTY_FN, baseIncident_setPlayerStatus]
 const incident_setIncidentStatus = [
   baseIncident_setIncidentStatus,
   baseIncident_setIncidentStatus,

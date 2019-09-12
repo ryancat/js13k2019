@@ -178,7 +178,9 @@ function game_addIncident(
   // start or restart the incident
   const incident = incidentRecord[INCIDENT_RECORD_INCIDENT]
   // make sure incident has updated playerStatus
-  incident[INCIDENT_PLAYER_STATUS] = incidentProps[INCIDENT_PLAYER_STATUS]
+  if (incidentProps[INCIDENT_PLAYER_STATUS]) {
+    incident[INCIDENT_PLAYER_STATUS] = incidentProps[INCIDENT_PLAYER_STATUS]
+  }
   incident_restart[incidentId](incident)
 
   // add play method into incident plays queue and dedupe
