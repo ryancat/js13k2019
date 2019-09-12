@@ -56,12 +56,12 @@ function _maze_breakWall(
     return false
   }
 
-  const [firstCol, firstRow] = _maze_getColRowByCellIndex(
+  const [firstRow, firstCol] = _maze_getColRowByCellIndex(
     firstCellIndex,
     colNum,
     rowNum
   )
-  const [secondCol, secondRow] = _maze_getColRowByCellIndex(
+  const [secondRow, secondCol] = _maze_getColRowByCellIndex(
     secondCellIndex,
     colNum,
     rowNum
@@ -172,9 +172,6 @@ function maze_generateMaze([
       startCol = colNum - 1
       cells[startRow][startCol] = '0100'
       break
-
-    default:
-      throw new Error(`invalid start side: ${startSide}`)
   }
 
   const cellIndex = _maze_getCellIndexByColRow(

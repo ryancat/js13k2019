@@ -158,11 +158,12 @@ function game_addLayer(game, layerId = -1, isDom) {
 function game_addIncident(
   game,
   incidentId = -1,
+  incidentKey = '',
   incidentFactory = EMPTY_FN,
   incidentProps = [],
   isForced = false
 ) {
-  const cachedIncidentRecord = game[GAME_INCIDENTS][incidentId]
+  const cachedIncidentRecord = game[GAME_INCIDENTS][incidentKey]
   const incidentRecord =
     !isForced && cachedIncidentRecord
       ? cachedIncidentRecord
@@ -172,7 +173,7 @@ function game_addIncident(
         ]
 
   incidentRecord[INCIDENT_RECORD_TIMESTAMPS].push(Date.now())
-  game[GAME_INCIDENTS][incidentId] = incidentRecord
+  game[GAME_INCIDENTS][incidentKey] = incidentRecord
 
   // start or restart the incident
   const incident = incidentRecord[INCIDENT_RECORD_INCIDENT]

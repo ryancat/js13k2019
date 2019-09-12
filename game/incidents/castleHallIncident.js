@@ -64,16 +64,19 @@ function castleHallIncident_bindEventCallback(incident) {
     KING_SPRITE
   )
   const incidentGame = incident[INCIDENT_GAME]
+  // const gameMaze = incidentGame[GAME_MAZE]
   const doorSprites = group_getSpritesByIds(
     incident[INCIDENT_MAP_GROUP],
     incident[INCIDENT_DOORS].map(doorId => incidentGame[GAME_DOORS][doorId])
   )
 
   // Close the door when game starts
-  doorSprites.forEach(doorSprite => {
-    doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
-    doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
-  })
+  if (!IS_ALL_DOOR_OPEN) {
+    doorSprites.forEach(doorSprite => {
+      doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+      doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
+    })
+  }
 
   // Bind king sprite hit handler
   kingSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
@@ -104,20 +107,22 @@ function castleHallIncident_bindEventCallback(incident) {
       // Finish the current incident as we exit
       incident_finish[incident[INCIDENT_ID]](incident)
 
-      // Add battle field scene
+      // Add next battle field incident
       const battleFieldIncidentProps = [
         BATTLE_FIELD_INCIDENT, // incident id
         incidentGame, // incident game
         32, // row numbers
         32, // col numbers
       ]
-      battleFieldIncidentProps[INCIDENT_CELL_ROW] =
-        incidentGame[GAME_MAZE][MAZE_START_ROW]
-      battleFieldIncidentProps[INCIDENT_CELL_COL] =
-        incidentGame[GAME_MAZE][MAZE_START_COL]
+      const nextMazeCellRow = incidentGame[GAME_MAZE][MAZE_START_ROW]
+      const nextMazeCellCol = incidentGame[GAME_MAZE][MAZE_START_COL]
+      battleFieldIncidentProps[INCIDENT_CELL_ROW] = nextMazeCellRow
+      battleFieldIncidentProps[INCIDENT_CELL_COL] = nextMazeCellCol
+      // battleFieldIncidentProps[INCIDENT_DOORS] = gameMaze[MAZE_CELLS]
       game_addIncident(
         game,
         BATTLE_FIELD_INCIDENT,
+        `${BATTLE_FIELD_INCIDENT}@${nextMazeCellRow}@${nextMazeCellCol}`,
         incident_factories[BATTLE_FIELD_INCIDENT],
         battleFieldIncidentProps
       )

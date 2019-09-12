@@ -108,6 +108,7 @@ castleHallIncidentProp[INCIDENT_DOORS] = [DOOR_BOTTOM]
 game_addIncident(
   game,
   CASTLE_HALL_INCIDENT,
+  `${CASTLE_HALL_INCIDENT}@0`,
   incident_factories[CASTLE_HALL_INCIDENT],
   castleHallIncidentProp
 )
@@ -131,3 +132,6 @@ loop_add(game[GAME_LOOP], dt => {
 })
 // Start the game loop
 loop_start(game[GAME_LOOP])
+
+// Some debug constants
+const IS_ALL_DOOR_OPEN = true

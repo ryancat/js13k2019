@@ -1,4 +1,5 @@
 function battleFieldIncident_factory(props) {
+  console.log('enter room', props[INCIDENT_CELL_ROW], props[INCIDENT_CELL_COL])
   return baseIncident_factory(props)
 }
 
@@ -52,44 +53,61 @@ function battleFieldIncident_setCamera(incident) {
 }
 
 function battleFieldIncident_bindEventCallback(incident) {
-  const kingSprite = group_getSpriteById(
-    incident[INCIDENT_MAP_GROUP],
-    KING_SPRITE
-  )
   const incidentGame = incident[INCIDENT_GAME]
   const doorSprites = group_getSpritesByIds(
     incident[INCIDENT_MAP_GROUP],
     incident[INCIDENT_DOORS].map(doorId => incidentGame[GAME_DOORS][doorId])
   )
-  // const bottomDoorSprites = group_getSpritesById(
-  //   incident[INCIDENT_MAP_GROUP],
-  //   BOTTOM_DOOR_SPRITE
-  // )
 
   // Close the door when game starts
-  doorSprites.forEach(doorSprite => {
-    doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
-    doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
-  })
+  if (!IS_ALL_DOOR_OPEN) {
+    doorSprites.forEach(doorSprite => {
+      doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+      doorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
+    })
+  }
 
   // Bind door hit handler
   // Close the door when game starts
   doorSprites.forEach(doorSprite => {
     doorSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
-      // Add battle field scene
+      if (doorSprite[SPRITE_HITTYPE] !== HITTYPE_PASS) {
+        // cannot pass yet
+        return
+      }
+
+      const doorSpriteId = doorSprite[SPRITE_ID]
+      const lrIncrement =
+        doorSpriteId === RIGHT_DOOR_SPRITE
+          ? 1
+          : doorSpriteId === LEFT_DOOR_SPRITE
+          ? -1
+          : 0
+      const tbIncrement =
+        doorSpriteId === BOTTOM_DOOR_SPRITE
+          ? 1
+          : doorSpriteId === TOP_DOOR_SPRITE
+          ? -1
+          : 0
+
+      // Finish the current incident as we exit
+      incident_finish[incident[INCIDENT_ID]](incident)
+
+      // Add next battle field incident
       const battleFieldIncidentProps = [
         BATTLE_FIELD_INCIDENT, // incident id
         incidentGame, // incident game
         32, // row numbers
         32, // col numbers
       ]
-      battleFieldIncidentProps[INCIDENT_CELL_ROW] =
-        incidentGame[GAME_MAZE][MAZE_START_ROW]
-      battleFieldIncidentProps[INCIDENT_CELL_COL] =
-        incidentGame[GAME_MAZE][MAZE_START_COL]
+      const nextMazeCellRow = incident[INCIDENT_CELL_ROW] + tbIncrement
+      const nextMazeCellCol = incident[INCIDENT_CELL_COL] + lrIncrement
+      battleFieldIncidentProps[INCIDENT_CELL_ROW] = nextMazeCellRow
+      battleFieldIncidentProps[INCIDENT_CELL_COL] = nextMazeCellCol
       game_addIncident(
         game,
         BATTLE_FIELD_INCIDENT,
+        `${BATTLE_FIELD_INCIDENT}@${nextMazeCellRow}@${nextMazeCellCol}`,
         incident_factories[BATTLE_FIELD_INCIDENT],
         battleFieldIncidentProps
       )
