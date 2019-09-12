@@ -21,68 +21,38 @@ game_addInteractionKey(game, KEY_SPACE, [32])
 
 // Map incident factory for incident ids
 // Functional way to implement inheritance
-const incident_factories = [
-  baseIncident_factory,
-  castleHallIncident_factory,
-  battleFieldIncident_factory,
-]
-const incident_play = [baseIncident_play, baseIncident_play, baseIncident_play]
-const incident_finish = [
-  baseIncident_finish,
-  baseIncident_finish,
-  baseIncident_finish,
-]
-const incident_restart = [
-  baseIncident_restart,
-  baseIncident_restart,
-  baseIncident_restart,
-]
-const incident_createMapData = [
-  EMPTY_FN,
-  castleHallIncident_createMapData,
-  battleFieldIncident_createMapData,
-]
+const incident_factories = [baseIncident_factory, battleFieldIncident_factory]
+const incident_play = [baseIncident_play, baseIncident_play]
+const incident_finish = [baseIncident_finish, baseIncident_finish]
+const incident_restart = [baseIncident_restart, baseIncident_restart]
+const incident_createMapData = [EMPTY_FN, battleFieldIncident_createMapData]
 const incident_initMapGroup = [
-  baseIncident_initMapGroup,
   baseIncident_initMapGroup,
   baseIncident_initMapGroup,
 ]
 const incident_getSceneById = [
   baseIncident_getSceneById,
   baseIncident_getSceneById,
-  baseIncident_getSceneById,
 ]
 const incident_addSpritesToScene = [
   baseIncident_addSpritesToScene,
-  castleHallIncident_addSpritesToScene,
   battleFieldIncident_addSpritesToScene,
 ]
-const incident_setPlayerStatus = [EMPTY_FN, EMPTY_FN, EMPTY_FN]
+const incident_setPlayerStatus = [EMPTY_FN, EMPTY_FN]
 const incident_setIncidentStatus = [
-  baseIncident_setIncidentStatus,
   baseIncident_setIncidentStatus,
   baseIncident_setIncidentStatus,
 ]
 const incident_renderBackground = [
   baseIncident_renderBackground,
   baseIncident_renderBackground,
-  baseIncident_renderBackground,
 ]
-const incident_update = [
-  EMPTY_FN,
-  castleHallIncident_update,
-  battleFieldIncident_update,
-]
+const incident_update = [EMPTY_FN, battleFieldIncident_update]
 const incident_addScene = [EMPTY_FN, EMPTY_FN]
-const incident_setCamera = [
-  EMPTY_FN,
-  castleHallIncident_setCamera,
-  battleFieldIncident_setCamera,
-]
-const incident_addSceneSprites = [EMPTY_FN, EMPTY_FN, EMPTY_FN]
+const incident_setCamera = [EMPTY_FN, battleFieldIncident_setCamera]
+const incident_addSceneSprites = [EMPTY_FN, EMPTY_FN]
 const incident_bindEventCallback = [
   EMPTY_FN,
-  castleHallIncident_bindEventCallback,
   battleFieldIncident_bindEventCallback,
 ]
 
@@ -96,22 +66,26 @@ sprites_init(game)
 game_setMaze(game, maze_generateMaze())
 
 // Add first incidents
-const castleHallIncidentProp = [
-  CASTLE_HALL_INCIDENT, // incident id
-  game, // incident game
-  32, // row numbers
-  32, // col numbers
-]
-castleHallIncidentProp[INCIDENT_CELL_ROW] = game[GAME_MAZE][MAZE_START_ROW] - 1
-castleHallIncidentProp[INCIDENT_CELL_COL] = game[GAME_MAZE][MAZE_START_COL]
-castleHallIncidentProp[INCIDENT_DOORS] = [DOOR_BOTTOM]
-game_addIncident(
-  game,
-  CASTLE_HALL_INCIDENT,
-  `${CASTLE_HALL_INCIDENT}@0`,
-  incident_factories[CASTLE_HALL_INCIDENT],
-  castleHallIncidentProp
-)
+function addFirstIncident() {
+  const incidentProps = [
+    BATTLE_FIELD_INCIDENT, // incident id
+    game, // incident game
+    32, // row numbers
+    32, // col numbers
+  ]
+  const gameMaze = game[GAME_MAZE]
+  incidentProps[INCIDENT_CELL_ROW] = gameMaze[MAZE_START_ROW]
+  incidentProps[INCIDENT_CELL_COL] = gameMaze[MAZE_START_COL]
+  game_addIncident(
+    game,
+    BATTLE_FIELD_INCIDENT,
+    `${BATTLE_FIELD_INCIDENT}@${incidentProps[INCIDENT_CELL_ROW]}@${incidentProps[INCIDENT_CELL_COL]}`,
+    incident_factories[BATTLE_FIELD_INCIDENT],
+    incidentProps
+  )
+}
+
+addFirstIncident()
 
 // Start to play incidents
 loop_add(game[GAME_LOOP], dt => {

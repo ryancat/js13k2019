@@ -152,25 +152,25 @@ function maze_generateMaze([
     case DOOR_TOP:
       startRow = 0
       startCol = Math.floor(random[RANDOM_NEXT_FLOAT]() * colNum)
-      cells[startRow][startCol] = '1000'
+      // cells[startRow][startCol] = '1000'
       break
 
     case DOOR_BOTTOM:
       startRow = rowNum - 1
       startCol = Math.floor(random[RANDOM_NEXT_FLOAT]() * colNum)
-      cells[startRow][startCol] = '0010'
+      // cells[startRow][startCol] = '0010'
       break
 
     case DOOR_LEFT:
       startRow = Math.floor(random[RANDOM_NEXT_FLOAT]() * rowNum)
       startCol = 0
-      cells[startRow][startCol] = '0001'
+      // cells[startRow][startCol] = '0001'
       break
 
     case DOOR_RIGHT:
       startRow = Math.floor(random[RANDOM_NEXT_FLOAT]() * rowNum)
       startCol = colNum - 1
-      cells[startRow][startCol] = '0100'
+      // cells[startRow][startCol] = '0100'
       break
   }
 
