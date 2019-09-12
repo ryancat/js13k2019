@@ -7,6 +7,8 @@
 //   RENDERER_CANVAS,
 //   RENDERER_CONTEXT,
 //   RENDERER_DOM,
+//   RENDERER_DOM_WIDTH,
+//   RENDERER_DOM_HEIGHT,
 // ] = [0, 1, 2, 3, 4, 5, 6]
 
 function renderer_factory(props = []) {

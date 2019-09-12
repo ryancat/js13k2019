@@ -6,13 +6,15 @@
 //   RENDERER_HEIGHT,
 //   RENDERER_CANVAS,
 //   RENDERER_CONTEXT,
-//   RENDERER_DOM
-// ] = [0, 1, 2, 3, 4, 5]
+//   RENDERER_DOM,
+//   RENDERER_DOM_WIDTH,
+//   RENDERER_DOM_HEIGHT,
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 function dom_renderer_factory(props = []) {
   const wrapper = document.createElement('div')
   const renderer = util_assignArr(
-    ['', document.createElement('div'), 500, 500, null, null, wrapper],
+    ['', document.createElement('div'), 500, 500, null, null, wrapper, 0, 0],
     props
   )
 
@@ -28,8 +30,8 @@ function dom_renderer_factory(props = []) {
     renderer,
     0,
     0,
-    renderer[RENDERER_WIDTH],
-    renderer[RENDERER_HEIGHT]
+    renderer[RENDERER_DOM_WIDTH],
+    renderer[RENDERER_DOM_HEIGHT]
   )
 
   return renderer
@@ -43,11 +45,12 @@ function dom_renderer_setBounds(
   height = 500
 ) {
   const wrapper = renderer[RENDERER_DOM]
-  const container = renderer[RENDERER_CONTAINER]
-  wrapper.style.top = top
-  wrapper.style.left = left
-  wrapper.style.right = container.offsetWidth - (left + width)
-  wrapper.style.bottom = container.offsetHeight - (top + height)
+  wrapper.style.top = Math.round(top) + 'px'
+  wrapper.style.left = Math.round(left) + 'px'
+  wrapper.style.right =
+    Math.round(renderer[RENDERER_WIDTH] - (left + width)) + 'px'
+  wrapper.style.bottom =
+    Math.round(renderer[RENDERER_HEIGHT] - (top + height)) + 'px'
 }
 
 function dom_renderer_drawText(
@@ -58,10 +61,12 @@ function dom_renderer_drawText(
     left = 0,
     width = 500,
     height = 500,
-    align = 'left',
-    fontSize = 16,
-    fontWeight = 400,
+    paddings = [0, 0],
     color = PALETTE_GUNMETAL[4],
+    fontSize = 24,
+    fontWeight = 400,
+    fontFamily = 'fantasy sans-serif serif',
+    align = 'left',
   ]
 ) {
   const wrapper = renderer[RENDERER_DOM]
@@ -69,7 +74,9 @@ function dom_renderer_drawText(
   wrapper.innerText = text
   wrapper.style.fontSize = fontSize + 'px'
   wrapper.style.fontWeight = fontWeight
+  wrapper.style.fontFamily = fontFamily
   wrapper.style.color = color
+  wrapper.style.padding = paddings.map(padding => padding + 'px').join(' ')
   wrapper.style.textAlign = align
 }
 
