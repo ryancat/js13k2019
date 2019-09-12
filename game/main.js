@@ -55,6 +55,9 @@ const incident_bindEventCallback = [EMPTY_FN, EMPTY_FN]
 // Add sprites in game
 sprites_init(game)
 
+// Generate maze
+console.log(maze_generateMaze())
+
 // Add first incidents
 game_addIncident(
   game,
