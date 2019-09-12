@@ -98,5 +98,5 @@ loop_add(game[GAME_LOOP], dt => {
 loop_start(game[GAME_LOOP])
 
 // Some debug states
-let isAllDoorOpen = true
+let isAllDoorOpen = false
 let noBackgroundMusic = true

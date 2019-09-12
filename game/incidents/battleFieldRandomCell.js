@@ -72,7 +72,7 @@ function battleFieldIncident_playRandomCell(incident) {
         // Only play conversation when there is no dialog right now
         game_playConversation(
           incidentGame,
-          conv_john(johnSprite, playerSprite),
+          conv_john(johnSprite, playerSprite, incident),
           () => {
             // open the door
             doorSprites.forEach(doorSprite => {
