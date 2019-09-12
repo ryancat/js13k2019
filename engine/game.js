@@ -85,8 +85,11 @@ function game_factory(props = []) {
   return game
 }
 
-function _game_createKeyInteraction(interactionProps = []) {
-  const interaction = util_assignArr([[], null, 0, false], interactionProps)
+function _game_createKeyInteraction(interactionProps = [], sound) {
+  const interaction = util_assignArr(
+    [[], null, 0, false, false, false],
+    interactionProps
+  )
 
   document.addEventListener('keydown', evt => {
     if (interaction[INTERACTION_KEY_CODES].indexOf(evt.keyCode) === -1) {
@@ -97,6 +100,8 @@ function _game_createKeyInteraction(interactionProps = []) {
     const now = Date.now()
     if (!interaction[INTERACTION_PRESS_START_TIME]) {
       interaction[INTERACTION_PRESS_START_TIME] = now
+      zzfx.apply(null, sound)
+      // zzfx(1, 0.1, 120, 0.2, 0.34, -0.2, 1, 0, 0.93)
     } else {
       interaction[INTERACTION_PRESS_DURATION] =
         now - interaction[INTERACTION_PRESS_START_TIME]
@@ -139,8 +144,11 @@ function game_loadSounds(game) {
   musicUtil_initBackgroundSong(game)
 }
 
-function game_addInteractionKey(game, keyId = -1, keyCodes = []) {
-  game[GAME_KEY_INTERACTIONS][keyId] = _game_createKeyInteraction([keyCodes])
+function game_addInteractionKey(game, keyId = -1, keyCodes = [], sound) {
+  game[GAME_KEY_INTERACTIONS][keyId] = _game_createKeyInteraction(
+    [keyCodes],
+    sound
+  )
 }
 
 function game_addLayer(game, layerId = -1, isDom) {

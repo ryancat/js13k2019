@@ -12,10 +12,10 @@ game_addLayer(game, RENDERER_LAYER_FOREGROUND)
 game_addLayer(game, RENDERER_LAYER_TEXT, true)
 
 // Add interaction controls
-game_addInteractionKey(game, KEY_UP, [87, 38])
-game_addInteractionKey(game, KEY_DOWN, [83, 40])
-game_addInteractionKey(game, KEY_LEFT, [65, 37])
-game_addInteractionKey(game, KEY_RIGHT, [68, 39])
+game_addInteractionKey(game, KEY_UP, [87, 38], MUSIC_SOUND_MOVE)
+game_addInteractionKey(game, KEY_DOWN, [83, 40], MUSIC_SOUND_MOVE)
+game_addInteractionKey(game, KEY_LEFT, [65, 37], MUSIC_SOUND_MOVE)
+game_addInteractionKey(game, KEY_RIGHT, [68, 39], MUSIC_SOUND_MOVE)
 game_addInteractionKey(game, KEY_ENTER, [13])
 game_addInteractionKey(game, KEY_SPACE, [32])
 
@@ -70,9 +70,9 @@ incident_init(game)
 
 // Start to play incidents
 loop_add(game[GAME_LOOP], dt => {
-  if (!game[GAME_MUSIC_BACKGROUND_READY]) {
-    return
-  }
+  // if (!game[GAME_MUSIC_BACKGROUND_READY]) {
+  //   return
+  // }
 
   if (!noBackgroundMusic) {
     musicUtil_playBackgroundSong(game)

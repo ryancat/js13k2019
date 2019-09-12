@@ -66,7 +66,9 @@ const [
   INTERACTION_PRESS_START_TIME,
   INTERACTION_PRESS_DURATION,
   INTERACTION_IS_DOWN,
-] = [0, 1, 2, 3]
+  INTERACTION_DOWN_EDGE,
+  INTERACTION_UP_EDGE,
+] = [0, 1, 2, 3, 4, 5]
 
 // sound object
 // renderer object
@@ -197,6 +199,7 @@ const [
   SPRITE_HIT_CALLBACK,
   SPRITE_CONVERSATION_STATES,
   SPRITE_LAYER_GROUP,
+  SPRITE_STATE,
 ] = [
   0,
   1,
@@ -221,6 +224,7 @@ const [
   20,
   21,
   22,
+  23,
 ]
 
 // group

@@ -111,6 +111,9 @@ function battleFieldIncident_bindEventCallback(incident) {
           break
       }
 
+      // Set player state
+      playerSprite[SPRITE_STATE][PLAYER_FROM_DOOR] = playerFromDoor
+
       // Finish the current incident as we exit
       incident_finish[incident[INCIDENT_ID]](incident)
 
@@ -125,7 +128,8 @@ function battleFieldIncident_bindEventCallback(incident) {
       const nextMazeCellCol = incident[INCIDENT_CELL_COL] + lrIncrement
       battleFieldIncidentProps[INCIDENT_CELL_ROW] = nextMazeCellRow
       battleFieldIncidentProps[INCIDENT_CELL_COL] = nextMazeCellCol
-      battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] = [playerFromDoor]
+      battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] =
+        playerSprite[SPRITE_STATE]
       game_addIncident(
         game,
         BATTLE_FIELD_INCIDENT,
@@ -147,7 +151,8 @@ function baseIncident_setPlayerStatus(incident) {
     incident[INCIDENT_MAP_GROUP],
     PLAYER_SPRITE
   )
-  const playerFromDoor = incident[INCIDENT_PLAYER_STATUS][PLAYER_FROM_DOOR]
+  playerSprite[SPRITE_STATE] = incident[INCIDENT_PLAYER_STATUS]
+  const playerFromDoor = playerSprite[SPRITE_STATE][PLAYER_FROM_DOOR]
   const incidentGame = incident[INCIDENT_GAME]
   const incidentWidth =
     incident[INCIDENT_COL_NUM] * incidentGame[GAME_TILE_WIDTH]
@@ -210,7 +215,6 @@ function battleFieldIncident_handlePlayerMove(incident, playerSprite, dt) {
   const diagonalSpeed = playerVMax / Math.sqrt(2)
 
   if (upKeyIsDown) {
-    ZZFX.z(40161)
     // up key is pressed
     playerSprite[SPRITE_VY] = -(isDiagonalDirection
       ? diagonalSpeed

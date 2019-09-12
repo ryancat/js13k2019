@@ -7,6 +7,7 @@ function battleFieldIncident_createRandomCell(incident) {
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
+  const playerStatus = incident[INCIDENT_PLAYER_STATUS]
 
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x
@@ -22,8 +23,8 @@ function battleFieldIncident_createRandomCell(incident) {
         PLAYER_SPRITE, // object id
         gameObjectWidths[GAME_OBJ_WIDTH_M], // width
         gameObjectHeights[GAME_OBJ_WIDTH_L], // height
-        Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
-        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 2), // y
+        ,
+        ,
         GAME_PLAYER_NAME, // player (default) name,
       ],
     ],

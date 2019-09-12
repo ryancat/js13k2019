@@ -22,7 +22,8 @@
 //   SPRITE_HIT_CALLBACK,
 //   SPRITE_CONVERSATION_STATES,
 //   SPRITE_LAYER_GROUP,
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+//   SPRITE_STATE
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
 function sprite_factory(props = []) {
   return util_assignArr(
@@ -48,6 +49,7 @@ function sprite_factory(props = []) {
       SPRITE_TYPE_TILE,
       [],
       EMPTY_FN,
+      [],
       [],
       [],
     ],
