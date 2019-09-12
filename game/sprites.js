@@ -35,6 +35,7 @@ function sprites_init(game) {
     const defaultProps = []
     defaultProps[SPRITE_ID] = WALL_SPRITE
     defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BROWN[3]
+    defaultProps[SPRITE_HITTYPE] = HITTYPE_STOP
     return sprite_factory(util_assignArr(defaultProps, props))
   })
 

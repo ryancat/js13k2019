@@ -192,7 +192,7 @@ function game_createObjectSprite(game, spriteId = -1, objectSpriteProps = []) {
   const defaultProps = []
   defaultProps[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
   defaultProps[SPRITE_ID] = spriteId
-  return game[GAME_SPRITE_FACTORIES][spriteId](
+  return game_getSpriteFactory(game, spriteId)(
     util_assignArr(defaultProps, objectSpriteProps)
   )
 }

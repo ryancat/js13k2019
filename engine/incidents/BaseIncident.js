@@ -174,6 +174,7 @@ function baseIncident_initMapGroup(incident) {
           spriteProps[SPRITE_COL] = colIndex
           spriteProps[SPRITE_ROW] = rowIndex
           spriteProps[SPRITE_TILE_INDEX] = tileIndex
+          spriteProps[SPRITE_MAP_GROUP] = mapGroup
 
           group_addSprite(
             layerGroup,
@@ -193,10 +194,11 @@ function baseIncident_initMapGroup(incident) {
           spriteProps[SPRITE_WIDTH] = layerObject[OBJ_WIDTH]
           spriteProps[SPRITE_HEIGHT] = layerObject[OBJ_HEIGHT]
           spriteProps[SPRITE_NAME] = layerObject[OBJ_NAME]
+          spriteProps[SPRITE_MAP_GROUP] = mapGroup
 
           group_addSprite(
             layerGroup,
-            game_createTileSprite(
+            game_createObjectSprite(
               incidentGame,
               layerObject[OBJ_ID],
               spriteProps

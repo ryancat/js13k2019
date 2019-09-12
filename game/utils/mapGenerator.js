@@ -90,6 +90,8 @@ function _mg_generateTileLayerData(
             layerData[spriteIndex] = BOTTOM_DOOR_SPRITE
           } else if (doors.indexOf(DOOR_LEFT) >= 0 && isLeftDoor) {
             layerData[spriteIndex] = LEFT_DOOR_SPRITE
+          } else {
+            layerData[spriteIndex] = EMPTY_SPRITE
           }
           break
 

@@ -33,8 +33,6 @@ const [
   RENDERER_LAYER_FOREGROUND,
 ] = [0, 1, 2]
 
-const [HITTYPE_PASS, HITTYPE_STOP] = [0, 1]
-
 const [KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_ENTER, KEY_SPACE] = [
   0,
   1,

@@ -126,7 +126,9 @@ const [
   SPRITE_VY,
   SPRITE_VMAX,
   SPRITE_TYPE,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+  SPRITE_MAP_GROUP,
+  SPRITE_HIT_CALLBACK,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 // group
 const [
@@ -185,7 +187,16 @@ const [
   MAP_DATA_PROP_OBJECTS,
 ] = [0, 1, 2, 3, 4, 5, 6, 7]
 
+// hit map
+const [HIT_SPRITE_TOP, HIT_SPRITE_RIGHT, HIT_SPRITE_BOTTOM, HIT_SPRITE_LEFT] = [
+  0,
+  1,
+  2,
+  3,
+]
+
 /***** ENUMS *****/
 const [GROUP_TYPE_MAP, GROUP_TYPE_LAYER] = [0, 1]
 const BASE_INCIDENT = 0
 const [SPRITE_TYPE_TILE, SPRITE_TYPE_OBJECT] = [0, 1]
+const [HITTYPE_PASS, HITTYPE_STOP] = [0, 1]
