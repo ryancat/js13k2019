@@ -9,7 +9,6 @@ function battleFieldIncident_createStartCell(incident) {
 
   // create king object sprite props
   const kingSpriteProps = []
-  kingSpriteProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BLUE[2]
   kingSpriteProps[SPRITE_HITTYPE] = HITTYPE_STOP
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
     0, // x

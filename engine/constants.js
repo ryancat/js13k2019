@@ -200,6 +200,7 @@ const [
   SPRITE_CONVERSATION_STATES,
   SPRITE_LAYER_GROUP,
   SPRITE_STATE,
+  SPRITE_DIALOG_SPRITE_ID,
 ] = [
   0,
   1,
@@ -225,6 +226,7 @@ const [
   21,
   22,
   23,
+  24,
 ]
 
 // group

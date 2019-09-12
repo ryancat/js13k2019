@@ -82,4 +82,20 @@ function sprites_init(game) {
     defaultProps[SPRITE_BACKGROUND_COLOR] = playerColor
     return sprite_factory(util_assignArr(defaultProps, props))
   })
+
+  const kingColor = PALETTE_BLUE[2]
+  game_addSprite(game, KING_SPRITE, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = KING_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = kingColor
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
+
+  const johnColor = PALETTE_GREEN[1]
+  game_addSprite(game, JOHN_SPRITE, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = JOHN_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = johnColor
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
 }
