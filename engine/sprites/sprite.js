@@ -290,7 +290,6 @@ function sprite_getHitMoveCallback(sprite, otherSpriteHitType) {
 
 function sprite_hitMoveStop(sprite, finalHitSpriteResult) {
   const [finalHitSprite, hitValue, hitDirection] = finalHitSpriteResult
-  console.log(finalHitSpriteResult)
   switch (hitDirection) {
     case HIT_SPRITE_TOP:
       sprite[SPRITE_Y] += hitValue

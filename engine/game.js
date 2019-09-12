@@ -213,8 +213,7 @@ function game_playConversation(game, dialogContents = [], callback = EMPTY_FN) {
   )
 
   // start the dialog
-  // gameDialog[DIALOG_START]()
-  dialog_start(gameDialog)
+  dialog_start(gameDialog, dialogContents.length === 1)
 }
 
 function game_setDialog(game, dialog = null) {

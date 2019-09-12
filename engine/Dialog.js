@@ -8,9 +8,16 @@ function dialog_factory(props = []) {
   return dialog
 }
 
-function dialog_start(dialog) {
-  // pause game when dialog starts
-  game_pause(dialog[DIALOG_GAME])
+function dialog_start(dialog, autoHide) {
+  if (autoHide) {
+    // automatically hide dialog after 1.5 seconds
+    setTimeout(() => {
+      dialog_end(dialog)
+    }, 1500)
+  } else {
+    // pause game when dialog starts
+    game_pause(dialog[DIALOG_GAME])
+  }
 }
 
 function dialog_update(dialog, dt) {
