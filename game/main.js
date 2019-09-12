@@ -50,25 +50,31 @@ const incident_update = [EMPTY_FN, castleHallIncident_update]
 const incident_addScene = [EMPTY_FN, EMPTY_FN]
 const incident_setCamera = [EMPTY_FN, castleHallIncident_setCamera]
 const incident_addSceneSprites = [EMPTY_FN, EMPTY_FN]
-const incident_bindEventCallback = [EMPTY_FN, EMPTY_FN]
+const incident_bindEventCallback = [
+  EMPTY_FN,
+  castleHallIncident_bindEventCallback,
+]
 
 // Add sprites in game
 sprites_init(game)
 
 // Generate maze
-console.log(maze_generateMaze())
+game_setMaze(game, maze_generateMaze())
 
 // Add first incidents
+const castleHallIncidentProp = [
+  CASTLE_HALL_INCIDENT, // incident id
+  game, // incident game
+  32, // row numbers
+  32, // col numbers
+]
+castleHallIncidentProp[INCIDENT_CELL_ROW] = game[GAME_MAZE][MAZE_START_ROW] - 1
+castleHallIncidentProp[INCIDENT_CELL_COL] = game[GAME_MAZE][MAZE_START_COL]
 game_addIncident(
   game,
   CASTLE_HALL_INCIDENT,
   incident_factories[CASTLE_HALL_INCIDENT],
-  [
-    CASTLE_HALL_INCIDENT, // incident id
-    game, // incident game
-    32, // row numbers
-    32, // col numbers
-  ]
+  castleHallIncidentProp
 
   // INCIDENT_ID,
   // INCIDENT_GAME,

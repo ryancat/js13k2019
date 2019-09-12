@@ -21,6 +21,8 @@ function baseIncident_factory(props = []) {
       false,
       [],
       [],
+      -1,
+      -1,
     ],
     props
   )

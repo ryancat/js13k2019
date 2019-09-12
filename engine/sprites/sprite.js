@@ -20,7 +20,8 @@
 //   SPRITE_TYPE,
 //   SPRITE_MAP_GROUP,
 //   SPRITE_HIT_CALLBACK,
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+//   SPRITE_CONVERSATION_STATES
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
 function sprite_factory(props = []) {
   return util_assignArr(
@@ -46,6 +47,7 @@ function sprite_factory(props = []) {
       SPRITE_TYPE_TILE,
       [],
       EMPTY_FN,
+      [],
     ],
     props
   )
@@ -186,11 +188,6 @@ function sprite_hitSprites(sprite, otherSprites = []) {
 
   otherSprites.forEach(sprite_hitSprite.bind(null, aggregateHitResults, sprite))
 
-  // Remove unrealistic hit values
-  // aggregateHitResults.forEach(aggregateHitResult, index => {
-  //   aggregateHitResult = aggregateHitResult.filter(result => result[1] >= result[0])
-  // })
-
   // The hitDirection is decided by most number of blocking sprites
   // Avoid weird hit issue...
   // TODO fix this! this happens when player move to bottom left corner
@@ -223,7 +220,7 @@ function sprite_hitSprites(sprite, otherSprites = []) {
   )
 
   // The hitten sprite need to react too
-  finalHitSprite[SPRITE_HIT_CALLBACK](finalHitSprite, sprite)
+  finalHitSprite[SPRITE_HIT_CALLBACK](sprite)
 
   // Handle hit callbacks
   // actualHitSprite.hitCallback(this)

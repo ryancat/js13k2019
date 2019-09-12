@@ -29,7 +29,8 @@ const [
   GAME_DIALOG,
   GAME_OBJECT_WIDTHS,
   GAME_OBJECT_HEIGHTS,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+  GAME_MAZE,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 
 // interaction object
 const [
@@ -78,12 +79,23 @@ const [
   INCIDENT_FLAG_RENDER_BACKGROUND,
   INCIDENT_FLAG_LAYER_CLEAR_DIRTY_ARR,
   INCIDENT_FLAG_LAYER_DIRTY_ARR,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+  INCIDENT_CELL_ROW,
+  INCIDENT_CELL_COL,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 // tile sprite
 // object sprite
 // dialog
-const [DIALOG_START] = [0]
+const [
+  DIALOG_CONTENTS,
+  DIALOG_GAME,
+  DIALOG_END_CALLBACKS,
+  DIALOG_RENDERER,
+  DIALOG_NEXTKEY_ID,
+  DIALOG_NEXTKEY_ACTIVE,
+  DIALOG_ACTIVE_CONTENT_INDEX,
+  DIALOG_UPDATE_LOOP_CALLBACK,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 // loop
 const [
@@ -128,7 +140,31 @@ const [
   SPRITE_TYPE,
   SPRITE_MAP_GROUP,
   SPRITE_HIT_CALLBACK,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  SPRITE_CONVERSATION_STATES,
+] = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+]
 
 // group
 const [
@@ -195,8 +231,27 @@ const [HIT_SPRITE_TOP, HIT_SPRITE_RIGHT, HIT_SPRITE_BOTTOM, HIT_SPRITE_LEFT] = [
   3,
 ]
 
+// maze
+const [
+  MAZE_ROW_NUM,
+  MAZE_COL_NUM,
+  MAZE_CELLS,
+  MAZE_START_ROW,
+  MAZE_START_COL,
+  MAZE_END_ROW,
+  MAZE_END_COL,
+] = [0, 1, 2, 3, 4, 5, 6]
+
+// dialog content
+const [
+  DIALOG_CONTENT_FROM_SPRITE_ID,
+  DIALOG_CONTENT_CONTENT,
+  DIALOG_CONTENT_COLOR,
+  DIALOG_CONTENT_CALLBACK,
+] = [0, 1, 2, 3]
+
 /***** ENUMS *****/
-const [GROUP_TYPE_MAP, GROUP_TYPE_LAYER] = [0, 1]
+const [GROUP_TYPE_MAP, GROUP_TYPE_LAYER, GROUP_TYPE_SCENE] = [0, 1, 2]
 const BASE_INCIDENT = 0
 const [SPRITE_TYPE_TILE, SPRITE_TYPE_OBJECT] = [0, 1]
 const [HITTYPE_PASS, HITTYPE_STOP] = [0, 1]

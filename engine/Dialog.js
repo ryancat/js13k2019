@@ -1,22 +1,10 @@
-const [
-  DIALOG_GAME,
-  DIALOG_END_CALLBACKS,
-  DIALOG_RENDERER,
-  DIALOG_NEXTKEY_ID,
-  DIALOG_NEXTKEY_ACTIVE,
-  DIALOG_ACTIVE_CONTENT_INDEX,
-  DIALOG_CONTENTS,
-] = [0, 1, 2, 3, 4, 5, 6, 7]
-
-const PADDING = 0.05
-const RATIO_Y = 0.8
-const CONTENT_START_RATIO_X = 0.2
-const FONT_SIZE = 20
-
 function dialog_factory(props = []) {
-  const dialog = util_assignArr([null, [], null, -1, false, 0, []], props)
-
-  loop_add(dialog_update.bind(null, dialog))
+  const dialog = util_assignArr(
+    [[], null, [], null, -1, false, 0, EMPTY_FN],
+    props
+  )
+  dialog[DIALOG_UPDATE_LOOP_CALLBACK] = dialog_update.bind(null, dialog)
+  loop_add(dialog[DIALOG_GAME][GAME_LOOP], dialog[DIALOG_UPDATE_LOOP_CALLBACK])
   return dialog
 }
 
@@ -35,7 +23,7 @@ function dialog_update(dialog, dt) {
     activeContent = dialogContent_factory(dialogContentProp)
   }
 
-  dialog_clear()
+  dialog_clear(dialog)
 
   const camera = dialog[DIALOG_GAME][GAME_CAMERA]
   const cameraWidth = camera[CAMERA_WIDTH]
@@ -77,11 +65,11 @@ function dialog_update(dialog, dt) {
   } else if (dialog[DIALOG_NEXTKEY_ACTIVE]) {
     dialog[DIALOG_NEXTKEY_ACTIVE] = false
     dialog[DIALOG_ACTIVE_CONTENT_INDEX]++
-    activeContent[DIALOG_CONTENT_CONTENT]()
+    activeContent[DIALOG_CONTENT_CALLBACK]()
 
     if (dialog[DIALOG_ACTIVE_CONTENT_INDEX] >= dialog[DIALOG_CONTENTS].length) {
       // reach the end of conversation
-      dialog_end()
+      dialog_end(dialog)
     }
   }
 }
@@ -93,5 +81,9 @@ function dialog_clear(dialog) {
 function dialog_end(dialog) {
   dialog_clear(dialog)
   dialog[DIALOG_END_CALLBACKS].forEach(callback => callback())
+  loop_remove(
+    dialog[DIALOG_GAME][GAME_LOOP],
+    dialog[DIALOG_UPDATE_LOOP_CALLBACK]
+  )
   game_resume(dialog[DIALOG_GAME])
 }

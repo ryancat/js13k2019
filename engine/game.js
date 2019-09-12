@@ -37,7 +37,7 @@ function game_factory(props = []) {
       [],
       [],
       [],
-      [],
+      null,
       [],
       [],
     ],
@@ -197,18 +197,24 @@ function game_createObjectSprite(game, spriteId = -1, objectSpriteProps = []) {
   )
 }
 
-function game_playConversation(
-  game,
-  dialogFactory = EMPTY_FN,
-  dialogProps = [],
-  callback = EMPTY_FN
-) {
-  const gameDialog = dialogFactory(dialogProps)
+function game_playConversation(game, dialogContents = [], callback = EMPTY_FN) {
+  const gameDialog = dialog_factory([
+    dialogContents, // dialog contents
+    game, // game
+    [callback], // dialog end callbacks
+    game[GAME_LAYERS][RENDERER_LAYER_FOREGROUND], // renderer
+    KEY_ENTER, // next key id
+  ])
   game[GAME_DIALOG] = gameDialog
-  gameDialog[DIALOG_START]()
+
+  // always destroy dialog after conversation ends
   gameDialog[DIALOG_END_CALLBACKS].push(callback, () =>
     game_setDialog(game, null)
   )
+
+  // start the dialog
+  // gameDialog[DIALOG_START]()
+  dialog_start(gameDialog)
 }
 
 function game_setDialog(game, dialog = null) {
@@ -221,4 +227,8 @@ function game_pause(game) {
 
 function game_resume(game) {
   game[GAME_FLAG_DISABLE_MOVE] = false
+}
+
+function game_setMaze(game, maze) {
+  game[GAME_MAZE] = maze
 }

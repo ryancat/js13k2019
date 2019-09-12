@@ -183,7 +183,7 @@ function maze_generateMaze([
     colNum,
     rowNum
   )
-  debugger
+
   _maze_getAdjacentCells(cellIndex, colNum, rowNum).forEach(
     adjacentCellIndex => {
       if (adjacentCellIndex === -1) {
@@ -195,7 +195,6 @@ function maze_generateMaze([
     }
   )
 
-  debugger
   while (wallList.length) {
     const nextWallKey = wallList.splice(
       Math.floor(random[RANDOM_NEXT_FLOAT]() * wallList.length),

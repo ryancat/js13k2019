@@ -3,23 +3,6 @@ function castleHallIncident_factory(props) {
   return baseIncident_factory(props)
 }
 
-// function mg_generateMapData(mapProps) {
-//   const layers = _mg_generateMapLayers(
-//     util_assignArr(
-//       [
-//         DEFAULT_X,
-//         DEFAULT_Y,
-//         DEFAULT_COL_NUM,
-//         DEFAULT_ROW_NUM,
-//         [DOOR_BOTTOM],
-//         DEFAULT_TILE_WIDTH,
-//         DEFAULT_TILE_HEIGHT,
-//         [],
-//       ],
-//       mapProps
-//     )
-//   )
-
 function castleHallIncident_createMapData(incident) {
   const incidentGame = incident[INCIDENT_GAME]
   const incidentWidth =
@@ -75,8 +58,33 @@ function castleHallIncident_setCamera(incident) {
   camera_follow(incident[INCIDENT_GAME][GAME_CAMERA], playerSprite)
 }
 
-function castleHallIncident_bindEventCallback() {
-  // todo finish this
+function castleHallIncident_bindEventCallback(incident) {
+  const kingSprite = group_getSpriteById(
+    incident[INCIDENT_MAP_GROUP],
+    KING_SPRITE
+  )
+
+  const incidentGame = incident[INCIDENT_GAME]
+  const bottomDoorSprites = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    BOTTOM_DOOR_SPRITE
+  )
+  kingSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
+    if (!incidentGame[GAME_DIALOG]) {
+      // Only play conversation when there is no dialog right now
+      game_playConversation(
+        incidentGame,
+        conv_king(kingSprite, playerSprite),
+        () => {
+          // open the door
+          bottomDoorSprites.forEach(bottomDoorSprite => {
+            bottomDoorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+            bottomDoorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+          })
+        }
+      )
+    }
+  }
 }
 
 function castleHallIncident_handleDoors() {
@@ -136,3 +144,11 @@ function castleHallIncident_handlePlayerMove(incident, playerSprite, dt) {
 
   sprite_move(playerSprite, incidentGame[GAME_FLAG_DISABLE_MOVE])
 }
+
+// castleHallIncident_addSceneSprites(incident) {
+//   // const doorSceneProps = []
+//   // doorSceneProps[GROUP_TYPE] = GROUP_TYPE_SCENE
+//   // doorSceneProps[GROUP_RENDERER] = incident[INCIDENT_GAME][GAME_LAYERS][RENDERER_LAYER_MAIN]
+//   // const doorScene = group_factory(doorSceneProps)
+
+// }
