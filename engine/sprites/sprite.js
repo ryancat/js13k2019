@@ -92,10 +92,10 @@ function sprite_move(sprite, isDisableMove) {
   }
 
   sprite[SPRITE_X] += sprite[SPRITE_VX]
-  this.sprite_checkHitSprites(sprite)
+  sprite_checkHitSprites(sprite)
 
   sprite[SPRITE_Y] += sprite[SPRITE_VY]
-  this.sprite_checkHitSprites(sprite)
+  sprite_checkHitSprites(sprite)
 }
 
 function sprite_checkHitSprites(sprite) {

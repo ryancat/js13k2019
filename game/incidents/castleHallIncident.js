@@ -63,12 +63,19 @@ function castleHallIncident_bindEventCallback(incident) {
     incident[INCIDENT_MAP_GROUP],
     KING_SPRITE
   )
-
   const incidentGame = incident[INCIDENT_GAME]
   const bottomDoorSprites = group_getSpritesById(
     incident[INCIDENT_MAP_GROUP],
     BOTTOM_DOOR_SPRITE
   )
+
+  // Close the door when game starts
+  bottomDoorSprites.forEach(bottomDoorSprite => {
+    bottomDoorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+    bottomDoorSprite[SPRITE_HITTYPE] = HITTYPE_STOP
+  })
+
+  // Bind king sprite hit handler
   kingSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
     if (!incidentGame[GAME_DIALOG]) {
       // Only play conversation when there is no dialog right now
