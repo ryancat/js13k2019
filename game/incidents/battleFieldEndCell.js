@@ -120,6 +120,9 @@ function battleFieldIncident_playEndCell(incident) {
     PLAYER_SPRITE
   )
 
+  // Player reach end cell
+  playerSprite[SPRITE_STATE][PLAYER_FIGHT_BOSS] = true
+
   // When there are monsters
   const monsterSprites = group_getSpritesById(
     incident[INCIDENT_MAP_GROUP],
@@ -237,7 +240,7 @@ function battleFieldIncident_playEndCell(incident) {
 
               // Player go back to king
               playerSprite[SPRITE_STATE][PLAYER_FINISH_BOSS] = true
-              battleFieldEnd_playerGoBack(incident, playerSprite)
+              battleFieldIncident_playerGoBack(incident, playerSprite)
             }
           }
         }
@@ -283,7 +286,7 @@ function battleFieldIncident_playEndCell(incident) {
         JOHN_SPRITE
       )
 
-      if (johnSprite) {
+      if (johnSprite && johnSprite[SPRITE_NAME] === 'johnTheBadGuy') {
         johnSprite[SPRITE_STATE][SPRITE_IS_DISABLED] = true
       }
 

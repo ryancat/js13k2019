@@ -211,15 +211,20 @@ function baseIncident_setPlayerStatus(incident) {
   // TODO: move this to monster's dedicated function
   // We need to set monster states as well
   // Enable monsters
-  const badJohnSprites = group_getSpritesById(
+  const johnSprite = group_getSpriteById(
     incident[INCIDENT_MAP_GROUP],
     JOHN_SPRITE
-  ).filter(johnSprite => johnSprite[SPRITE_NAME] === 'johnTheBadGuy')
+  )
 
-  const allMonsterSprites = group_getSpritesById(
+  let allMonsterSprites = group_getSpritesById(
     incident[INCIDENT_MAP_GROUP],
     MONSTER_SPRITE
-  ).concat(badJohnSprites)
+  )
+
+  allMonsterSprites =
+    johnSprite && johnSprite[SPRITE_NAME] === 'johnTheBadGuy'
+      ? allMonsterSprites.concat([johnSprite])
+      : allMonsterSprites
 
   allMonsterSprites.forEach(monsterSprite => {
     monsterSprite[SPRITE_STATE][SPRITE_IS_DISABLED] = false
@@ -233,6 +238,17 @@ function baseIncident_setPlayerStatus(incident) {
       monsterSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
     )
   })
+
+  // piggy back john
+  if (
+    playerSprite[SPRITE_STATE][PLAYER_FIGHT_BOSS] &&
+    johnSprite &&
+    johnSprite[SPRITE_NAME] !== 'johnTheBadGuy'
+  ) {
+    // john shouldn't be here
+    johnSprite[SPRITE_OPACITY] = 0
+    johnSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+  }
 }
 
 function battleFieldIncident_update(incident, dt) {
