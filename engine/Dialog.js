@@ -56,15 +56,30 @@ function dialog_update(dialog, dt) {
   ])
 
   // draw dialog from character sprite
-  const dialogSpriteProps = [
-    activeContent[DIALOG_CONTENT_SPRITE][SPRITE_ID],
-    camera[CAMERA_X] + dialogX + gameObjectWidths[GAME_OBJ_WIDTH_S],
-    camera[CAMERA_Y] + dialogY - gameObjectHeights[GAME_OBJ_HEIGHT_S],
-    dialogWidth * 0.2,
-    dialogHeight - gameObjectHeights[GAME_OBJ_HEIGHT_XS],
-  ]
-  dialogSpriteProps[SPRITE_NAME] =
-    activeContent[DIALOG_CONTENT_SPRITE][SPRITE_NAME]
+  // const dialogSpriteProps = [
+  //   activeContent[DIALOG_CONTENT_SPRITE][SPRITE_ID],
+  //   camera[CAMERA_X] + dialogX + gameObjectWidths[GAME_OBJ_WIDTH_S],
+  //   camera[CAMERA_Y] + dialogY - gameObjectHeights[GAME_OBJ_HEIGHT_S],
+  //   dialogWidth * 0.2,
+  //   dialogHeight - gameObjectHeights[GAME_OBJ_HEIGHT_XS],
+  // ]
+  // dialogSpriteProps[SPRITE_NAME] =
+  //   activeContent[DIALOG_CONTENT_SPRITE][SPRITE_NAME]
+  // dialogSpriteProps[SPRITE_BACKGROUND_COLOR] = activeContent[DIALOG_CONTENT_SPRITE][SPRITE_BACKGROUND_COLOR]
+
+  const dialogSpriteProps = util_assignArr(
+    [],
+    activeContent[DIALOG_CONTENT_SPRITE]
+  )
+  dialogSpriteProps[SPRITE_X] =
+    camera[CAMERA_X] + dialogX + gameObjectWidths[GAME_OBJ_WIDTH_S]
+  dialogSpriteProps[SPRITE_Y] =
+    camera[CAMERA_Y] + dialogY - gameObjectHeights[GAME_OBJ_HEIGHT_S]
+  dialogSpriteProps[SPRITE_WIDTH] = dialogWidth * 0.2
+  dialogSpriteProps[SPRITE_HEIGHT] =
+    dialogHeight - gameObjectHeights[GAME_OBJ_HEIGHT_XS]
+  dialogSpriteProps[SPRITE_STATE] = []
+
   sprite_render(
     // create sprite for dialog
     game_getSpriteFactory(

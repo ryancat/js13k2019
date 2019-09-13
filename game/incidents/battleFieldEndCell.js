@@ -15,6 +15,8 @@ function battleFieldIncident_createEndCell(incident) {
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
   const playerStatus = incident[INCIDENT_PLAYER_STATUS]
+  const playerWidth = gameObjectWidths[GAME_OBJ_WIDTH_M]
+  const playerHeight = gameObjectHeights[GAME_OBJ_WIDTH_L]
   const mapObjects = [
     // player object
     [
@@ -83,12 +85,12 @@ function battleFieldIncident_createEndCell(incident) {
       monsterHeight, // height
       Math.floor(
         tileWidth +
-          (incidentWidth - tileWidth * 2 - monsterWidth) *
+          (incidentWidth - tileWidth * 2 - monsterWidth - playerWidth) *
             random[RANDOM_NEXT_FLOAT]()
       ), // x
       Math.floor(
         tileHeight * 3 +
-          (incidentHeight - tileHeight * 6 - monsterHeight) *
+          (incidentHeight - tileHeight * 6 - monsterHeight - playerHeight) *
             random[RANDOM_NEXT_FLOAT]()
       ), // y
       ,
@@ -197,21 +199,23 @@ function battleFieldIncident_playEndCell(incident) {
                 incidentGame,
                 conv_john(johnSprite, playerSprite, incident),
                 () => {
-                  sprite_continueAttack(
-                    johnSprite,
-                    playerSprite,
-                    incident,
-                    BULLET_SPRITE_BOSS,
-                    johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
-                  )
+                  setTimeout(() => {
+                    sprite_continueAttack(
+                      johnSprite,
+                      playerSprite,
+                      incident,
+                      BULLET_SPRITE_BOSS,
+                      johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
+                    )
 
-                  sprite_continueAttack(
-                    johnSprite,
-                    null,
-                    incident,
-                    BULLET_SPRITE_BOSS,
-                    johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
-                  )
+                    sprite_continueAttack(
+                      johnSprite,
+                      null,
+                      incident,
+                      BULLET_SPRITE_BOSS,
+                      johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
+                    )
+                  }, 1000)
                 }
               )
             }

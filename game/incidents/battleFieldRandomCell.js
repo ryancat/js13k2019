@@ -10,12 +10,14 @@ function battleFieldIncident_createRandomCell(incident) {
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
   const playerStatus = incident[INCIDENT_PLAYER_STATUS]
+  const playerWidth = gameObjectWidths[GAME_OBJ_WIDTH_M]
+  const playerHeight = gameObjectHeights[GAME_OBJ_WIDTH_L]
   const mapObjects = [
     // player object
     [
       PLAYER_SPRITE, // object id
-      gameObjectWidths[GAME_OBJ_WIDTH_M], // width
-      gameObjectHeights[GAME_OBJ_WIDTH_L], // height
+      playerWidth, // width
+      playerHeight, // height
       0, // the x will be set after enter map
       0, // the y will be set after enter map
       GAME_PLAYER_NAME, // player (default) name,
@@ -84,12 +86,12 @@ function battleFieldIncident_createRandomCell(incident) {
           monsterHeight, // height
           Math.floor(
             tileWidth +
-              (incidentWidth - tileWidth * 2 - monsterWidth) *
+              (incidentWidth - tileWidth * 2 - monsterWidth - playerWidth) *
                 random[RANDOM_NEXT_FLOAT]()
           ), // x
           Math.floor(
             tileHeight * 3 +
-              (incidentHeight - tileHeight * 6 - monsterHeight) *
+              (incidentHeight - tileHeight * 6 - monsterHeight - playerHeight) *
                 random[RANDOM_NEXT_FLOAT]()
           ), // y
           ,
