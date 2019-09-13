@@ -286,10 +286,27 @@ function sprite_hitSprites(sprite, otherSprites = []) {
   }
 
   const finalHitSprite = finalHitSpriteResult[0]
-  sprite_getHitMoveCallback(sprite, finalHitSprite[SPRITE_HITTYPE])(
-    sprite,
-    finalHitSpriteResult
-  )
+
+  // Special case: let monster pass the door freely
+  if (
+    sprite[SPRITE_ID] !== MONSTER_SPRITE ||
+    [
+      TOP_DOOR_SPRITE,
+      RIGHT_DOOR_SPRITE,
+      BOTTOM_DOOR_SPRITE,
+      LEFT_DOOR_SPRITE,
+    ].indexOf(finalHitSprite[SPRITE_ID]) === -1
+  ) {
+    sprite_getHitMoveCallback(sprite, finalHitSprite[SPRITE_HITTYPE])(
+      sprite,
+      finalHitSpriteResult
+    )
+  }
+
+  // sprite_getHitMoveCallback(sprite, finalHitSprite[SPRITE_HITTYPE])(
+  //   sprite,
+  //   finalHitSpriteResult
+  // )
 
   // update current sprite after process movement
   if (sprite[SPRITE_HITTYPE] === HITTYPE_GONE) {

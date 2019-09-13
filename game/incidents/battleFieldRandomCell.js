@@ -86,13 +86,27 @@ function battleFieldIncident_createRandomCell(incident) {
           monsterHeight, // height
           Math.floor(
             tileWidth +
-              (incidentWidth - tileWidth * 2 - monsterWidth - playerWidth) *
-                random[RANDOM_NEXT_FLOAT]()
+              Math.max(
+                0,
+                (incidentWidth -
+                  tileWidth * 2 -
+                  monsterWidth -
+                  playerWidth -
+                  tileWidth) *
+                  random[RANDOM_NEXT_FLOAT]()
+              )
           ), // x
           Math.floor(
             tileHeight * 3 +
-              (incidentHeight - tileHeight * 6 - monsterHeight - playerHeight) *
-                random[RANDOM_NEXT_FLOAT]()
+              Math.max(
+                0,
+                (incidentHeight -
+                  tileHeight * 6 -
+                  monsterHeight -
+                  playerHeight -
+                  tileHeight) *
+                  random[RANDOM_NEXT_FLOAT]()
+              )
           ), // y
           ,
           monsterProps,

@@ -8,30 +8,21 @@ function conv_john(johnSprite, playerSprite, incident) {
       [playerSprite, '...'],
       [johnSprite, 'Wait! Is it gem of ice?'],
       [playerSprite, '(What is that)...'],
+      [johnSprite, 'Oh, it must be gem of fire! I.. the king needs them!'],
+      [playerSprite, 'Who are you, may I ask?'],
+      [johnSprite, "Well, I am a helper! I am also king's clostest friend."],
       [
         johnSprite,
-        'Oh, it must be gem of fire then! You have a long way to go, my friend!',
+        'The land of gems is no more. The monsters have taken all the gems!',
       ],
-      [playerSprite, 'Why do you say that?'],
-      [
-        johnSprite,
-        'Well... You are not the first warrior come here. Definitely not the last one.',
-      ],
-      [
-        johnSprite,
-        'The land of gems is not what it used to be. The monsters have taken all the gems!',
-      ],
-      [johnSprite, 'They say the gem of fire will give you strength...'],
-      [johnSprite, 'the gem of ice will give you dexterity...'],
-      [johnSprite, 'and the gem of light will give you wisdom!'],
       [johnSprite, 'Bring back the gems to me... err, the king!'],
       [
         johnSprite,
-        'Remember! You cannot pass the doors unless all the monsters are cleard in that room!',
+        'Remember! You cannot pass the doors when mosters have taken the room!',
       ],
       [
         johnSprite,
-        'I have cleared this room for you. You are welcome! Now the doors are opened!',
+        'I have cleared this one for you. You are welcome! Now the doors are opened!',
         ,
         () => {
           const incidentGame = incident[INCIDENT_GAME]
