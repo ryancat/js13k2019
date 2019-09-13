@@ -20,7 +20,8 @@ function battleFieldIncident_createRandomCell(incident) {
     ],
   ]
 
-  if (!playerStatus[PLAYER_JOHN_INTRODUCED]) {
+  if (!playerStatus[PLAYER_JOHN_MEET]) {
+    playerStatus[PLAYER_JOHN_MEET] = true
     // First we must meet John
     const johnProps = []
     johnProps[SPRITE_HITTYPE] = HITTYPE_STOP
@@ -70,16 +71,18 @@ function battleFieldIncident_playRandomCell(incident) {
     incident[INCIDENT_MAP_GROUP],
     incident[INCIDENT_DOORS].map(doorId => incidentGame[GAME_DOORS][doorId])
   )
+  const playerSprite = group_getSpriteById(
+    incident[INCIDENT_MAP_GROUP],
+    PLAYER_SPRITE
+  )
   const playerStatus = incident[INCIDENT_PLAYER_STATUS]
 
-  if (!playerStatus[PLAYER_JOHN_INTRODUCED]) {
+  const johnSprite = group_getSpriteById(
+    incident[INCIDENT_MAP_GROUP],
+    JOHN_SPRITE
+  )
+  if (johnSprite && !playerStatus[PLAYER_JOHN_INTRODUCED]) {
     playerStatus[PLAYER_JOHN_INTRODUCED] = true
-
-    const johnSprite = group_getSpriteById(
-      incident[INCIDENT_MAP_GROUP],
-      JOHN_SPRITE
-    )
-
     // Bind king sprite hit handler
     johnSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
       if (playerSprite[SPRITE_ID] !== PLAYER_SPRITE) {
@@ -103,19 +106,21 @@ function battleFieldIncident_playRandomCell(incident) {
       }
     }
   } else {
-    if (!playerStatus[PLAYER_MEET_FIRST_MONSTER]) {
-      playerStatus[PLAYER_MEET_FIRST_MONSTER] = true
-      const playerSprite = group_getSpriteById(
-        incident[INCIDENT_MAP_GROUP],
-        PLAYER_SPRITE
-      )
-      const monsterSprite = group_getSpriteById(
-        incident[INCIDENT_MAP_GROUP],
-        MONSTER_SPRITE
-      )
+    // When there are monsters
+    const monsterSprites = group_getSpritesById(
+      incident[INCIDENT_MAP_GROUP],
+      MONSTER_SPRITE
+    )
+    let monsterNum = monsterSprites.length
+    if (monsterNum <= 0) {
+      // all monster cleared. Open the door
+      doorSprites.forEach(doorSprite => {
+        doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+        doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+      })
+    }
 
-      console.log(monsterSprite)
-
+    monsterSprites.forEach(monsterSprite => {
       // monster would attack!
       sprite_continueAttack(
         monsterSprite,
@@ -123,6 +128,50 @@ function battleFieldIncident_playRandomCell(incident) {
         incident,
         BULLET_SPRITE_ENEMY
       )
+    })
+
+    monsterSprites.forEach(monsterSprite => {
+      // monster will take damage
+      monsterSprite[SPRITE_HIT_CALLBACK] = spriteHitMonster => {
+        switch (spriteHitMonster[SPRITE_ID]) {
+          case BULLET_SPRITE:
+            // regular bullet hit monster
+            // reduce one HP
+            monsterSprite[SPRITE_STATE][SPRITE_HP]--
+            break
+        }
+
+        if (monsterSprite[SPRITE_STATE][SPRITE_HP] < 0) {
+          // monster died
+          sprite_destroy(monsterSprite)
+          monsterNum--
+        }
+
+        if (monsterNum <= 0) {
+          // all monster cleared. Open the door
+          doorSprites.forEach(doorSprite => {
+            doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+            doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+          })
+        }
+      }
+    })
+  }
+
+  // Player will take damage
+  playerSprite[SPRITE_HIT_CALLBACK] = spriteHitPlayer => {
+    switch (spriteHitPlayer[SPRITE_ID]) {
+      case MONSTER_SPRITE:
+        // regular monster touch me
+        // reduce one HP
+        playerSprite[SPRITE_STATE][SPRITE_HP] -= 0.1
+        break
+
+      case BULLET_SPRITE_ENEMY:
+        // regular monster hit me
+        // reduce one HP
+        playerSprite[SPRITE_STATE][SPRITE_HP]--
+        break
     }
   }
 }

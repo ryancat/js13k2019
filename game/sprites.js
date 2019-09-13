@@ -61,27 +61,23 @@ function sprites_init(game) {
     })
   })
 
-  const playerColor = PALETTE_BROWN[2]
   game_addSprite(game, PLAYER_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = PLAYER_SPRITE
     defaultProps[SPRITE_NAME] = 'player'
-    defaultProps[SPRITE_BACKGROUND_COLOR] = playerColor
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BROWN[2]
+    defaultProps[SPRITE_BORDER_COLOR] = PALETTE_BROWN[3]
     defaultProps[SPRITE_SHOW_NAME] = true
     defaultProps[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
     defaultProps[SPRITE_HITTYPE] = HITTYPE_STOP
+    defaultProps[SPRITE_STATE] = []
+    defaultProps[SPRITE_STATE][SPRITE_HP] = 10
+    defaultProps[SPRITE_STATE][SPRITE_HP_MAX] = 10
     const playerSprite = sprite_factory(util_assignArr(defaultProps, props))
 
     // set player max speed (per 1 ms)
     playerSprite[SPRITE_VMAX] = playerSprite[SPRITE_WIDTH] / 4
     return playerSprite
-  })
-
-  game_addSprite(game, PLAYER_DIALOG_SPRITE, props => {
-    const defaultProps = []
-    defaultProps[SPRITE_ID] = PLAYER_DIALOG_SPRITE
-    defaultProps[SPRITE_BACKGROUND_COLOR] = playerColor
-    return sprite_factory(util_assignArr(defaultProps, props))
   })
 
   const kingColor = PALETTE_BLUE[2]
@@ -103,11 +99,15 @@ function sprites_init(game) {
   game_addSprite(game, MONSTER_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = MONSTER_SPRITE
-    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[2]
+    defaultProps[SPRITE_BORDER_COLOR] = PALETTE_RED[3]
+    defaultProps[SPRITE_STATE] = []
+    defaultProps[SPRITE_STATE][SPRITE_HP] = 6
+    defaultProps[SPRITE_STATE][SPRITE_HP_MAX] = 6
     const monsterSprite = sprite_factory(util_assignArr(defaultProps, props))
 
     // set monster max speed (per 1 ms)
-    monsterSprite[SPRITE_VMAX] = monsterSprite[SPRITE_WIDTH] / 8
+    monsterSprite[SPRITE_VMAX] = monsterSprite[SPRITE_WIDTH] / 16
 
     return monsterSprite
   })

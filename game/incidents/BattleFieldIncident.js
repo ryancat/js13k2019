@@ -162,7 +162,7 @@ function baseIncident_setPlayerStatus(incident) {
     incident[INCIDENT_MAP_GROUP],
     PLAYER_SPRITE
   )
-  playerSprite[SPRITE_STATE] = incident[INCIDENT_PLAYER_STATUS]
+  util_assignArr(playerSprite[SPRITE_STATE], incident[INCIDENT_PLAYER_STATUS])
   const playerFromDoor = playerSprite[SPRITE_STATE][PLAYER_FROM_DOOR]
   const incidentGame = incident[INCIDENT_GAME]
   const incidentWidth =
@@ -212,6 +212,7 @@ function battleFieldIncident_update(incident, dt) {
   // player move and attack
   battleFieldIncident_handlePlayerMove(incident, playerSprite, dt)
   battleFieldIncident_handlePlayerAttack(incident, playerSprite, dt)
+  battleFieldIncident_handlePlayerState(incident, playerSprite, dt)
 
   // monster move
   battleFieldIncident_handleMonstersMove(incident, dt)
@@ -277,6 +278,8 @@ function battleFieldIncident_handlePlayerAttack(incident, playerSprite) {
     sprite_move(bulletSprite, incidentGame[GAME_FLAG_DISABLE_MOVE])
   })
 }
+
+function battleFieldIncident_handlePlayerState(incident, playerSprite) {}
 
 function battleFieldIncident_handleMonstersMove(incident) {
   const playerSprite = group_getSpriteById(

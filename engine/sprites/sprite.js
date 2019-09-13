@@ -81,12 +81,44 @@ function sprite_render(sprite, dt, camera, renderer) {
     return
   }
 
+  // Assume all sprite rect will respect HP
+  let spriteHpY = transformY
+  let spriteHpHeight = sprite[SPRITE_HEIGHT]
+  let spriteOpacity = sprite[SPRITE_OPACITY]
+  const spriteHp = sprite[SPRITE_STATE][SPRITE_HP]
+  const spriteHpMax = sprite[SPRITE_STATE][SPRITE_HP_MAX]
+
+  if (typeof spriteHp === 'number') {
+    // Sprite has HP
+    if (spriteHp > 0) {
+      spriteHpHeight = Math.max(
+        0,
+        (sprite[SPRITE_HEIGHT] * spriteHp) / spriteHpMax
+      )
+      spriteHpY = transformY + sprite[SPRITE_HEIGHT] - spriteHpHeight
+
+      // Render HP box
+      renderer_drawRect(renderer, [
+        transformX, // x
+        spriteHpY, // y
+        sprite[SPRITE_WIDTH], // width
+        spriteHpHeight, // height
+        sprite[SPRITE_OPACITY], // globalAlpha
+        !!sprite[SPRITE_BACKGROUND_COLOR], // is fill
+        !!sprite[SPRITE_BORDER_COLOR], // is stroke
+        sprite[SPRITE_BACKGROUND_COLOR], // fill
+        sprite[SPRITE_BORDER_COLOR], // stroke
+      ])
+    }
+    spriteOpacity = 0.4
+  }
+
   renderer_drawRect(renderer, [
     transformX, // x
     transformY, // y
     sprite[SPRITE_WIDTH], // width
     sprite[SPRITE_HEIGHT], // height
-    sprite[SPRITE_OPACITY], // globalAlpha
+    spriteOpacity, // globalAlpha
     !!sprite[SPRITE_BACKGROUND_COLOR], // is fill
     !!sprite[SPRITE_BORDER_COLOR], // is stroke
     sprite[SPRITE_BACKGROUND_COLOR], // fill
@@ -394,6 +426,11 @@ function sprite_continueAttack(
   bulletSpriteId,
   maxInterval = 2000
 ) {
+  if (sprite[SPRITE_STATE][SPRITE_HP] < 0) {
+    // Cannot attach when it's dead
+    return
+  }
+
   sprite_attack(sprite, targetSprite, incident, bulletSpriteId)
 
   setTimeout(() => {
