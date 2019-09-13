@@ -83,6 +83,11 @@ function battleFieldIncident_playRandomCell(incident) {
 
     // Bind king sprite hit handler
     johnSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
+      if (playerSprite[SPRITE_ID] !== PLAYER_SPRITE) {
+        // Only player can hit john
+        return
+      }
+
       if (!incidentGame[GAME_DIALOG]) {
         // Only play conversation when there is no dialog right now
         game_playConversation(

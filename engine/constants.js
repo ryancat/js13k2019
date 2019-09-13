@@ -205,6 +205,7 @@ const [
   SPRITE_LAYER_GROUP,
   SPRITE_STATE,
   SPRITE_DIALOG_SPRITE_ID,
+  SPRITE_PARENT,
 ] = [
   0,
   1,
@@ -231,6 +232,7 @@ const [
   22,
   23,
   24,
+  25,
 ]
 
 // group
@@ -245,7 +247,8 @@ const [
   GROUP_MAP_GROUP,
   GROUP_RENDERER,
   GROUP_LAYER_NAME,
-] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  GROUP_PARENT,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 // map layer
 const [
@@ -331,4 +334,4 @@ const [
 const [GROUP_TYPE_MAP, GROUP_TYPE_LAYER, GROUP_TYPE_BULLETS] = [0, 1, 2]
 const BASE_INCIDENT = 0
 const [SPRITE_TYPE_TILE, SPRITE_TYPE_OBJECT] = [0, 1]
-const [HITTYPE_PASS, HITTYPE_STOP] = [0, 1]
+const [HITTYPE_PASS, HITTYPE_STOP, HITTYPE_GONE] = [0, 1, 2]

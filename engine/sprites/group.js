@@ -9,7 +9,8 @@
 //   GROUP_MAP_GROUP,
 //   GROUP_RENDERER,
 //   GROUP_LAYER_NAME
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+//   GROUP_PARENT
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 function group_factory(props = []) {
   return util_assignArr(['', 32, 32, 0, 0, [], [], [], [], -1], props)
@@ -20,6 +21,8 @@ function group_addLayerGroup(group, layerGroup) {
   if (layerGroups.indexOf(layerGroup) === -1) {
     layerGroups.push(layerGroup)
   }
+
+  layerGroup[GROUP_PARENT] = group
 }
 
 function group_addSprite(group, sprite = []) {
@@ -27,6 +30,8 @@ function group_addSprite(group, sprite = []) {
   if (children.indexOf(sprite) === -1) {
     children.push(sprite)
   }
+
+  sprite[SPRITE_PARENT] = group
 }
 
 function group_clear(group, dt) {

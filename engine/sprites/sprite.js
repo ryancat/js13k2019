@@ -24,7 +24,8 @@
 //   SPRITE_LAYER_GROUP,
 //   SPRITE_STATE,
 //   SPRITE_DIALOG_SPRITE_ID
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+//   SPRITE_PARENT
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 
 function sprite_factory(props = []) {
   return util_assignArr(
@@ -54,6 +55,7 @@ function sprite_factory(props = []) {
       [],
       [],
       -1,
+      [],
     ],
     props
   )
@@ -236,6 +238,11 @@ function sprite_hitSprites(sprite, otherSprites = []) {
     finalHitSpriteResult
   )
 
+  // update current sprite after process movement
+  if (sprite[SPRITE_HITTYPE] === HITTYPE_GONE) {
+    sprite_destroy(sprite)
+  }
+
   // The hitten sprite need to react too
   finalHitSprite[SPRITE_HIT_CALLBACK](sprite)
 
@@ -330,15 +337,21 @@ function sprite_hitMoveStop(sprite, finalHitSpriteResult) {
   }
 }
 
+function sprite_hitMoveGone(sprite, finalHitSpriteResult) {
+  const [finalHitSprite, hitValue, hitDirection] = finalHitSpriteResult
+  // sprite[SPRITE_VX] = 0
+  // sprite[SPRITE_VY] = 0
+
+  sprite_destroy(sprite)
+}
+
+function sprite_destroy(sprite) {
+  const parentGroupChildren = sprite[SPRITE_PARENT][GROUP_CHILDREN]
+  parentGroupChildren.splice(parentGroupChildren.indexOf(sprite), 1)
+}
+
 function sprite_attack(sprite, incident, bulletSpriteId) {
   const incidentBulletGroup = incident[INCIDENT_BULLETS_GROUP]
-
-  // const bulletSprite = sprite_factory([
-  //   bulletSpriteId,
-  //   sprite[SPRITE_X],
-  //   sprite[SPRITE_Y],
-  // ])
-
   const bulletSprite = game_getSpriteFactory(
     incident[INCIDENT_GAME],
     bulletSpriteId
@@ -356,6 +369,8 @@ function sprite_attack(sprite, incident, bulletSpriteId) {
 
   // Bullets are not the default tile sprite
   bulletSprite[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
+  bulletSprite[SPRITE_MAP_GROUP] = incident[INCIDENT_MAP_GROUP]
+  bulletSprite[SPRITE_HITTYPE] = HITTYPE_GONE
 
   // Add the attack bullet in the bullets array
   group_addSprite(incidentBulletGroup, bulletSprite)

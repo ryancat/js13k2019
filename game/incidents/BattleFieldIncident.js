@@ -80,6 +80,11 @@ function battleFieldIncident_bindEventCallback(incident) {
   // Bind door hit handler
   doorSprites.forEach(doorSprite => {
     doorSprite[SPRITE_HIT_CALLBACK] = playerSprite => {
+      if (playerSprite[SPRITE_ID] !== PLAYER_SPRITE) {
+        // Only player can hit door
+        return
+      }
+
       if (doorSprite[SPRITE_HITTYPE] !== HITTYPE_PASS) {
         // cannot pass yet
         return
