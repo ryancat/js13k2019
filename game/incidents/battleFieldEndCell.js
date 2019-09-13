@@ -40,7 +40,7 @@ function battleFieldIncident_createEndCell(incident) {
     gameObjectHeights[GAME_OBJ_WIDTH_XL], // height
     Math.round((incidentWidth - GAME_OBJ_WIDTH_L) / 2), // x
     Math.round((incidentHeight - GAME_OBJ_WIDTH_XL) / 2), // y
-    '',
+    ,
     monsterProps,
   ])
 
@@ -68,7 +68,7 @@ function battleFieldIncident_createEndCell(incident) {
       Math.floor(
         (incidentHeight - monsterHeight) * random[RANDOM_NEXT_FLOAT]()
       ), // y
-      '',
+      ,
       monsterProps,
     ])
   }

@@ -32,7 +32,7 @@ function battleFieldIncident_createRandomCell(incident) {
       gameObjectHeights[GAME_OBJ_WIDTH_L], // height
       Math.round((incidentWidth - GAME_OBJ_WIDTH_M) / 3), // x
       Math.round((incidentHeight - GAME_OBJ_WIDTH_L) / 3), // y
-      'John',
+      ,
       johnProps,
     ])
   } else {
@@ -47,7 +47,7 @@ function battleFieldIncident_createRandomCell(incident) {
         gameObjectHeights[GAME_OBJ_WIDTH_L], // height
         Math.round((incidentWidth - GAME_OBJ_WIDTH_M) / 2), // x
         Math.round((incidentHeight - GAME_OBJ_WIDTH_L) / 2), // y
-        '',
+        ,
         monsterProps,
       ])
     } else {
@@ -80,7 +80,7 @@ function battleFieldIncident_createRandomCell(incident) {
           Math.floor(
             (incidentHeight - monsterHeight) * random[RANDOM_NEXT_FLOAT]()
           ), // y
-          '',
+          ,
           monsterProps,
         ])
       }

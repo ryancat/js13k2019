@@ -25,8 +25,8 @@ function battleFieldIncident_createStartCell(incident) {
         gameObjectWidths[GAME_OBJ_WIDTH_M], // width
         gameObjectHeights[GAME_OBJ_WIDTH_L], // height
         Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
-        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 4), // y
-        GAME_KING_NAME, // king's name,
+        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 4), // y // king's name,
+        ,
         kingSpriteProps,
       ],
       // player object
@@ -35,8 +35,8 @@ function battleFieldIncident_createStartCell(incident) {
         gameObjectWidths[GAME_OBJ_WIDTH_M], // width
         gameObjectHeights[GAME_OBJ_WIDTH_L], // height
         Math.floor((incidentWidth - gameObjectWidths[GAME_OBJ_WIDTH_M]) / 2), // x
-        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 2), // y
-        GAME_PLAYER_NAME, // player (default) name,
+        Math.floor((incidentHeight - gameObjectHeights[GAME_OBJ_HEIGHT_L]) / 2), // y // player (default) name,
+        ,
       ],
     ],
   ])

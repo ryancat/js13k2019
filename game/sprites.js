@@ -85,6 +85,8 @@ function sprites_init(game) {
   game_addSprite(game, KING_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = KING_SPRITE
+    defaultProps[SPRITE_NAME] = 'realKing!'
+    defaultProps[SPRITE_SHOW_NAME] = true
     defaultProps[SPRITE_BACKGROUND_COLOR] = kingColor
     return sprite_factory(util_assignArr(defaultProps, props))
   })
@@ -93,13 +95,31 @@ function sprites_init(game) {
   game_addSprite(game, JOHN_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = JOHN_SPRITE
+    defaultProps[SPRITE_NAME] = 'johnTheGoodGuy'
+    defaultProps[SPRITE_SHOW_NAME] = true
     defaultProps[SPRITE_BACKGROUND_COLOR] = johnColor
     return sprite_factory(util_assignArr(defaultProps, props))
   })
 
+  const monsterNames = [
+    'chupacabra',
+    'snallygaster',
+    'werewolf',
+    'hodag',
+    'dybbuk',
+    'tommy-knocker',
+    'sasquatch',
+    'nix',
+    'guytrash',
+  ]
   game_addSprite(game, MONSTER_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = MONSTER_SPRITE
+    defaultProps[SPRITE_NAME] =
+      monsterNames[
+        Math.floor(monsterNames.length * random[RANDOM_NEXT_FLOAT]())
+      ]
+    defaultProps[SPRITE_SHOW_NAME] = true
     defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[2]
     defaultProps[SPRITE_BORDER_COLOR] = PALETTE_RED[3]
     defaultProps[SPRITE_STATE] = []

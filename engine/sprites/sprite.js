@@ -124,6 +124,19 @@ function sprite_render(sprite, dt, camera, renderer) {
     sprite[SPRITE_BACKGROUND_COLOR], // fill
     sprite[SPRITE_BORDER_COLOR], // stroke
   ])
+
+  if (sprite[SPRITE_SHOW_NAME]) {
+    // Will show name on top of character
+    renderer_drawText(renderer, [
+      transformX + sprite[SPRITE_WIDTH] / 2,
+      transformY,
+      'center',
+      'bottom',
+      sprite[SPRITE_NAME],
+      16,
+      sprite[SPRITE_BACKGROUND_COLOR],
+    ])
+  }
 }
 
 function sprite_move(sprite, isDisableMove) {
