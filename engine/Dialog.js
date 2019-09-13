@@ -24,11 +24,11 @@ function dialog_update(dialog, dt) {
   let activeContent =
     dialog[DIALOG_CONTENTS][dialog[DIALOG_ACTIVE_CONTENT_INDEX]]
 
-  if (typeof activeContent === 'string') {
-    const dialogContentProp = []
-    dialogContentProp[DIALOG_CONTENT_CONTENT] = activeContent
-    activeContent = dialogContent_factory(dialogContentProp)
-  }
+  // if (typeof activeContent === 'string') {
+  //   const dialogContentProp = []
+  //   dialogContentProp[DIALOG_CONTENT_CONTENT] = activeContent
+  //   activeContent = dialogContent_factory(dialogContentProp)
+  // }
 
   dialog_clear(dialog)
 
@@ -56,15 +56,21 @@ function dialog_update(dialog, dt) {
   ])
 
   // draw dialog from character sprite
+  const dialogSpriteProps = [
+    activeContent[DIALOG_CONTENT_SPRITE][SPRITE_ID],
+    camera[CAMERA_X] + dialogX + gameObjectWidths[GAME_OBJ_WIDTH_S],
+    camera[CAMERA_Y] + dialogY - gameObjectHeights[GAME_OBJ_HEIGHT_S],
+    dialogWidth * 0.2,
+    dialogHeight - gameObjectHeights[GAME_OBJ_HEIGHT_XS],
+  ]
+  dialogSpriteProps[SPRITE_NAME] =
+    activeContent[DIALOG_CONTENT_SPRITE][SPRITE_NAME]
   sprite_render(
     // create sprite for dialog
-    game_getSpriteFactory(game, activeContent[DIALOG_CONTENT_FROM_SPRITE_ID])([
-      activeContent[DIALOG_CONTENT_FROM_SPRITE_ID],
-      camera[CAMERA_X] + dialogX + gameObjectWidths[GAME_OBJ_WIDTH_S],
-      camera[CAMERA_Y] + dialogY - gameObjectHeights[GAME_OBJ_HEIGHT_S],
-      dialogWidth * 0.2,
-      dialogHeight - gameObjectHeights[GAME_OBJ_HEIGHT_XS],
-    ]),
+    game_getSpriteFactory(
+      game,
+      activeContent[DIALOG_CONTENT_SPRITE][SPRITE_ID]
+    )(dialogSpriteProps),
     dt,
     game[GAME_CAMERA],
     dialog[DIALOG_RENDERER]

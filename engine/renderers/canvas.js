@@ -96,12 +96,14 @@ function renderer_drawText(renderer, drawProps = []) {
     text = 'PLACE_HOLDER',
     fontSize = '16',
     color = 'black',
+    opacity = 1,
   ] = drawProps
 
   const context = renderer[RENDERER_CONTEXT]
   context.save()
   context.font = `${fontSize}px serif`
   context.fillStyle = color
+  context.globalAlpha = opacity
   context.textAlign = align
   context.textBaseline = baseline
   context.fillText(text, x, y)

@@ -1,42 +1,39 @@
 function conv_john(johnSprite, playerSprite, incident) {
-  const johnSpriteId = johnSprite[SPRITE_ID]
-  const playerSpriteId = playerSprite[SPRITE_ID]
-
   if (!johnSprite[SPRITE_CONVERSATION_STATES][0]) {
     johnSprite[SPRITE_CONVERSATION_STATES][0] = true
     return [
-      [johnSpriteId, 'Yes?'],
-      [playerSpriteId, 'I...'],
-      [johnSpriteId, 'Let me guess! You are looking for the gem of light?'],
-      [playerSpriteId, 'Actually...'],
-      [johnSpriteId, 'Wait! Is it gem of ice?'],
-      [playerSpriteId, '(Sigh) Nope.'],
+      [johnSprite, 'Yes?'],
+      [playerSprite, 'I...'],
+      [johnSprite, 'Let me guess! You are looking for the gem of light?'],
+      [playerSprite, 'Actually...'],
+      [johnSprite, 'Wait! Is it gem of ice?'],
+      [playerSprite, '(Sigh) Nope.'],
       [
-        johnSpriteId,
+        johnSprite,
         'Oh, it must be gem of fire then! You have a long way to go, my friend!',
       ],
-      [playerSpriteId, 'Why do you say that?'],
+      [playerSprite, 'Why do you say that?'],
       [
-        johnSpriteId,
+        johnSprite,
         'Well... You are not the first warrior come here. Definitely not the last one.',
       ],
       [
-        johnSpriteId,
+        johnSprite,
         'The land of three gems is not what it used to be. The dragons have taken all the three gems!',
       ],
-      [johnSpriteId, 'They say the gem of fire will give you strength...'],
-      [johnSpriteId, 'the gem of ice will give you dexterity...'],
-      [johnSpriteId, 'and the gem of light will give you wisdom!'],
+      [johnSprite, 'They say the gem of fire will give you strength...'],
+      [johnSprite, 'the gem of ice will give you dexterity...'],
+      [johnSprite, 'and the gem of light will give you wisdom!'],
       [
-        johnSpriteId,
+        johnSprite,
         'Each gem is protected by a powerful dragon, and they are stronger than all the other monsters out there!',
       ],
       [
-        johnSpriteId,
+        johnSprite,
         'Remember! You cannot pass the doors unless all the monsters are cleard in that room!',
       ],
       [
-        johnSpriteId,
+        johnSprite,
         'I have cleared this room for you. You are welcome! Now the doors are opened!',
         ,
         () => {
@@ -54,14 +51,57 @@ function conv_john(johnSprite, playerSprite, incident) {
         },
       ],
       [
-        johnSpriteId,
+        johnSprite,
         'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south',
+      ],
+    ].map(dialogContent_factory)
+  } else if (johnSprite[SPRITE_CONVERSATION_STATES][1]) {
+    johnSprite[SPRITE_CONVERSATION_STATES][1] = false
+    return [
+      [johnSprite, 'You KILL the dragon king! That never happened!!'],
+      [playerSprite, 'It was... easy.'],
+      [johnSprite, 'Ok, that was not expected...'],
+      [
+        playerSprite,
+        'You are welcome! Now, where is the gems? I was told to bring them back.',
+      ],
+      [johnSprite, '...'],
+      [playerSprite, 'John...?'],
+      [johnSprite, '...'],
+      [playerSprite, "John... John, are you ok? You don't look good."],
+      [
+        johnSprite,
+        'I am sorry, my friend, but you are not going to leave here',
+        PALETTE_RED[3],
+        () => {
+          johnSprite[SPRITE_NAME] = 'johnTheBadGuy'
+          johnSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[4]
+          johnSprite[SPRITE_BORDER_COLOR] = PALETTE_RED[4]
+          johnSprite[SPRITE_STATE][SPRITE_HP] = 10
+          johnSprite[SPRITE_STATE][SPRITE_HP_MAX] = 50
+          johnSprite[SPRITE_STATE][SPRITE_DAMAGE] = 3
+          johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE] = 200
+        },
+      ],
+      [playerSprite, 'What...!?'],
+      [
+        johnSprite,
+        'I took the gems! I am the richest person in the world, but I must hide that from the king!',
+      ],
+      [
+        johnSprite,
+        'The gems bring me everything, but I want more... I want the throne! I want to be the new king!',
+      ],
+      [playerSprite, 'That is not appropriate...'],
+      [
+        johnSprite,
+        'Ha! Now that you know the truth, you are going to die with it!',
       ],
     ].map(dialogContent_factory)
   } else {
     return [
       dialogContent_factory([
-        johnSpriteId,
+        johnSprite,
         'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south',
         PALETTE_RED[3],
       ]),

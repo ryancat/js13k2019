@@ -25,12 +25,27 @@ function battleFieldIncident_createEndCell(incident) {
     ],
   ]
 
+  // John will secretly here
+  const johnProps = []
+  johnProps[SPRITE_HITTYPE] = HITTYPE_PASS
+  johnProps[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[1]
+  johnProps[SPRITE_OPACITY] = 0
+  mapObjects.push([
+    JOHN_SPRITE,
+    gameObjectWidths[GAME_OBJ_WIDTH_M], // width
+    gameObjectHeights[GAME_OBJ_WIDTH_L], // height
+    Math.round((incidentWidth - GAME_OBJ_WIDTH_M) / 3), // x
+    Math.round((incidentHeight - GAME_OBJ_WIDTH_L) / 3), // y
+    ,
+    johnProps,
+  ])
+
   // We will send ONE BOSS
   const monsterProps = []
   monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
   monsterProps[SPRITE_STATE] = []
   monsterProps[SPRITE_STATE][SPRITE_HP] = 1
-  monsterProps[SPRITE_STATE][SPRITE_HP_MAX] = 100
+  monsterProps[SPRITE_STATE][SPRITE_HP_MAX] = 20
   monsterProps[SPRITE_STATE][SPRITE_DAMAGE] = 2
   monsterProps[SPRITE_STATE][SPRITE_ATTACK_RATE] = 150
   monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
@@ -47,7 +62,7 @@ function battleFieldIncident_createEndCell(incident) {
   // We will send other monsters
   const totalMonsterNum = Math.floor(
     random[RANDOM_NEXT_FLOAT]() *
-      (((incident[INCIDENT_COL_NUM] / 16) * incident[INCIDENT_ROW_NUM]) / 27)
+      (((incident[INCIDENT_COL_NUM] / 20) * incident[INCIDENT_ROW_NUM]) / 30)
   )
   for (let i = 0; i < totalMonsterNum; i++) {
     const monsterWidth =
@@ -149,11 +164,74 @@ function battleFieldIncident_playEndCell(incident) {
       }
 
       if (monsterNum <= 0) {
-        // all monster cleared. Open the door
-        doorSprites.forEach(doorSprite => {
-          doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
-          doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
-        })
+        // Final room, monster died, and john will be back
+        const johnSprite = group_getSpriteById(
+          incident[INCIDENT_MAP_GROUP],
+          JOHN_SPRITE
+        )
+        johnSprite[SPRITE_OPACITY] = 1
+        johnSprite[SPRITE_HITTYPE] = HITTYPE_STOP
+        johnSprite[SPRITE_CONVERSATION_STATES][0] = true
+        johnSprite[SPRITE_CONVERSATION_STATES][1] = true
+
+        // JOHN will talk
+        johnSprite[SPRITE_HIT_CALLBACK] = spriteHitJohn => {
+          if (
+            spriteHitJohn[SPRITE_ID] === PLAYER_SPRITE &&
+            johnSprite[SPRITE_CONVERSATION_STATES][1]
+          ) {
+            if (!incidentGame[GAME_DIALOG]) {
+              // Only play conversation when there is no dialog right now
+              game_playConversation(
+                incidentGame,
+                conv_john(johnSprite, playerSprite, incident),
+                () => {
+                  sprite_continueAttack(
+                    johnSprite,
+                    playerSprite,
+                    incident,
+                    BULLET_SPRITE_BOSS,
+                    johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
+                  )
+
+                  sprite_continueAttack(
+                    johnSprite,
+                    null,
+                    incident,
+                    BULLET_SPRITE_BOSS,
+                    johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
+                  )
+                }
+              )
+            }
+          }
+
+          if (spriteHitJohn[SPRITE_ID] === BULLET_SPRITE) {
+            // John take damage
+            switch (spriteHitJohn[SPRITE_ID]) {
+              case BULLET_SPRITE:
+                // regular bullet hit monster
+                // reduce one HP
+                johnSprite[SPRITE_STATE][SPRITE_HP] -=
+                  spriteHitJohn[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
+                break
+            }
+
+            if (johnSprite[SPRITE_STATE][SPRITE_HP] <= 0) {
+              // john died
+              sprite_destroy(johnSprite)
+
+              // all monster cleared. Open the door
+              doorSprites.forEach(doorSprite => {
+                doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+                doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+              })
+
+              // Player go back to king
+              battleFieldEnd_playerGoBack(incident, playerSprite)
+            }
+          }
+        }
       }
     }
   })
@@ -163,13 +241,20 @@ function battleFieldIncident_playEndCell(incident) {
     switch (spriteHitPlayer[SPRITE_ID]) {
       case MONSTER_SPRITE:
         // regular monster touch me
-        // reduce one HP
+        // reduce HP
         playerSprite[SPRITE_STATE][SPRITE_HP] -= 0.1
         break
 
       case BULLET_SPRITE_ENEMY:
         // regular monster hit me
-        // reduce one HP
+        // reduce HP
+        playerSprite[SPRITE_STATE][SPRITE_HP] -=
+          spriteHitPlayer[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
+        break
+
+      case BULLET_SPRITE_BOSS:
+        // boss monster hit me
+        // reduce HP
         playerSprite[SPRITE_STATE][SPRITE_HP] -=
           spriteHitPlayer[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
         break
@@ -177,31 +262,34 @@ function battleFieldIncident_playEndCell(incident) {
 
     if (playerSprite[SPRITE_STATE][SPRITE_HP] <= 0) {
       // player died, send back to start point
-
-      // Finish the current incident as we exit
-      incident_finish[incident[INCIDENT_ID]](incident)
-
-      // Add next battle field incident
-      const mazeStartRow = incidentGame[GAME_MAZE][MAZE_START_ROW]
-      const mazeStartCol = incidentGame[GAME_MAZE][MAZE_START_COL]
-      const battleFieldIncidentProps = [
-        BATTLE_FIELD_INCIDENT, // incident id
-        incidentGame, // incident game
-        32, // row numbers
-        32, // col numbers
-      ]
-      battleFieldIncidentProps[INCIDENT_CELL_ROW] = mazeStartRow
-      battleFieldIncidentProps[INCIDENT_CELL_COL] = mazeStartCol
-      battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] =
-        playerSprite[SPRITE_STATE]
-
-      game_addIncident(
-        game,
-        BATTLE_FIELD_INCIDENT,
-        `${BATTLE_FIELD_INCIDENT}@${mazeStartRow}@${mazeStartCol}`,
-        incident_factories[BATTLE_FIELD_INCIDENT],
-        battleFieldIncidentProps
-      )
+      battleFieldEnd_playerGoBack(incident, playerSprite)
     }
   }
+}
+
+function battleFieldEnd_playerGoBack(incident, playerSprite) {
+  // Finish the current incident as we exit
+  incident_finish[incident[INCIDENT_ID]](incident)
+
+  const incidentGame = incident[INCIDENT_GAME]
+  // Add next battle field incident
+  const mazeStartRow = incidentGame[GAME_MAZE][MAZE_START_ROW]
+  const mazeStartCol = incidentGame[GAME_MAZE][MAZE_START_COL]
+  const battleFieldIncidentProps = [
+    BATTLE_FIELD_INCIDENT, // incident id
+    incidentGame, // incident game
+    32, // row numbers
+    32, // col numbers
+  ]
+  battleFieldIncidentProps[INCIDENT_CELL_ROW] = mazeStartRow
+  battleFieldIncidentProps[INCIDENT_CELL_COL] = mazeStartCol
+  battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] = playerSprite[SPRITE_STATE]
+
+  game_addIncident(
+    incidentGame,
+    BATTLE_FIELD_INCIDENT,
+    `${BATTLE_FIELD_INCIDENT}@${mazeStartRow}@${mazeStartCol}`,
+    incident_factories[BATTLE_FIELD_INCIDENT],
+    battleFieldIncidentProps
+  )
 }

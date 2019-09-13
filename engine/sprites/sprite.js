@@ -135,6 +135,7 @@ function sprite_render(sprite, dt, camera, renderer) {
       sprite[SPRITE_NAME],
       16,
       sprite[SPRITE_BACKGROUND_COLOR],
+      sprite[SPRITE_OPACITY],
     ])
   }
 }

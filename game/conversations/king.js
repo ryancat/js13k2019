@@ -1,8 +1,8 @@
 function conv_king(kingSprite, playerSprite) {
-  const kingSpriteId = kingSprite[SPRITE_ID]
-  const playerSpriteId = playerSprite[SPRITE_ID]
-
-  if (playerSprite[SPRITE_STATE][SPRITE_HP] <= 0) {
+  if (
+    playerSprite[SPRITE_STATE][SPRITE_HP] <
+    playerSprite[SPRITE_STATE][SPRITE_HP_MAX]
+  ) {
     // save player first
     const luckyRate = Math.random()
     let kingWords = 'Let me help you, my friend!'
@@ -21,36 +21,36 @@ function conv_king(kingSprite, playerSprite) {
       kingWordsColor = PALETTE_RED[4]
     }
 
-    return [dialogContent_factory([kingSpriteId, kingWords, kingWordsColor])]
+    return [dialogContent_factory([kingSprite, kingWords, kingWordsColor])]
   }
 
   if (!kingSprite[SPRITE_CONVERSATION_STATES][0]) {
     kingSprite[SPRITE_CONVERSATION_STATES][0] = true
     return [
-      [kingSpriteId, 'Hello warrior, welcome to the land of real gems!'],
-      [kingSpriteId, 'I am the real king. You know, I run this place.'],
+      [kingSprite, 'Hello warrior, welcome to the land of real gems!'],
+      [kingSprite, 'I am the real king. You know, I run this place.'],
       [
-        kingSpriteId,
+        kingSprite,
         "However, that's until 5 years ago, when the dragons took our gems!",
       ],
-      [kingSpriteId, 'The world is suffering in fear...'],
-      [kingSpriteId, 'Please bring back the gems and restore the world peace!'],
+      [kingSprite, 'The world is suffering in fear...'],
+      [kingSprite, 'Please bring back the gems and restore the world peace!'],
       [
-        playerSpriteId,
+        playerSprite,
         "That sounds great! Kill the dragons and take the gems, that's what I do for a living!",
       ],
       [
-        kingSpriteId,
+        kingSprite,
         'Thank you for your help! Remember, you can always come back and restore your health!',
       ],
-      [playerSpriteId, 'Wow!'],
-      [kingSpriteId, 'You are welcome! Now, the doors are open for you!'],
-      [kingSpriteId, 'Please bring back our gems!', PALETTE_RED[3]],
+      [playerSprite, 'Wow!'],
+      [kingSprite, 'You are welcome! Now, the doors are open for you!'],
+      [kingSprite, 'Please bring back our gems!', PALETTE_RED[3]],
     ].map(dialogContent_factory)
   } else {
     return [
       dialogContent_factory([
-        kingSpriteId,
+        kingSprite,
         'Please bring back our gems!',
         PALETTE_RED[3],
       ]),

@@ -277,26 +277,37 @@ function battleFieldIncident_handlePlayerAttack(incident, playerSprite) {
     playerSprite[SPRITE_X] + playerSprite[SPRITE_WIDTH] / 2
   const playerSpriteCenterY =
     playerSprite[SPRITE_Y] + playerSprite[SPRITE_HEIGHT] / 2
-  const closestMonster = group_getSpritesById(
+
+  const badJohnSprites = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    JOHN_SPRITE
+  ).filter(johnSprite => johnSprite[SPRITE_NAME] === 'johnTheBadGuy')
+
+  const allMonsterSprites = group_getSpritesById(
     incident[INCIDENT_MAP_GROUP],
     MONSTER_SPRITE
-  ).sort((monsterSpriteA, monsterSpriteB) => {
-    const monsterACenterX =
-      monsterSpriteA[SPRITE_X] + monsterSpriteA[SPRITE_WIDTH] / 2
-    const monsterACenterY =
-      monsterSpriteA[SPRITE_Y] + monsterSpriteA[SPRITE_HEIGHT] / 2
-    const monsterBCenterX =
-      monsterSpriteB[SPRITE_X] + monsterSpriteB[SPRITE_WIDTH] / 2
-    const monsterBCenterY =
-      monsterSpriteB[SPRITE_Y] + monsterSpriteB[SPRITE_HEIGHT] / 2
+  )
+    .concat(badJohnSprites)
+    .filter(badSprite => badSprite[SPRITE_HITTYPE] === HITTYPE_STOP)
+  const closestMonster = allMonsterSprites.sort(
+    (monsterSpriteA, monsterSpriteB) => {
+      const monsterACenterX =
+        monsterSpriteA[SPRITE_X] + monsterSpriteA[SPRITE_WIDTH] / 2
+      const monsterACenterY =
+        monsterSpriteA[SPRITE_Y] + monsterSpriteA[SPRITE_HEIGHT] / 2
+      const monsterBCenterX =
+        monsterSpriteB[SPRITE_X] + monsterSpriteB[SPRITE_WIDTH] / 2
+      const monsterBCenterY =
+        monsterSpriteB[SPRITE_Y] + monsterSpriteB[SPRITE_HEIGHT] / 2
 
-    return (
-      Math.pow(playerSpriteCenterX - monsterACenterX, 2) +
-      Math.pow(playerSpriteCenterY - monsterACenterY, 2) -
-      (Math.pow(playerSpriteCenterX - monsterBCenterX, 2) +
-        Math.pow(playerSpriteCenterY - monsterBCenterY, 2))
-    )
-  })[0]
+      return (
+        Math.pow(playerSpriteCenterX - monsterACenterX, 2) +
+        Math.pow(playerSpriteCenterY - monsterACenterY, 2) -
+        (Math.pow(playerSpriteCenterX - monsterBCenterX, 2) +
+          Math.pow(playerSpriteCenterY - monsterBCenterY, 2))
+      )
+    }
+  )[0]
 
   if (spaceKeyIsDown) {
     // player will attack when alive
@@ -323,15 +334,18 @@ function battleFieldIncident_handleMonstersMove(incident) {
     PLAYER_SPRITE
   )
 
-  // const playerSurrandingSprites = sprite_getOccupiedTileIndexes(playerSprite)
+  const badJohnSprites = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    JOHN_SPRITE
+  ).filter(johnSprite => johnSprite[SPRITE_NAME] === 'johnTheBadGuy')
 
-  group_getSpritesById(incident[INCIDENT_MAP_GROUP], MONSTER_SPRITE).forEach(
-    monsterSprite => {
-      sprite_moveToSprite(monsterSprite, monsterSprite, playerSprite)
-      sprite_move(
-        monsterSprite,
-        incident[INCIDENT_GAME][GAME_FLAG_DISABLE_MOVE]
-      )
-    }
-  )
+  const allMonsterSprites = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    MONSTER_SPRITE
+  ).concat(badJohnSprites)
+
+  allMonsterSprites.forEach(monsterSprite => {
+    sprite_moveToSprite(monsterSprite, monsterSprite, playerSprite)
+    sprite_move(monsterSprite, incident[INCIDENT_GAME][GAME_FLAG_DISABLE_MOVE])
+  })
 }

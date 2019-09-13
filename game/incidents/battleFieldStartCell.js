@@ -64,7 +64,8 @@ function battleFieldIncident_playStartCell(incident) {
       // Only play conversation when there is no dialog right now
 
       const conversationEndCallback =
-        playerSprite[SPRITE_STATE][SPRITE_HP] <= 0
+        playerSprite[SPRITE_STATE][SPRITE_HP] <=
+        playerSprite[SPRITE_STATE][SPRITE_HP_MAX]
           ? () => {
               playerSprite[SPRITE_STATE][SPRITE_HP] =
                 playerSprite[SPRITE_STATE][SPRITE_HP_MAX]

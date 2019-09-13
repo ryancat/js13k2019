@@ -51,10 +51,16 @@ function battleFieldIncident_createRandomCell(incident) {
         monsterProps,
       ])
     } else {
-      const totalMonsterNum = Math.floor(
-        random[RANDOM_NEXT_FLOAT]() *
-          (((incident[INCIDENT_COL_NUM] / 8) * incident[INCIDENT_ROW_NUM]) / 27)
-      )
+      const totalMonsterNum =
+        random[RANDOM_NEXT_FLOAT]() > 0.6
+          ? Math.floor(
+              random[RANDOM_NEXT_FLOAT]() *
+                (((incident[INCIDENT_COL_NUM] / 8) *
+                  incident[INCIDENT_ROW_NUM]) /
+                  27)
+            )
+          : 0
+
       for (let i = 0; i < totalMonsterNum; i++) {
         const monsterWidth =
           gameObjectWidths[

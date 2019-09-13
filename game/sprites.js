@@ -81,24 +81,27 @@ function sprites_init(game) {
     return playerSprite
   })
 
-  const kingColor = PALETTE_BLUE[2]
   game_addSprite(game, KING_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = KING_SPRITE
     defaultProps[SPRITE_NAME] = 'realKing!'
     defaultProps[SPRITE_SHOW_NAME] = true
-    defaultProps[SPRITE_BACKGROUND_COLOR] = kingColor
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BLUE[2]
     return sprite_factory(util_assignArr(defaultProps, props))
   })
 
-  const johnColor = PALETTE_GREEN[1]
   game_addSprite(game, JOHN_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = JOHN_SPRITE
     defaultProps[SPRITE_NAME] = 'johnTheGoodGuy'
     defaultProps[SPRITE_SHOW_NAME] = true
-    defaultProps[SPRITE_BACKGROUND_COLOR] = johnColor
-    return sprite_factory(util_assignArr(defaultProps, props))
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[1]
+    defaultProps[SPRITE_STATE] = []
+    const johnSprite = sprite_factory(util_assignArr(defaultProps, props))
+
+    // set john max speed (per 1 ms)
+    johnSprite[SPRITE_VMAX] = johnSprite[SPRITE_WIDTH] / 8
+    return johnSprite
   })
 
   const monsterNames = [
@@ -168,7 +171,18 @@ function sprites_init(game) {
     defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[1]
     defaultProps[SPRITE_WIDTH] = 8
     defaultProps[SPRITE_HEIGHT] = 8
-    defaultProps[SPRITE_VMAX] = 10
+    defaultProps[SPRITE_VMAX] = 8
+    defaultProps[SPRITE_MOVE_TYPE] = SPRITE_MOVE_TYPE_CONSTANT
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
+
+  game_addSprite(game, BULLET_SPRITE_BOSS, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = BULLET_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[2]
+    defaultProps[SPRITE_WIDTH] = 10
+    defaultProps[SPRITE_HEIGHT] = 10
+    defaultProps[SPRITE_VMAX] = 6
     defaultProps[SPRITE_MOVE_TYPE] = SPRITE_MOVE_TYPE_CONSTANT
     return sprite_factory(util_assignArr(defaultProps, props))
   })
