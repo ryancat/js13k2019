@@ -37,6 +37,7 @@ function battleFieldIncident_createRandomCell(incident) {
     ])
   } else {
     if (!playerStatus[PLAYER_MEET_FIRST_MONSTER]) {
+      playerStatus[PLAYER_MEET_FIRST_MONSTER] = true
       // We will send ONE monsters
       const monsterProps = []
       monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
@@ -49,6 +50,40 @@ function battleFieldIncident_createRandomCell(incident) {
         '',
         monsterProps,
       ])
+    } else {
+      const totalMonsterNum = Math.floor(
+        random[RANDOM_NEXT_FLOAT]() *
+          (((incident[INCIDENT_COL_NUM] / 8) * incident[INCIDENT_ROW_NUM]) / 27)
+      )
+      for (let i = 0; i < totalMonsterNum; i++) {
+        const monsterWidth =
+          gameObjectWidths[
+            Math.ceil(
+              (gameObjectWidths.length - 2) * random[RANDOM_NEXT_FLOAT]()
+            )
+          ]
+        const monsterHeight =
+          gameObjectHeights[
+            Math.ceil(
+              (gameObjectHeights.length - 2) * random[RANDOM_NEXT_FLOAT]()
+            )
+          ]
+        const monsterProps = []
+        monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
+        mapObjects.push([
+          MONSTER_SPRITE,
+          monsterWidth, // width
+          monsterHeight, // height
+          Math.floor(
+            (incidentWidth - monsterWidth) * random[RANDOM_NEXT_FLOAT]()
+          ), // x
+          Math.floor(
+            (incidentHeight - monsterHeight) * random[RANDOM_NEXT_FLOAT]()
+          ), // y
+          '',
+          monsterProps,
+        ])
+      }
     }
   }
 

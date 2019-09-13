@@ -432,7 +432,7 @@ function sprite_continueAttack(
   maxInterval = 2000
 ) {
   if (sprite[SPRITE_STATE][SPRITE_HP] <= 0) {
-    // Cannot attach when it's dead
+    // Cannot attack when it's dead
     return
   }
 

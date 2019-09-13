@@ -109,10 +109,27 @@ function sprites_init(game) {
     const monsterSprite = sprite_factory(util_assignArr(defaultProps, props))
 
     // set monster max speed (per 1 ms)
-    monsterSprite[SPRITE_VMAX] = monsterSprite[SPRITE_WIDTH] / 16
+    monsterSprite[SPRITE_VMAX] = monsterSprite[SPRITE_WIDTH] / 64
 
     return monsterSprite
   })
+
+  // game_addSprite(game, MONSTER_SPRITE_BOSS, props => {
+  //   const defaultProps = []
+  //   defaultProps[SPRITE_ID] = MONSTER_SPRITE
+  //   defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[2]
+  //   defaultProps[SPRITE_BORDER_COLOR] = PALETTE_RED[3]
+  //   defaultProps[SPRITE_STATE] = []
+  //   defaultProps[SPRITE_STATE][SPRITE_HP] = 100
+  //   defaultProps[SPRITE_STATE][SPRITE_HP_MAX] = 100
+  //   defaultProps[SPRITE_STATE][SPRITE_DAMAGE] = 2
+  //   const monsterSprite = sprite_factory(util_assignArr(defaultProps, props))
+
+  //   // set monster max speed (per 1 ms)
+  //   monsterSprite[SPRITE_VMAX] = monsterSprite[SPRITE_WIDTH] / 128
+
+  //   return monsterSprite
+  // })
 
   game_addSprite(game, BULLET_SPRITE, props => {
     const defaultProps = []

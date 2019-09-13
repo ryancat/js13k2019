@@ -228,25 +228,25 @@ function maze_generateMaze([
     case DOOR_TOP:
       endRow = 0
       endCol = Math.floor(random[RANDOM_NEXT_FLOAT]() * colNum)
-      cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '1000')
+      // cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '1000')
       break
 
     case DOOR_BOTTOM:
       endRow = rowNum - 1
       endCol = Math.floor(random[RANDOM_NEXT_FLOAT]() * colNum)
-      cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '0010')
+      // cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '0010')
       break
 
     case DOOR_LEFT:
       endRow = Math.floor(random[RANDOM_NEXT_FLOAT]() * rowNum)
       endCol = 0
-      cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '0001')
+      // cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '0001')
       break
 
     case DOOR_RIGHT:
       endRow = Math.floor(random[RANDOM_NEXT_FLOAT]() * rowNum)
       endCol = colNum - 1
-      cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '0100')
+      // cells[endRow][endCol] = math_addBinary(cells[endRow][endCol], '0100')
       break
   }
 
