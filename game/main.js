@@ -66,7 +66,7 @@ game_setDoorSprites(game)
 sprites_init(game)
 
 // Generate maze
-game_setMaze(game, maze_generateMaze([8, 8]))
+game_setMaze(game, maze_generateMaze([2, 2]))
 
 // Add first incidents
 incident_init(game)

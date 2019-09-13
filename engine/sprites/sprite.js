@@ -445,8 +445,11 @@ function sprite_continueAttack(
   bulletSpriteId,
   maxInterval = 2000
 ) {
-  if (sprite[SPRITE_STATE][SPRITE_HP] <= 0) {
-    // Cannot attack when it's dead
+  if (
+    sprite[SPRITE_STATE][SPRITE_HP] <= 0 ||
+    sprite[SPRITE_STATE][SPRITE_IS_DISABLED]
+  ) {
+    // Cannot attack when it's dead or disabled, for example not in cell
     return
   }
 

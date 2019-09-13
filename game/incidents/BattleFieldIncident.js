@@ -207,6 +207,32 @@ function baseIncident_setPlayerStatus(incident) {
     playerSprite[SPRITE_X] = (incidentWidth - playerSprite[SPRITE_WIDTH]) / 2
     playerSprite[SPRITE_Y] = (incidentHeight - playerSprite[SPRITE_HEIGHT]) / 2
   }
+
+  // TODO: move this to monster's dedicated function
+  // We need to set monster states as well
+  // Enable monsters
+  const badJohnSprites = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    JOHN_SPRITE
+  ).filter(johnSprite => johnSprite[SPRITE_NAME] === 'johnTheBadGuy')
+
+  const allMonsterSprites = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    MONSTER_SPRITE
+  ).concat(badJohnSprites)
+
+  allMonsterSprites.forEach(monsterSprite => {
+    monsterSprite[SPRITE_STATE][SPRITE_IS_DISABLED] = false
+
+    // monster will resume attacking!
+    sprite_continueAttack(
+      monsterSprite,
+      playerSprite,
+      incident,
+      BULLET_SPRITE_ENEMY,
+      monsterSprite[SPRITE_STATE][SPRITE_ATTACK_RATE]
+    )
+  })
 }
 
 function battleFieldIncident_update(incident, dt) {
@@ -348,4 +374,31 @@ function battleFieldIncident_handleMonstersMove(incident) {
     sprite_moveToSprite(monsterSprite, monsterSprite, playerSprite)
     sprite_move(monsterSprite, incident[INCIDENT_GAME][GAME_FLAG_DISABLE_MOVE])
   })
+}
+
+function battleFieldIncident_playerGoBack(incident, playerSprite) {
+  // Finish the current incident as we exit
+  incident_finish[incident[INCIDENT_ID]](incident)
+
+  const incidentGame = incident[INCIDENT_GAME]
+  // Add next battle field incident
+  const mazeStartRow = incidentGame[GAME_MAZE][MAZE_START_ROW]
+  const mazeStartCol = incidentGame[GAME_MAZE][MAZE_START_COL]
+  const battleFieldIncidentProps = [
+    BATTLE_FIELD_INCIDENT, // incident id
+    incidentGame, // incident game
+    32, // row numbers
+    32, // col numbers
+  ]
+  battleFieldIncidentProps[INCIDENT_CELL_ROW] = mazeStartRow
+  battleFieldIncidentProps[INCIDENT_CELL_COL] = mazeStartCol
+  battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] = playerSprite[SPRITE_STATE]
+
+  game_addIncident(
+    incidentGame,
+    BATTLE_FIELD_INCIDENT,
+    `${BATTLE_FIELD_INCIDENT}@${mazeStartRow}@${mazeStartCol}`,
+    incident_factories[BATTLE_FIELD_INCIDENT],
+    battleFieldIncidentProps
+  )
 }

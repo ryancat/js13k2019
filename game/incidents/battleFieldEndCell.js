@@ -10,6 +10,8 @@ function battleFieldIncident_createEndCell(incident) {
     incident[INCIDENT_COL_NUM] * incidentGame[GAME_TILE_WIDTH]
   const incidentHeight =
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
+  const tileWidth = incidentGame[GAME_TILE_WIDTH]
+  const tileHeight = incidentGame[GAME_TILE_HEIGHT]
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
   const playerStatus = incident[INCIDENT_PLAYER_STATUS]
@@ -79,9 +81,15 @@ function battleFieldIncident_createEndCell(incident) {
       MONSTER_SPRITE,
       monsterWidth, // width
       monsterHeight, // height
-      Math.floor((incidentWidth - monsterWidth) * random[RANDOM_NEXT_FLOAT]()), // x
       Math.floor(
-        (incidentHeight - monsterHeight) * random[RANDOM_NEXT_FLOAT]()
+        tileWidth +
+          (incidentWidth - tileWidth * 2 - monsterWidth) *
+            random[RANDOM_NEXT_FLOAT]()
+      ), // x
+      Math.floor(
+        tileHeight * 3 +
+          (incidentHeight - tileHeight * 6 - monsterHeight) *
+            random[RANDOM_NEXT_FLOAT]()
       ), // y
       ,
       monsterProps,
@@ -94,8 +102,8 @@ function battleFieldIncident_createEndCell(incident) {
     incident[INCIDENT_COL_NUM], // colNum
     incident[INCIDENT_ROW_NUM], // rowNum
     incident[INCIDENT_DOORS], // doors
-    incidentGame[GAME_TILE_WIDTH], // tileWidth
-    incidentGame[GAME_TILE_HEIGHT], // tileHeight
+    tileWidth, // tileWidth
+    tileHeight, // tileHeight
     mapObjects,
   ])
 }
@@ -264,35 +272,23 @@ function battleFieldIncident_playEndCell(incident) {
     }
 
     if (playerSprite[SPRITE_STATE][SPRITE_HP] <= 0) {
+      // Stop the current monsters from attacking
+      monsterSprites.forEach(
+        monsterSprite =>
+          (monsterSprite[SPRITE_STATE][SPRITE_IS_DISABLED] = true)
+      )
+
+      const johnSprite = group_getSpriteById(
+        incident[INCIDENT_MAP_GROUP],
+        JOHN_SPRITE
+      )
+
+      if (johnSprite) {
+        johnSprite[SPRITE_STATE][SPRITE_IS_DISABLED] = true
+      }
+
       // player died, send back to start point
-      battleFieldEnd_playerGoBack(incident, playerSprite)
+      battleFieldIncident_playerGoBack(incident, playerSprite)
     }
   }
-}
-
-function battleFieldEnd_playerGoBack(incident, playerSprite) {
-  // Finish the current incident as we exit
-  incident_finish[incident[INCIDENT_ID]](incident)
-
-  const incidentGame = incident[INCIDENT_GAME]
-  // Add next battle field incident
-  const mazeStartRow = incidentGame[GAME_MAZE][MAZE_START_ROW]
-  const mazeStartCol = incidentGame[GAME_MAZE][MAZE_START_COL]
-  const battleFieldIncidentProps = [
-    BATTLE_FIELD_INCIDENT, // incident id
-    incidentGame, // incident game
-    32, // row numbers
-    32, // col numbers
-  ]
-  battleFieldIncidentProps[INCIDENT_CELL_ROW] = mazeStartRow
-  battleFieldIncidentProps[INCIDENT_CELL_COL] = mazeStartCol
-  battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] = playerSprite[SPRITE_STATE]
-
-  game_addIncident(
-    incidentGame,
-    BATTLE_FIELD_INCIDENT,
-    `${BATTLE_FIELD_INCIDENT}@${mazeStartRow}@${mazeStartCol}`,
-    incident_factories[BATTLE_FIELD_INCIDENT],
-    battleFieldIncidentProps
-  )
 }
