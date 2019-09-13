@@ -1,4 +1,4 @@
-function conv_king(kingSprite, playerSprite) {
+function conv_king(kingSprite, playerSprite, incident) {
   if (
     playerSprite[SPRITE_STATE][SPRITE_HP] <
     playerSprite[SPRITE_STATE][SPRITE_HP_MAX]
@@ -47,7 +47,24 @@ function conv_king(kingSprite, playerSprite) {
         'Thank you for your help! Remember, you can always come back and restore your health!',
       ],
       [playerSprite, 'Wow!'],
-      [kingSprite, 'You are welcome! Now, the doors are open for you!'],
+      [
+        kingSprite,
+        'You are welcome! Now, the doors are open for you!',
+        ,
+        () => {
+          const incidentGame = incident[INCIDENT_GAME]
+          const doorSprites = group_getSpritesByIds(
+            incident[INCIDENT_MAP_GROUP],
+            incident[INCIDENT_DOORS].map(
+              doorId => incidentGame[GAME_DOORS][doorId]
+            )
+          )
+          doorSprites.forEach(doorSprite => {
+            doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+            doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+          })
+        },
+      ],
       [kingSprite, 'Please bring back our gems!', PALETTE_RED[3]],
     ].map(dialogContent_factory)
   } else if (playerSprite[SPRITE_STATE][PLAYER_FINISH_BOSS]) {

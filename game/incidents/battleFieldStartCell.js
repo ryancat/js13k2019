@@ -80,7 +80,7 @@ function battleFieldIncident_playStartCell(incident) {
 
       game_playConversation(
         incidentGame,
-        conv_king(kingSprite, playerSprite),
+        conv_king(kingSprite, playerSprite, incident),
         conversationEndCallback
       )
     }
