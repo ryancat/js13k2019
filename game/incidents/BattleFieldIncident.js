@@ -209,8 +209,12 @@ function battleFieldIncident_update(incident, dt) {
     PLAYER_SPRITE
   )
 
+  // player move and attack
   battleFieldIncident_handlePlayerMove(incident, playerSprite, dt)
   battleFieldIncident_handlePlayerAttack(incident, playerSprite, dt)
+
+  // monster move
+  battleFieldIncident_handleMonstersMove(incident, dt)
 }
 
 function battleFieldIncident_handlePlayerMove(incident, playerSprite, dt) {
@@ -272,4 +276,23 @@ function battleFieldIncident_handlePlayerAttack(incident, playerSprite) {
   incident[INCIDENT_BULLETS_GROUP][GROUP_CHILDREN].forEach(bulletSprite => {
     sprite_move(bulletSprite, incidentGame[GAME_FLAG_DISABLE_MOVE])
   })
+}
+
+function battleFieldIncident_handleMonstersMove(incident) {
+  const playerSprite = group_getSpriteById(
+    incident[INCIDENT_MAP_GROUP],
+    PLAYER_SPRITE
+  )
+
+  // const playerSurrandingSprites = sprite_getOccupiedTileIndexes(playerSprite)
+
+  group_getSpritesById(incident[INCIDENT_MAP_GROUP], MONSTER_SPRITE).forEach(
+    monsterSprite => {
+      sprite_moveToSprite(monsterSprite, monsterSprite, playerSprite)
+      sprite_move(
+        monsterSprite,
+        incident[INCIDENT_GAME][GAME_FLAG_DISABLE_MOVE]
+      )
+    }
+  )
 }

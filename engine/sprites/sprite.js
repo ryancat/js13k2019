@@ -118,7 +118,7 @@ function sprite_checkHitSprites(sprite) {
 }
 
 // return the occupied tiles for objects and tile sprite
-function _sprite_getOccupiedTileIndexes(sprite) {
+function sprite_getOccupiedTileIndexes(sprite) {
   if (sprite[SPRITE_TYPE] === SPRITE_TYPE_TILE) {
     return [sprite[SPRITE_TILE_INDEX]]
   } else {
@@ -150,7 +150,7 @@ function _sprite_getOccupiedTileIndexes(sprite) {
 // Get the surranding sprites.
 function sprite_getPossibleHitSprites(sprite) {
   const spriteMapGroup = sprite[SPRITE_MAP_GROUP]
-  const spriteIndexes = _sprite_getOccupiedTileIndexes(sprite)
+  const spriteIndexes = sprite_getOccupiedTileIndexes(sprite)
 
   let possibleHitSprites = []
   spriteIndexes.forEach(spriteIndex => {
@@ -172,9 +172,8 @@ function sprite_getPossibleHitSprites(sprite) {
               layerSprite !== sprite &&
               (!sprite[SPRITE_FROM_SPRITE] ||
                 layerSprite !== sprite[SPRITE_FROM_SPRITE]) &&
-              _sprite_getOccupiedTileIndexes(layerSprite).indexOf(
-                spriteIndex
-              ) >= 0 &&
+              sprite_getOccupiedTileIndexes(layerSprite).indexOf(spriteIndex) >=
+                0 &&
               layerSprite[SPRITE_HITTYPE] !== HITTYPE_PASS
             )
           })
@@ -370,27 +369,7 @@ function sprite_attack(sprite, targetSprite, incident, bulletSpriteId) {
   // todo: stop that random direction
   let attackAngle
   if (targetSprite) {
-    const targetCenterX =
-      targetSprite[SPRITE_X] + targetSprite[SPRITE_WIDTH] / 2
-    const targetCenterY =
-      targetSprite[SPRITE_Y] + targetSprite[SPRITE_HEIGHT] / 2
-    const spriteCenterX = sprite[SPRITE_X] + sprite[SPRITE_WIDTH] / 2
-    const spriteCenterY = sprite[SPRITE_Y] + sprite[SPRITE_HEIGHT] / 2
-
-    attackAngle = Math.atan(
-      Math.abs(
-        (spriteCenterY - targetCenterY) / (targetCenterX - spriteCenterX)
-      )
-    )
-
-    bulletSprite[SPRITE_VX] =
-      Math.cos(attackAngle) *
-      bulletSpeed *
-      (targetCenterX > spriteCenterX ? 1 : -1)
-    bulletSprite[SPRITE_VY] =
-      Math.sin(attackAngle) *
-      bulletSpeed *
-      (targetCenterY > spriteCenterY ? 1 : -1)
+    sprite_moveToSprite(bulletSprite, sprite, targetSprite)
   } else {
     attackAngle = random[RANDOM_NEXT_FLOAT]() * Math.PI * 2
     bulletSprite[SPRITE_VX] = Math.cos(attackAngle) * bulletSpeed
@@ -426,4 +405,30 @@ function sprite_continueAttack(
       maxInterval
     )
   }, Math.max(300, Math.round(random[RANDOM_NEXT_FLOAT]() * maxInterval)))
+}
+
+function sprite_moveToSprite(sprite, sourceSprite, targetSprite) {
+  const spriteVMax = sprite[SPRITE_VMAX]
+  const targetCenterX = targetSprite[SPRITE_X] + targetSprite[SPRITE_WIDTH] / 2
+  const targetCenterY = targetSprite[SPRITE_Y] + targetSprite[SPRITE_HEIGHT] / 2
+  const sourceSpriteCenterX =
+    sourceSprite[SPRITE_X] + sourceSprite[SPRITE_WIDTH] / 2
+  const sourceSpriteCenterY =
+    sourceSprite[SPRITE_Y] + sourceSprite[SPRITE_HEIGHT] / 2
+
+  const attackAngle = Math.atan(
+    Math.abs(
+      (sourceSpriteCenterY - targetCenterY) /
+        (targetCenterX - sourceSpriteCenterX)
+    )
+  )
+
+  sprite[SPRITE_VX] =
+    Math.cos(attackAngle) *
+    spriteVMax *
+    (targetCenterX > sourceSpriteCenterX ? 1 : -1)
+  sprite[SPRITE_VY] =
+    Math.sin(attackAngle) *
+    spriteVMax *
+    (targetCenterY > sourceSpriteCenterY ? 1 : -1)
 }

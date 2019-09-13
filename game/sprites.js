@@ -104,7 +104,12 @@ function sprites_init(game) {
     const defaultProps = []
     defaultProps[SPRITE_ID] = MONSTER_SPRITE
     defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
-    return sprite_factory(util_assignArr(defaultProps, props))
+    const monsterSprite = sprite_factory(util_assignArr(defaultProps, props))
+
+    // set monster max speed (per 1 ms)
+    monsterSprite[SPRITE_VMAX] = monsterSprite[SPRITE_WIDTH] / 8
+
+    return monsterSprite
   })
 
   game_addSprite(game, BULLET_SPRITE, props => {
