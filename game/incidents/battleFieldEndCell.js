@@ -125,6 +125,9 @@ function battleFieldIncident_playEndCell(incident) {
   // Player reach end cell
   playerSprite[SPRITE_STATE][PLAYER_FIGHT_BOSS] = true
 
+  // Player say oh shit
+  game_playConversation(incidentGame, conv_player(playerSprite))
+
   // When there are monsters
   const monsterSprites = group_getSpritesById(
     incident[INCIDENT_MAP_GROUP],
