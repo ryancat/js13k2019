@@ -47,6 +47,38 @@ function conv_king(kingSprite, playerSprite) {
       [kingSprite, 'You are welcome! Now, the doors are open for you!'],
       [kingSprite, 'Please bring back our gems!', PALETTE_RED[3]],
     ].map(dialogContent_factory)
+  } else if (playerSprite[SPRITE_STATE][PLAYER_FINISH_BOSS]) {
+    if (!kingSprite[SPRITE_CONVERSATION_STATES][1]) {
+      kingSprite[SPRITE_CONVERSATION_STATES][1] = true
+      // Before game over
+      return [
+        [kingSprite, "You are back! How's your trip?"],
+        [playerSprite, 'Pretty interesting... I killed monsters and liars!'],
+        [kingSprite, 'What happened?!'],
+        [
+          playerSprite,
+          '(I told the realKing! about the betrayal of John. His clostest friend turns out to be a bad guy.)',
+        ],
+        [kingSprite, "I couldn'd believe what happened!"],
+        [kingSprite, '...'],
+        [kingSprite, 'Thank you, my friend, for bring me the best gift...'],
+        [kingSprite, 'The gem of truth!'],
+        [kingSprite, 'It worth more than all other gems combined.'],
+        [
+          kingSprite,
+          'Your name will be remembered in our country! (GAME OVER!)',
+          PALETTE_GREEN[3],
+        ],
+      ].map(dialogContent_factory)
+    } else {
+      return [
+        dialogContent_factory([
+          kingSprite,
+          'Your name will be remembered in our country! (GAME OVER!)',
+          PALETTE_GREEN[3],
+        ]),
+      ]
+    }
   } else {
     return [
       dialogContent_factory([

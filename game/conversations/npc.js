@@ -77,8 +77,8 @@ function conv_john(johnSprite, playerSprite, incident) {
           johnSprite[SPRITE_NAME] = 'johnTheBadGuy'
           johnSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[4]
           johnSprite[SPRITE_BORDER_COLOR] = PALETTE_RED[4]
-          johnSprite[SPRITE_STATE][SPRITE_HP] = 10
-          johnSprite[SPRITE_STATE][SPRITE_HP_MAX] = 50
+          johnSprite[SPRITE_STATE][SPRITE_HP] = 20
+          johnSprite[SPRITE_STATE][SPRITE_HP_MAX] = 20
           johnSprite[SPRITE_STATE][SPRITE_DAMAGE] = 3
           johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE] = 200
         },

@@ -12,7 +12,8 @@ const [
   SPRITE_DAMAGE,
   PLAYER_FIGHT_BOSS,
   SPRITE_ATTACK_RATE,
-] = [0, 1, 2, 3, 4, 5, 6, 7]
+  PLAYER_FINISH_BOSS,
+] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 // music states
 const MUSIC_SOUND_MOVE = [1, 0.1, 120, 0.2, 0.34, -0.2, 1, 0, 0.93]

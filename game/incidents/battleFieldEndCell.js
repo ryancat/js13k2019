@@ -44,7 +44,7 @@ function battleFieldIncident_createEndCell(incident) {
   const monsterProps = []
   monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
   monsterProps[SPRITE_STATE] = []
-  monsterProps[SPRITE_STATE][SPRITE_HP] = 1
+  monsterProps[SPRITE_STATE][SPRITE_HP] = 20
   monsterProps[SPRITE_STATE][SPRITE_HP_MAX] = 20
   monsterProps[SPRITE_STATE][SPRITE_DAMAGE] = 2
   monsterProps[SPRITE_STATE][SPRITE_ATTACK_RATE] = 150
@@ -228,6 +228,7 @@ function battleFieldIncident_playEndCell(incident) {
               })
 
               // Player go back to king
+              playerSprite[SPRITE_STATE][PLAYER_FINISH_BOSS] = true
               battleFieldEnd_playerGoBack(incident, playerSprite)
             }
           }
