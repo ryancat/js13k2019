@@ -5,9 +5,9 @@ function conv_john(johnSprite, playerSprite, incident) {
       [johnSprite, 'Yes?'],
       [playerSprite, 'I...'],
       [johnSprite, 'Let me guess! You are looking for the gem of light?'],
-      [playerSprite, 'Actually...'],
+      [playerSprite, '...'],
       [johnSprite, 'Wait! Is it gem of ice?'],
-      [playerSprite, '(Sigh) Nope.'],
+      [playerSprite, '(What is that)...'],
       [
         johnSprite,
         'Oh, it must be gem of fire then! You have a long way to go, my friend!',
@@ -19,15 +19,12 @@ function conv_john(johnSprite, playerSprite, incident) {
       ],
       [
         johnSprite,
-        'The land of three gems is not what it used to be. The dragons have taken all the three gems!',
+        'The land of gems is not what it used to be. The monsters have taken all the gems!',
       ],
       [johnSprite, 'They say the gem of fire will give you strength...'],
       [johnSprite, 'the gem of ice will give you dexterity...'],
       [johnSprite, 'and the gem of light will give you wisdom!'],
-      [
-        johnSprite,
-        'Each gem is protected by a powerful dragon, and they are stronger than all the other monsters out there!',
-      ],
+      [johnSprite, 'Bring back the gems to me... err, the king!'],
       [
         johnSprite,
         'Remember! You cannot pass the doors unless all the monsters are cleard in that room!',
@@ -52,7 +49,7 @@ function conv_john(johnSprite, playerSprite, incident) {
       ],
       [
         johnSprite,
-        'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south',
+        'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south! (SPACE key to attack)',
       ],
     ].map(dialogContent_factory)
   } else if (johnSprite[SPRITE_CONVERSATION_STATES][1]) {
@@ -63,7 +60,7 @@ function conv_john(johnSprite, playerSprite, incident) {
       [johnSprite, 'Ok, that was not expected...'],
       [
         playerSprite,
-        'You are welcome! Now, where is the gems? I was told to bring them back.',
+        'You are welcome! Now, where are the gems? I was told to bring them back.',
       ],
       [johnSprite, '...'],
       [playerSprite, 'John...?'],
@@ -102,7 +99,7 @@ function conv_john(johnSprite, playerSprite, incident) {
     return [
       dialogContent_factory([
         johnSprite,
-        'You need to find your way across the maze. I heard the gems are in the south. (SPACE key to attack)',
+        'You need to find your way across the maze. I heard the gems are in the south! (SPACE key to attack)',
         PALETTE_RED[3],
       ]),
     ]

@@ -81,13 +81,13 @@ function conv_king(kingSprite, playerSprite, incident) {
         ],
         [kingSprite, "I couldn'd believe what happened!"],
         [kingSprite, '...'],
-        [kingSprite, 'Thank you, my friend, for bring me the best gift...'],
+        [kingSprite, 'Thank you, my friend, for bring me back the best gem...'],
         [kingSprite, 'The gem of truth!'],
         [kingSprite, 'It worth more than all other gems combined.'],
         [
           kingSprite,
           'Your name will be remembered in our country! (GAME OVER!)',
-          PALETTE_GREEN[3],
+          PALETTE_GREEN[4],
         ],
       ].map(dialogContent_factory)
     } else {
