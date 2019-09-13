@@ -80,7 +80,6 @@ function dialog_update(dialog, dt) {
     [gameObjectWidths[GAME_OBJ_WIDTH_S], gameObjectWidths[GAME_OBJ_WIDTH_S]],
     activeContent[DIALOG_CONTENT_COLOR],
   ])
-  // todo: use DOM text
 
   // handle keystroke states
   const keyInteraction = game[GAME_KEY_INTERACTIONS][dialog[DIALOG_NEXTKEY_ID]]

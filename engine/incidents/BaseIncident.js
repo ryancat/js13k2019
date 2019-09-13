@@ -171,6 +171,28 @@ function baseIncident_restart(incident) {
   incident[INCIDENT_FLAG_FINISHED] = false
   incident[INCIDENT_FLAG_SET_CAMERA] = false
   incident[INCIDENT_FLAG_SET_PLAYER_STATUS] = false
+
+  // Draw room number on the top
+  const incidentGame = incident[INCIDENT_GAME]
+  const gameMaze = incidentGame[GAME_MAZE]
+  const cellIndex =
+    incident[INCIDENT_CELL_ROW] * gameMaze[MAZE_COL_NUM] +
+    incident[INCIDENT_CELL_COL]
+  const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
+  const gameCamera = incidentGame[GAME_CAMERA]
+  const cameraWidth = gameCamera[CAMERA_WIDTH]
+  const cellLabelX = cameraWidth / 2
+  const cellLabelY = gameObjectHeights[GAME_OBJ_HEIGHT_M]
+
+  dom_renderer_drawText(incidentGame[GAME_LAYERS][RENDERER_LAYER_TEXT], [
+    `Cell ${cellIndex}`,
+    cellLabelY,
+    cellLabelX,
+    cameraWidth - cellLabelX,
+    gameObjectHeights[GAME_OBJ_HEIGHT_M],
+    [0, 0],
+    PALETTE_BROWN[0],
+  ])
 }
 
 function baseIncident_initMapGroup(incident) {

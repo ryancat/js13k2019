@@ -29,7 +29,7 @@ function conv_john(johnSprite, playerSprite, incident) {
       [johnSpriteId, 'and the gem of light will give you wisdom!'],
       [
         johnSpriteId,
-        'Each gem is protected by a powerful dragon, and they are stronger than all other monsters out there!',
+        'Each gem is protected by a powerful dragon, and they are stronger than all the other monsters out there!',
       ],
       [
         johnSpriteId,
@@ -55,14 +55,14 @@ function conv_john(johnSprite, playerSprite, incident) {
       ],
       [
         johnSpriteId,
-        'Good luck, my friend! You need to find your way across the maze. I heard the gem of fire is in the south',
+        'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south',
       ],
     ].map(dialogContent_factory)
   } else {
     return [
       dialogContent_factory([
         johnSpriteId,
-        'Good luck, my friend! You need to find your way across the maze. I heard the gem of fire is in the south',
+        'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south',
         PALETTE_RED[3],
       ]),
     ]
