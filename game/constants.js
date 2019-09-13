@@ -17,3 +17,5 @@ const [
 
 // music states
 const MUSIC_SOUND_MOVE = [1, 0.1, 120, 0.2, 0.34, -0.2, 1, 0, 0.93]
+const MUSIC_SOUND_ATTACK = [1, 0.1, 1450, 0.3, 0.05, 0, 1.1, 16.8, 0.31]
+const MUSIC_SOUND_DAMAGE = [1, 0.1, 650, 0.1, 0.94, 1.1, 2.7, 16.7, 0.98]

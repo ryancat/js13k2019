@@ -207,6 +207,7 @@ function battleFieldIncident_playRandomCell(incident) {
         // regular monster touch me
         // reduce one HP
         playerSprite[SPRITE_STATE][SPRITE_HP] -= 0.1
+        zzfx.apply(null, MUSIC_SOUND_DAMAGE)
         break
 
       case BULLET_SPRITE_ENEMY:
@@ -214,6 +215,7 @@ function battleFieldIncident_playRandomCell(incident) {
         // reduce one HP
         playerSprite[SPRITE_STATE][SPRITE_HP] -=
           spriteHitPlayer[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
+        zzfx.apply(null, MUSIC_SOUND_DAMAGE)
         break
     }
 

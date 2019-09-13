@@ -244,6 +244,7 @@ function battleFieldIncident_playEndCell(incident) {
         // regular monster touch me
         // reduce HP
         playerSprite[SPRITE_STATE][SPRITE_HP] -= 0.1
+        zzfx.apply(null, MUSIC_SOUND_DAMAGE)
         break
 
       case BULLET_SPRITE_ENEMY:
@@ -251,6 +252,7 @@ function battleFieldIncident_playEndCell(incident) {
         // reduce HP
         playerSprite[SPRITE_STATE][SPRITE_HP] -=
           spriteHitPlayer[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
+        zzfx.apply(null, MUSIC_SOUND_DAMAGE)
         break
 
       case BULLET_SPRITE_BOSS:

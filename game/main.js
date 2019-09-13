@@ -16,7 +16,7 @@ game_addInteractionKey(game, KEY_DOWN, [83, 40], MUSIC_SOUND_MOVE)
 game_addInteractionKey(game, KEY_LEFT, [65, 37], MUSIC_SOUND_MOVE)
 game_addInteractionKey(game, KEY_RIGHT, [68, 39], MUSIC_SOUND_MOVE)
 game_addInteractionKey(game, KEY_ENTER, [13])
-game_addInteractionKey(game, KEY_SPACE, [32])
+game_addInteractionKey(game, KEY_SPACE, [32], MUSIC_SOUND_ATTACK)
 
 // Map incident factory for incident ids
 // Functional way to implement inheritance
