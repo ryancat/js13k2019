@@ -20,9 +20,10 @@
 //   GAME_MAZE,
 //   GAME_DOORS,
 //   GAME_MUSIC_BACKGROUND_READY
+//   GAME_MUSIC_BACKGROUND_PLAYING
 //   GAME_MUSIC_BACKGROUND_BUFFER
 //   GAME_MUSIC_AUDIO_CONTEXT
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
 function game_factory(props = []) {
   const game = util_assignArr(
@@ -47,6 +48,7 @@ function game_factory(props = []) {
       [],
       null,
       [],
+      false,
       false,
       null,
       null,
@@ -100,8 +102,9 @@ function _game_createKeyInteraction(interactionProps = [], sound) {
     const now = Date.now()
     if (!interaction[INTERACTION_PRESS_START_TIME]) {
       interaction[INTERACTION_PRESS_START_TIME] = now
-      zzfx.apply(null, sound)
-      // zzfx(1, 0.1, 120, 0.2, 0.34, -0.2, 1, 0, 0.93)
+      if (sound) {
+        zzfx.apply(null, sound)
+      }
     } else {
       interaction[INTERACTION_PRESS_DURATION] =
         now - interaction[INTERACTION_PRESS_START_TIME]

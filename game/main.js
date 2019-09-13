@@ -70,12 +70,13 @@ incident_init(game)
 
 // Start to play incidents
 loop_add(game[GAME_LOOP], dt => {
-  // if (!game[GAME_MUSIC_BACKGROUND_READY]) {
-  //   return
-  // }
-
-  if (!noBackgroundMusic) {
-    musicUtil_playBackgroundSong(game)
+  if (game[GAME_MUSIC_BACKGROUND_READY]) {
+    if (!game[GAME_MUSIC_BACKGROUND_PLAYING]) {
+      if (!noBackgroundMusic) {
+        musicUtil_playBackgroundSong(game)
+      }
+      game[GAME_MUSIC_BACKGROUND_PLAYING] = true
+    }
   }
 
   // The game will load each play states, which will manage its
@@ -99,4 +100,4 @@ loop_start(game[GAME_LOOP])
 
 // Some debug states
 let isAllDoorOpen = false
-let noBackgroundMusic = true
+let noBackgroundMusic = false

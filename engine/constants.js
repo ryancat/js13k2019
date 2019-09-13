@@ -32,6 +32,7 @@ const [
   GAME_MAZE,
   GAME_DOORS,
   GAME_MUSIC_BACKGROUND_READY,
+  GAME_MUSIC_BACKGROUND_PLAYING,
   GAME_MUSIC_BACKGROUND_BUFFER,
   GAME_MUSIC_AUDIO_CONTEXT,
 ] = [
@@ -58,6 +59,7 @@ const [
   20,
   21,
   22,
+  23,
 ]
 
 // interaction object

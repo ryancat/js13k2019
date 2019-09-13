@@ -126,6 +126,12 @@ function battleFieldIncident_bindEventCallback(incident) {
       ]
       const nextMazeCellRow = incident[INCIDENT_CELL_ROW] + tbIncrement
       const nextMazeCellCol = incident[INCIDENT_CELL_COL] + lrIncrement
+      battleFieldIncidentProps[INCIDENT_ROW_NUM] = Math.floor(
+        random[RANDOM_NEXT_FLOAT]() * 32 + 16
+      )
+      battleFieldIncidentProps[INCIDENT_COL_NUM] = Math.floor(
+        random[RANDOM_NEXT_FLOAT]() * 32 + 16
+      )
       battleFieldIncidentProps[INCIDENT_CELL_ROW] = nextMazeCellRow
       battleFieldIncidentProps[INCIDENT_CELL_COL] = nextMazeCellCol
       battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] =
