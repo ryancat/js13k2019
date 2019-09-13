@@ -9,6 +9,7 @@ const [
   PLAYER_MEET_FIRST_MONSTER,
   SPRITE_HP,
   SPRITE_HP_MAX,
+  SPRITE_DAMAGE,
 ] = [0, 1, 2, 3, 4, 5]
 
 // music states

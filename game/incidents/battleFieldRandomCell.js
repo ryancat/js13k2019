@@ -137,7 +137,8 @@ function battleFieldIncident_playRandomCell(incident) {
           case BULLET_SPRITE:
             // regular bullet hit monster
             // reduce one HP
-            monsterSprite[SPRITE_STATE][SPRITE_HP]--
+            monsterSprite[SPRITE_STATE][SPRITE_HP] -=
+              spriteHitMonster[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
             break
         }
 
@@ -170,7 +171,8 @@ function battleFieldIncident_playRandomCell(incident) {
       case BULLET_SPRITE_ENEMY:
         // regular monster hit me
         // reduce one HP
-        playerSprite[SPRITE_STATE][SPRITE_HP]--
+        playerSprite[SPRITE_STATE][SPRITE_HP] -=
+          spriteHitPlayer[SPRITE_FROM_SPRITE][SPRITE_STATE][SPRITE_DAMAGE]
         break
     }
 

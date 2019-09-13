@@ -273,10 +273,40 @@ function battleFieldIncident_handlePlayerAttack(incident, playerSprite) {
   const incidentGame = incident[INCIDENT_GAME]
   const gameKeyInteractions = incidentGame[GAME_KEY_INTERACTIONS]
   const spaceKeyIsDown = gameKeyInteractions[KEY_SPACE][INTERACTION_IS_DOWN]
+  const playerSpriteCenterX =
+    playerSprite[SPRITE_X] + playerSprite[SPRITE_WIDTH] / 2
+  const playerSpriteCenterY =
+    playerSprite[SPRITE_Y] + playerSprite[SPRITE_HEIGHT] / 2
+  const closestMonster = group_getSpritesById(
+    incident[INCIDENT_MAP_GROUP],
+    MONSTER_SPRITE
+  ).sort((monsterSpriteA, monsterSpriteB) => {
+    const monsterACenterX =
+      monsterSpriteA[SPRITE_X] + monsterSpriteA[SPRITE_WIDTH] / 2
+    const monsterACenterY =
+      monsterSpriteA[SPRITE_Y] + monsterSpriteA[SPRITE_HEIGHT] / 2
+    const monsterBCenterX =
+      monsterSpriteB[SPRITE_X] + monsterSpriteB[SPRITE_WIDTH] / 2
+    const monsterBCenterY =
+      monsterSpriteB[SPRITE_Y] + monsterSpriteB[SPRITE_HEIGHT] / 2
+
+    return (
+      Math.pow(playerSpriteCenterX - monsterACenterX, 2) +
+      Math.pow(playerSpriteCenterY - monsterACenterY, 2) -
+      (Math.pow(playerSpriteCenterX - monsterBCenterX, 2) +
+        Math.pow(playerSpriteCenterY - monsterBCenterY, 2))
+    )
+  })[0]
 
   if (spaceKeyIsDown) {
-    // player will attack
-    sprite_attack(playerSprite, null, incident, BULLET_SPRITE)
+    // player will attack when alive
+    sprite_attackThrottled(
+      playerSprite,
+      closestMonster,
+      incident,
+      BULLET_SPRITE,
+      1000
+    )
   }
 
   // Move all bullets

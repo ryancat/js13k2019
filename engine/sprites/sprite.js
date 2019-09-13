@@ -387,6 +387,11 @@ function sprite_destroy(sprite) {
 }
 
 function sprite_attack(sprite, targetSprite, incident, bulletSpriteId) {
+  if (sprite[SPRITE_STATE][SPRITE_HP] <= 0) {
+    // Cannot attach when it's dead
+    return
+  }
+
   const incidentBulletGroup = incident[INCIDENT_BULLETS_GROUP]
   const bulletSprite = game_getSpriteFactory(
     incident[INCIDENT_GAME],
@@ -426,7 +431,7 @@ function sprite_continueAttack(
   bulletSpriteId,
   maxInterval = 2000
 ) {
-  if (sprite[SPRITE_STATE][SPRITE_HP] < 0) {
+  if (sprite[SPRITE_STATE][SPRITE_HP] <= 0) {
     // Cannot attach when it's dead
     return
   }
@@ -443,6 +448,8 @@ function sprite_continueAttack(
     )
   }, Math.max(300, Math.round(random[RANDOM_NEXT_FLOAT]() * maxInterval)))
 }
+
+const sprite_attackThrottled = throttle(sprite_attack, 300)
 
 function sprite_moveToSprite(sprite, sourceSprite, targetSprite) {
   const spriteVMax = sprite[SPRITE_VMAX]

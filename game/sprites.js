@@ -73,6 +73,7 @@ function sprites_init(game) {
     defaultProps[SPRITE_STATE] = []
     defaultProps[SPRITE_STATE][SPRITE_HP] = 10
     defaultProps[SPRITE_STATE][SPRITE_HP_MAX] = 10
+    defaultProps[SPRITE_STATE][SPRITE_DAMAGE] = 1
     const playerSprite = sprite_factory(util_assignArr(defaultProps, props))
 
     // set player max speed (per 1 ms)
@@ -104,6 +105,7 @@ function sprites_init(game) {
     defaultProps[SPRITE_STATE] = []
     defaultProps[SPRITE_STATE][SPRITE_HP] = 6
     defaultProps[SPRITE_STATE][SPRITE_HP_MAX] = 6
+    defaultProps[SPRITE_STATE][SPRITE_DAMAGE] = 1
     const monsterSprite = sprite_factory(util_assignArr(defaultProps, props))
 
     // set monster max speed (per 1 ms)

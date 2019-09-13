@@ -62,16 +62,25 @@ function battleFieldIncident_playStartCell(incident) {
 
     if (!incidentGame[GAME_DIALOG]) {
       // Only play conversation when there is no dialog right now
+
+      const conversationEndCallback =
+        playerSprite[SPRITE_STATE][SPRITE_HP] <= 0
+          ? () => {
+              playerSprite[SPRITE_STATE][SPRITE_HP] =
+                playerSprite[SPRITE_STATE][SPRITE_HP_MAX]
+            }
+          : () => {
+              // open the door
+              doorSprites.forEach(doorSprite => {
+                doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
+                doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
+              })
+            }
+
       game_playConversation(
         incidentGame,
         conv_king(kingSprite, playerSprite),
-        () => {
-          // open the door
-          doorSprites.forEach(doorSprite => {
-            doorSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[3]
-            doorSprite[SPRITE_HITTYPE] = HITTYPE_PASS
-          })
-        }
+        conversationEndCallback
       )
     }
   }
