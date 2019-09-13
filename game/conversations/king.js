@@ -27,7 +27,10 @@ function conv_king(kingSprite, playerSprite) {
   if (!kingSprite[SPRITE_CONVERSATION_STATES][0]) {
     kingSprite[SPRITE_CONVERSATION_STATES][0] = true
     return [
-      [kingSprite, 'Hello warrior, welcome to the land of real gems!'],
+      [
+        kingSprite,
+        'Hello warrior, welcome to the land of real gems! (Enter key to next...)',
+      ],
       [kingSprite, 'I am the real king. You know, I run this place.'],
       [
         kingSprite,

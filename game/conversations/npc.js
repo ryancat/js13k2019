@@ -102,7 +102,7 @@ function conv_john(johnSprite, playerSprite, incident) {
     return [
       dialogContent_factory([
         johnSprite,
-        'Good luck, my friend! You need to find your way across the maze. I heard the gems are in the south',
+        'You need to find your way across the maze. I heard the gems are in the south. (SPACE key to attack)',
         PALETTE_RED[3],
       ]),
     ]

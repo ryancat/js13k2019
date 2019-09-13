@@ -181,7 +181,7 @@ function baseIncident_restart(incident) {
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
   const gameCamera = incidentGame[GAME_CAMERA]
   const cameraWidth = gameCamera[CAMERA_WIDTH]
-  const cellLabelX = cameraWidth / 2
+  const cellLabelX = cameraWidth / 2 - 20
   const cellLabelY = gameObjectHeights[GAME_OBJ_HEIGHT_M]
 
   dom_renderer_drawText(incidentGame[GAME_LAYERS][RENDERER_LAYER_TEXT], [
