@@ -126,8 +126,6 @@ function battleFieldIncident_bindEventCallback(incident) {
       const battleFieldIncidentProps = [
         BATTLE_FIELD_INCIDENT, // incident id
         incidentGame, // incident game
-        32, // row numbers
-        32, // col numbers
       ]
       const nextMazeCellRow = incident[INCIDENT_CELL_ROW] + tbIncrement
       const nextMazeCellCol = incident[INCIDENT_CELL_COL] + lrIncrement
@@ -163,6 +161,7 @@ function baseIncident_setPlayerStatus(incident) {
     PLAYER_SPRITE
   )
   util_assignArr(playerSprite[SPRITE_STATE], incident[INCIDENT_PLAYER_STATUS])
+
   const playerFromDoor = playerSprite[SPRITE_STATE][PLAYER_FROM_DOOR]
   const incidentGame = incident[INCIDENT_GAME]
   const incidentWidth =
@@ -171,7 +170,10 @@ function baseIncident_setPlayerStatus(incident) {
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
   const tileWidth = incidentGame[GAME_TILE_WIDTH]
   const tileHeight = incidentGame[GAME_TILE_HEIGHT]
-  if (typeof playerFromDoor !== 'undefined') {
+  if (
+    playerSprite[SPRITE_STATE][SPRITE_HP] > 0 &&
+    typeof playerFromDoor !== 'undefined'
+  ) {
     // Set player position to be next to the from door
     switch (playerFromDoor) {
       case DOOR_TOP:
@@ -200,6 +202,10 @@ function baseIncident_setPlayerStatus(incident) {
           (incidentHeight - playerSprite[SPRITE_HEIGHT]) / 2
         break
     }
+  } else {
+    // Set player position to be the center of room
+    playerSprite[SPRITE_X] = (incidentWidth - playerSprite[SPRITE_WIDTH]) / 2
+    playerSprite[SPRITE_Y] = (incidentHeight - playerSprite[SPRITE_HEIGHT]) / 2
   }
 }
 

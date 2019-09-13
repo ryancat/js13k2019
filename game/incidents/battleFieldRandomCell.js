@@ -141,7 +141,7 @@ function battleFieldIncident_playRandomCell(incident) {
             break
         }
 
-        if (monsterSprite[SPRITE_STATE][SPRITE_HP] < 0) {
+        if (monsterSprite[SPRITE_STATE][SPRITE_HP] <= 0) {
           // monster died
           sprite_destroy(monsterSprite)
           monsterNum--
@@ -172,6 +172,35 @@ function battleFieldIncident_playRandomCell(incident) {
         // reduce one HP
         playerSprite[SPRITE_STATE][SPRITE_HP]--
         break
+    }
+
+    if (playerSprite[SPRITE_STATE][SPRITE_HP] <= 0) {
+      // player died, send back to start point
+
+      // Finish the current incident as we exit
+      incident_finish[incident[INCIDENT_ID]](incident)
+
+      // Add next battle field incident
+      const mazeStartRow = incidentGame[GAME_MAZE][MAZE_START_ROW]
+      const mazeStartCol = incidentGame[GAME_MAZE][MAZE_START_COL]
+      const battleFieldIncidentProps = [
+        BATTLE_FIELD_INCIDENT, // incident id
+        incidentGame, // incident game
+        32, // row numbers
+        32, // col numbers
+      ]
+      battleFieldIncidentProps[INCIDENT_CELL_ROW] = mazeStartRow
+      battleFieldIncidentProps[INCIDENT_CELL_COL] = mazeStartCol
+      battleFieldIncidentProps[INCIDENT_PLAYER_STATUS] =
+        playerSprite[SPRITE_STATE]
+
+      game_addIncident(
+        game,
+        BATTLE_FIELD_INCIDENT,
+        `${BATTLE_FIELD_INCIDENT}@${mazeStartRow}@${mazeStartCol}`,
+        incident_factories[BATTLE_FIELD_INCIDENT],
+        battleFieldIncidentProps
+      )
     }
   }
 }

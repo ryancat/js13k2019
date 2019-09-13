@@ -2,7 +2,7 @@
 const game = game_factory([document.getElementById('root')])
 
 // Init game
-game_loadSounds(game)
+// game_loadSounds(game)
 
 // Add game layer
 game_addLayer(game, RENDERER_LAYER_BACKGROUND)
@@ -102,5 +102,5 @@ loop_add(game[GAME_LOOP], dt => {
 loop_start(game[GAME_LOOP])
 
 // Some debug states
-let isAllDoorOpen = false
+let isAllDoorOpen = true
 let noBackgroundMusic = false
