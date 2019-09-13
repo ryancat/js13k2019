@@ -20,3 +20,5 @@ const [
 const MUSIC_SOUND_MOVE = [1, 0.1, 120, 0.2, 0.34, -0.2, 1, 0, 0.93]
 const MUSIC_SOUND_ATTACK = [1, 0.1, 1450, 0.3, 0.05, 0, 1.1, 16.8, 0.31]
 const MUSIC_SOUND_DAMAGE = [1, 0.1, 650, 0.1, 0.94, 1.1, 2.7, 16.7, 0.98]
+const MUSIC_SOUND_PASS_DOOR = [1, 0.1, 550, 0.4, 0.83, 0.5, 2.9, 0.1, 0]
+const MUSIC_SOUND_BACK_TO_START = [1, 0.1, 54, 0.9, 0.36, 0, 0.3, 28.1, 0.27]

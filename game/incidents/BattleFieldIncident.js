@@ -146,6 +146,9 @@ function battleFieldIncident_bindEventCallback(incident) {
         incident_factories[BATTLE_FIELD_INCIDENT],
         battleFieldIncidentProps
       )
+
+      // Play the door sound
+      zzfx.apply(null, MUSIC_SOUND_PASS_DOOR)
     }
   })
 }
@@ -417,4 +420,6 @@ function battleFieldIncident_playerGoBack(incident, playerSprite) {
     incident_factories[BATTLE_FIELD_INCIDENT],
     battleFieldIncidentProps
   )
+
+  zzfx.apply(null, MUSIC_SOUND_BACK_TO_START)
 }
