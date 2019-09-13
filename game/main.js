@@ -30,6 +30,10 @@ const incident_initMapGroup = [
   baseIncident_initMapGroup,
   baseIncident_initMapGroup,
 ]
+const incident_initBulletsGroup = [
+  baseIncident_initBulletsGroup,
+  baseIncident_initBulletsGroup,
+]
 const incident_getSceneById = [
   baseIncident_getSceneById,
   baseIncident_getSceneById,
@@ -99,5 +103,5 @@ loop_add(game[GAME_LOOP], dt => {
 loop_start(game[GAME_LOOP])
 
 // Some debug states
-let isAllDoorOpen = false
+let isAllDoorOpen = true
 let noBackgroundMusic = false

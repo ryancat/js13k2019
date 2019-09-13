@@ -329,3 +329,34 @@ function sprite_hitMoveStop(sprite, finalHitSpriteResult) {
       break
   }
 }
+
+function sprite_attack(sprite, incident, bulletSpriteId) {
+  const incidentBulletGroup = incident[INCIDENT_BULLETS_GROUP]
+
+  // const bulletSprite = sprite_factory([
+  //   bulletSpriteId,
+  //   sprite[SPRITE_X],
+  //   sprite[SPRITE_Y],
+  // ])
+
+  const bulletSprite = game_getSpriteFactory(
+    incident[INCIDENT_GAME],
+    bulletSpriteId
+  )([
+    bulletSpriteId, // sprite id
+    sprite[SPRITE_X] + sprite[SPRITE_WIDTH] / 2, // origin x
+    sprite[SPRITE_Y] + sprite[SPRITE_HEIGHT] / 2, // origin y
+  ])
+
+  const bulletSpeed = bulletSprite[SPRITE_VMAX]
+  // todo: stop that random direction
+  const randomAngle = random[RANDOM_NEXT_FLOAT]() * Math.PI * 2
+  bulletSprite[SPRITE_VX] = Math.sin(randomAngle) * bulletSpeed
+  bulletSprite[SPRITE_VY] = Math.cos(randomAngle) * bulletSpeed
+
+  // Bullets are not the default tile sprite
+  bulletSprite[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
+
+  // Add the attack bullet in the bullets array
+  group_addSprite(incidentBulletGroup, bulletSprite)
+}

@@ -35,6 +35,21 @@ function battleFieldIncident_createRandomCell(incident) {
       johnProps,
     ])
   } else {
+    if (!playerStatus[PLAYER_MEET_FIRST_MONSTER]) {
+      // We will send ONE monsters
+      const monsterProps = []
+      monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
+      monsterProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[2]
+      mapObjects.push([
+        MONSTER_SPRITE,
+        gameObjectWidths[GAME_OBJ_WIDTH_M], // width
+        gameObjectHeights[GAME_OBJ_WIDTH_L], // height
+        Math.round((incidentWidth - GAME_OBJ_WIDTH_M) / 2), // x
+        Math.round((incidentHeight - GAME_OBJ_WIDTH_L) / 2), // y
+        '',
+        monsterProps,
+      ])
+    }
   }
 
   incident[INCIDENT_MAP_DATA] = mg_generateMapData([
@@ -82,6 +97,15 @@ function battleFieldIncident_playRandomCell(incident) {
           }
         )
       }
+    }
+  } else {
+    if (!playerStatus[PLAYER_MEET_FIRST_MONSTER]) {
+      playerStatus[PLAYER_MEET_FIRST_MONSTER] = true
+
+      const monsterSprite = group_getSpriteById(
+        incident[INCIDENT_MAP_GROUP],
+        MONSTER_SPRITE
+      )
     }
   }
 }

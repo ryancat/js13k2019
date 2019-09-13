@@ -117,6 +117,7 @@ const [
   INCIDENT_CELL_ROW,
   INCIDENT_CELL_COL,
   INCIDENT_DOORS,
+  INCIDENT_BULLETS_GROUP,
 ] = [
   0,
   1,
@@ -140,6 +141,7 @@ const [
   19,
   20,
   21,
+  22,
 ]
 
 // tile sprite
@@ -316,8 +318,17 @@ const [
   DIALOG_CONTENT_CALLBACK,
 ] = [0, 1, 2, 3]
 
+// bullets
+// const [BULLET_ID, BULLET_X, BULLET_Y, BULLET_ANGLE, BULLET_LEVEL] = [
+//   0,
+//   1,
+//   2,
+//   3,
+//   4,
+// ]
+
 /***** ENUMS *****/
-const [GROUP_TYPE_MAP, GROUP_TYPE_LAYER, GROUP_TYPE_SCENE] = [0, 1, 2]
+const [GROUP_TYPE_MAP, GROUP_TYPE_LAYER, GROUP_TYPE_BULLETS] = [0, 1, 2]
 const BASE_INCIDENT = 0
 const [SPRITE_TYPE_TILE, SPRITE_TYPE_OBJECT] = [0, 1]
 const [HITTYPE_PASS, HITTYPE_STOP] = [0, 1]

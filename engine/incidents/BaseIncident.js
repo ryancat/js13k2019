@@ -21,6 +21,7 @@
 //   INCIDENT_CELL_ROW,
 //   INCIDENT_CELL_COL,
 //   INCIDENT_DOORS,
+//   INCIDENT_BULLETS_GROUP
 // ] = [
 //   0,
 //   1,
@@ -44,6 +45,7 @@
 //   19,
 //   20,
 //   21,
+//   22
 // ]
 
 // incident
@@ -72,6 +74,7 @@ function baseIncident_factory(props = []) {
       -1,
       -1,
       [],
+      [],
     ],
     props
   )
@@ -92,6 +95,7 @@ function baseIncident_play(incident, dt) {
   // init or update incident
   if (!incident[INCIDENT_FLAG_INIT]) {
     incident_initMapGroup[incidentId](incident)
+    incident_initBulletsGroup[incidentId](incident)
     incident[INCIDENT_FLAG_INIT] = true
     return false
   }
@@ -144,11 +148,14 @@ function baseIncident_play(incident, dt) {
   incident[INCIDENT_FLAG_LAYER_DIRTY_ARR].forEach(
     (isLayerDirty, layerIndex) => {
       if (isLayerDirty) {
+        const gameCamera = incident[INCIDENT_GAME][GAME_CAMERA]
         group_render(
           incident[INCIDENT_MAP_GROUP][GROUP_LAYER_GROUP][layerIndex],
           dt,
-          incident[INCIDENT_GAME][GAME_CAMERA]
+          gameCamera
         )
+
+        group_render(incident[INCIDENT_BULLETS_GROUP], dt, gameCamera)
       }
     }
   )
@@ -273,6 +280,22 @@ function baseIncident_initMapGroup(incident) {
   incident[INCIDENT_FLAG_LAYER_DIRTY_ARR] = mapGroup[GROUP_LAYER_GROUP].map(
     () => true
   )
+}
+
+function baseIncident_initBulletsGroup(incident) {
+  const incidentMapGroup = incident[INCIDENT_MAP_GROUP]
+
+  incident[INCIDENT_BULLETS_GROUP] = group_factory([
+    GROUP_TYPE_BULLETS, // group type
+    incidentMapGroup[GROUP_COL_NUM], // group col num
+    incidentMapGroup[GROUP_ROW_NUM], // group row num
+    incidentMapGroup[GROUP_WIDTH], // group width
+    incidentMapGroup[GROUP_HEIGHT], // group height
+    [], // group children
+    [], // group layer group
+    [], // group map group
+    incidentMapGroup[GROUP_RENDERER], // group renderer
+  ])
 }
 
 function baseIncident_getSceneById(incident, sceneId) {

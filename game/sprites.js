@@ -98,4 +98,14 @@ function sprites_init(game) {
     defaultProps[SPRITE_BACKGROUND_COLOR] = johnColor
     return sprite_factory(util_assignArr(defaultProps, props))
   })
+
+  game_addSprite(game, BULLET_SPRITE, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = BULLET_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[0]
+    defaultProps[SPRITE_WIDTH] = 8
+    defaultProps[SPRITE_HEIGHT] = 8
+    defaultProps[SPRITE_VMAX] = 10
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
 }

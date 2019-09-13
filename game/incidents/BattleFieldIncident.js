@@ -205,6 +205,7 @@ function battleFieldIncident_update(incident, dt) {
   )
 
   battleFieldIncident_handlePlayerMove(incident, playerSprite, dt)
+  battleFieldIncident_handlePlayerAttack(incident, playerSprite, dt)
 }
 
 function battleFieldIncident_handlePlayerMove(incident, playerSprite, dt) {
@@ -250,4 +251,20 @@ function battleFieldIncident_handlePlayerMove(incident, playerSprite, dt) {
   }
 
   sprite_move(playerSprite, incidentGame[GAME_FLAG_DISABLE_MOVE])
+}
+
+function battleFieldIncident_handlePlayerAttack(incident, playerSprite) {
+  const incidentGame = incident[INCIDENT_GAME]
+  const gameKeyInteractions = incidentGame[GAME_KEY_INTERACTIONS]
+  const spaceKeyIsDown = gameKeyInteractions[KEY_SPACE][INTERACTION_IS_DOWN]
+
+  if (spaceKeyIsDown) {
+    // player will attack
+    sprite_attack(playerSprite, incident, BULLET_SPRITE)
+  }
+
+  // Move all bullets
+  incident[INCIDENT_BULLETS_GROUP][GROUP_CHILDREN].forEach(bulletSprite => {
+    sprite_move(bulletSprite, incidentGame[GAME_FLAG_DISABLE_MOVE])
+  })
 }
