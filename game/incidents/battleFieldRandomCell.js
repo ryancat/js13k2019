@@ -5,6 +5,8 @@ function battleFieldIncident_createRandomCell(incident) {
     incident[INCIDENT_COL_NUM] * incidentGame[GAME_TILE_WIDTH]
   const incidentHeight =
     incident[INCIDENT_ROW_NUM] * incidentGame[GAME_TILE_HEIGHT]
+  const tileWidth = incidentGame[GAME_TILE_WIDTH]
+  const tileHeight = incidentGame[GAME_TILE_HEIGHT]
   const gameObjectWidths = incidentGame[GAME_OBJECT_WIDTHS]
   const gameObjectHeights = incidentGame[GAME_OBJECT_HEIGHTS]
   const playerStatus = incident[INCIDENT_PLAYER_STATUS]
@@ -52,7 +54,7 @@ function battleFieldIncident_createRandomCell(incident) {
       ])
     } else {
       const totalMonsterNum =
-        random[RANDOM_NEXT_FLOAT]() > 0.6
+        random[RANDOM_NEXT_FLOAT]() > 0.5
           ? Math.floor(
               random[RANDOM_NEXT_FLOAT]() *
                 (((incident[INCIDENT_COL_NUM] / 8) *
@@ -81,10 +83,14 @@ function battleFieldIncident_createRandomCell(incident) {
           monsterWidth, // width
           monsterHeight, // height
           Math.floor(
-            (incidentWidth - monsterWidth) * random[RANDOM_NEXT_FLOAT]()
+            tileWidth +
+              (incidentWidth - tileWidth * 2 - monsterWidth) *
+                random[RANDOM_NEXT_FLOAT]()
           ), // x
           Math.floor(
-            (incidentHeight - monsterHeight) * random[RANDOM_NEXT_FLOAT]()
+            tileHeight * 3 +
+              (incidentHeight - tileHeight * 6 - monsterHeight) *
+                random[RANDOM_NEXT_FLOAT]()
           ), // y
           ,
           monsterProps,
