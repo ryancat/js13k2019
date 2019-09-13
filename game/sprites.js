@@ -69,6 +69,7 @@ function sprites_init(game) {
     defaultProps[SPRITE_BACKGROUND_COLOR] = playerColor
     defaultProps[SPRITE_SHOW_NAME] = true
     defaultProps[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
+    defaultProps[SPRITE_HITTYPE] = HITTYPE_STOP
     const playerSprite = sprite_factory(util_assignArr(defaultProps, props))
 
     // set player max speed (per 1 ms)
@@ -99,13 +100,43 @@ function sprites_init(game) {
     return sprite_factory(util_assignArr(defaultProps, props))
   })
 
+  game_addSprite(game, MONSTER_SPRITE, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = MONSTER_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[3]
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
+
   game_addSprite(game, BULLET_SPRITE, props => {
     const defaultProps = []
     defaultProps[SPRITE_ID] = BULLET_SPRITE
-    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[0]
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_GREEN[1]
     defaultProps[SPRITE_WIDTH] = 8
     defaultProps[SPRITE_HEIGHT] = 8
     defaultProps[SPRITE_VMAX] = 10
+    defaultProps[SPRITE_MOVE_TYPE] = SPRITE_MOVE_TYPE_CONSTANT
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
+
+  game_addSprite(game, BULLET_SPRITE_ENEMY, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = BULLET_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[1]
+    defaultProps[SPRITE_WIDTH] = 8
+    defaultProps[SPRITE_HEIGHT] = 8
+    defaultProps[SPRITE_VMAX] = 10
+    defaultProps[SPRITE_MOVE_TYPE] = SPRITE_MOVE_TYPE_CONSTANT
+    return sprite_factory(util_assignArr(defaultProps, props))
+  })
+
+  game_addSprite(game, BULLET_SPRITE_FOLLOW, props => {
+    const defaultProps = []
+    defaultProps[SPRITE_ID] = BULLET_SPRITE
+    defaultProps[SPRITE_BACKGROUND_COLOR] = PALETTE_BLUE[1]
+    defaultProps[SPRITE_WIDTH] = 8
+    defaultProps[SPRITE_HEIGHT] = 8
+    defaultProps[SPRITE_VMAX] = 10
+    defaultProps[SPRITE_MOVE_TYPE] = SPRITE_MOVE_TYPE_FOLLOW
     return sprite_factory(util_assignArr(defaultProps, props))
   })
 }

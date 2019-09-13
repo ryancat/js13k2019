@@ -39,7 +39,6 @@ function battleFieldIncident_createRandomCell(incident) {
       // We will send ONE monsters
       const monsterProps = []
       monsterProps[SPRITE_HITTYPE] = HITTYPE_STOP
-      monsterProps[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[2]
       mapObjects.push([
         MONSTER_SPRITE,
         gameObjectWidths[GAME_OBJ_WIDTH_M], // width
@@ -106,10 +105,23 @@ function battleFieldIncident_playRandomCell(incident) {
   } else {
     if (!playerStatus[PLAYER_MEET_FIRST_MONSTER]) {
       playerStatus[PLAYER_MEET_FIRST_MONSTER] = true
-
+      const playerSprite = group_getSpriteById(
+        incident[INCIDENT_MAP_GROUP],
+        PLAYER_SPRITE
+      )
       const monsterSprite = group_getSpriteById(
         incident[INCIDENT_MAP_GROUP],
         MONSTER_SPRITE
+      )
+
+      console.log(monsterSprite)
+
+      // monster would attack!
+      sprite_continueAttack(
+        monsterSprite,
+        playerSprite,
+        incident,
+        BULLET_SPRITE_ENEMY
       )
     }
   }

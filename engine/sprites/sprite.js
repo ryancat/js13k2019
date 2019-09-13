@@ -25,7 +25,10 @@
 //   SPRITE_STATE,
 //   SPRITE_DIALOG_SPRITE_ID
 //   SPRITE_PARENT
-// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+//   SPRITE_FROM_SPRITE
+//   SPRITE_TO_SPRITE
+//   SPRITE_MOVE_TYPE
+// ] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26. 27, 28]
 
 function sprite_factory(props = []) {
   return util_assignArr(
@@ -56,6 +59,9 @@ function sprite_factory(props = []) {
       [],
       -1,
       [],
+      null,
+      null,
+      -1,
     ],
     props
   )
@@ -164,6 +170,8 @@ function sprite_getPossibleHitSprites(sprite) {
           layerSprites.filter(layerSprite => {
             return (
               layerSprite !== sprite &&
+              (!sprite[SPRITE_FROM_SPRITE] ||
+                layerSprite !== sprite[SPRITE_FROM_SPRITE]) &&
               _sprite_getOccupiedTileIndexes(layerSprite).indexOf(
                 spriteIndex
               ) >= 0 &&
@@ -339,9 +347,6 @@ function sprite_hitMoveStop(sprite, finalHitSpriteResult) {
 
 function sprite_hitMoveGone(sprite, finalHitSpriteResult) {
   const [finalHitSprite, hitValue, hitDirection] = finalHitSpriteResult
-  // sprite[SPRITE_VX] = 0
-  // sprite[SPRITE_VY] = 0
-
   sprite_destroy(sprite)
 }
 
@@ -350,7 +355,7 @@ function sprite_destroy(sprite) {
   parentGroupChildren.splice(parentGroupChildren.indexOf(sprite), 1)
 }
 
-function sprite_attack(sprite, incident, bulletSpriteId) {
+function sprite_attack(sprite, targetSprite, incident, bulletSpriteId) {
   const incidentBulletGroup = incident[INCIDENT_BULLETS_GROUP]
   const bulletSprite = game_getSpriteFactory(
     incident[INCIDENT_GAME],
@@ -363,15 +368,62 @@ function sprite_attack(sprite, incident, bulletSpriteId) {
 
   const bulletSpeed = bulletSprite[SPRITE_VMAX]
   // todo: stop that random direction
-  const randomAngle = random[RANDOM_NEXT_FLOAT]() * Math.PI * 2
-  bulletSprite[SPRITE_VX] = Math.sin(randomAngle) * bulletSpeed
-  bulletSprite[SPRITE_VY] = Math.cos(randomAngle) * bulletSpeed
+  let attackAngle
+  if (targetSprite) {
+    const targetCenterX =
+      targetSprite[SPRITE_X] + targetSprite[SPRITE_WIDTH] / 2
+    const targetCenterY =
+      targetSprite[SPRITE_Y] + targetSprite[SPRITE_HEIGHT] / 2
+    const spriteCenterX = sprite[SPRITE_X] + sprite[SPRITE_WIDTH] / 2
+    const spriteCenterY = sprite[SPRITE_Y] + sprite[SPRITE_HEIGHT] / 2
+
+    attackAngle = Math.atan(
+      Math.abs(
+        (spriteCenterY - targetCenterY) / (targetCenterX - spriteCenterX)
+      )
+    )
+
+    bulletSprite[SPRITE_VX] =
+      Math.cos(attackAngle) *
+      bulletSpeed *
+      (targetCenterX > spriteCenterX ? 1 : -1)
+    bulletSprite[SPRITE_VY] =
+      Math.sin(attackAngle) *
+      bulletSpeed *
+      (targetCenterY > spriteCenterY ? 1 : -1)
+  } else {
+    attackAngle = random[RANDOM_NEXT_FLOAT]() * Math.PI * 2
+    bulletSprite[SPRITE_VX] = Math.cos(attackAngle) * bulletSpeed
+    bulletSprite[SPRITE_VY] = Math.sin(attackAngle) * bulletSpeed
+  }
 
   // Bullets are not the default tile sprite
   bulletSprite[SPRITE_TYPE] = SPRITE_TYPE_OBJECT
   bulletSprite[SPRITE_MAP_GROUP] = incident[INCIDENT_MAP_GROUP]
   bulletSprite[SPRITE_HITTYPE] = HITTYPE_GONE
+  bulletSprite[SPRITE_FROM_SPRITE] = sprite
+  bulletSprite[SPRITE_TO_SPRITE] = targetSprite
 
   // Add the attack bullet in the bullets array
   group_addSprite(incidentBulletGroup, bulletSprite)
+}
+
+function sprite_continueAttack(
+  sprite,
+  targetSprite,
+  incident,
+  bulletSpriteId,
+  maxInterval = 2000
+) {
+  sprite_attack(sprite, targetSprite, incident, bulletSpriteId)
+
+  setTimeout(() => {
+    sprite_continueAttack(
+      sprite,
+      targetSprite,
+      incident,
+      bulletSpriteId,
+      maxInterval
+    )
+  }, Math.max(300, Math.round(random[RANDOM_NEXT_FLOAT]() * maxInterval)))
 }

@@ -265,7 +265,7 @@ function battleFieldIncident_handlePlayerAttack(incident, playerSprite) {
 
   if (spaceKeyIsDown) {
     // player will attack
-    sprite_attack(playerSprite, incident, BULLET_SPRITE)
+    sprite_attack(playerSprite, null, incident, BULLET_SPRITE)
   }
 
   // Move all bullets
