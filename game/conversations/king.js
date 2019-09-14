@@ -73,15 +73,19 @@ function conv_king(kingSprite, playerSprite, incident) {
       // Before game over
       return [
         [kingSprite, "You are back! How's your trip?"],
-        [playerSprite, 'Pretty interesting... I killed monsters and liars!'],
+        [playerSprite, 'Pretty interesting... I killed monsters and a liar!'],
         [kingSprite, 'What happened?!'],
         [
           playerSprite,
-          '(I told the realKing! about the betrayal of John. His clostest friend turns out to be a bad guy.)',
+          '(I told the king about the betrayal of John. His closest friend turns out to be a bad guy.)',
         ],
-        [kingSprite, "I couldn'd believe what happened!"],
+        [
+          playerSprite,
+          'And here is the gems he stolen.',
+        ],
         [kingSprite, '...'],
-        [kingSprite, 'Thank you, my friend, for bring me back the best gem...'],
+        [kingSprite, "I couldn'd believe what happened!"],
+        [kingSprite, 'Thank you, my friend, for bringing me back the best gem...'],
         [kingSprite, 'The gem of truth!'],
         [kingSprite, 'It worth more than all other gems combined.'],
         [
