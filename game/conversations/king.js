@@ -10,14 +10,15 @@ function conv_king(kingSprite, playerSprite, incident) {
     if (luckyRate > 0.7) {
       // Chance to gain extra damage
       playerSprite[SPRITE_STATE][SPRITE_DAMAGE]++
-      kingWords = "Don't worry, I will make you stronger!"
+      kingWords = "Don't worry, I will make you stronger! (Attack + 1)"
       kingWordsColor = PALETTE_GREEN[4]
     }
 
     if (luckyRate < 0.3 && playerSprite[SPRITE_STATE][SPRITE_DAMAGE] > 1) {
       // Chance to lose damage
       playerSprite[SPRITE_STATE][SPRITE_DAMAGE]--
-      kingWords = 'Too much damange... Be careful, you are weaker now!'
+      kingWords =
+        'Too much damange... Be careful, you are weaker now! (Attack - 1)'
       kingWordsColor = PALETTE_RED[4]
     }
 
@@ -34,19 +35,16 @@ function conv_king(kingSprite, playerSprite, incident) {
       [kingSprite, 'I am the real king. You know, I run this place.'],
       [
         kingSprite,
-        "However, that's until 5 years ago, when the dragons took our gems!",
+        "However, that's until 5 years ago, when the monsters took our magic gems!",
       ],
       [kingSprite, 'The world is suffering in fear...'],
-      [kingSprite, 'Please bring back the gems and restore the world peace!'],
-      [
-        playerSprite,
-        "That sounds great! Kill the dragons and take the gems, that's what I do for a living!",
-      ],
+      [kingSprite, 'Please bring back the gems!'],
+      [playerSprite, 'I guess I can lend a hand!'],
       [
         kingSprite,
         'Thank you for your help! Remember, you can always come back and restore your health!',
       ],
-      [playerSprite, 'Wow!'],
+      [playerSprite, 'Great!'],
       [
         kingSprite,
         'You are welcome! Now, the doors are open for you!',
@@ -73,19 +71,19 @@ function conv_king(kingSprite, playerSprite, incident) {
       // Before game over
       return [
         [kingSprite, "You are back! How's your trip?"],
-        [playerSprite, 'Pretty interesting... I killed monsters and a liar!'],
+        [playerSprite, 'I killed monsters and a liar!'],
         [kingSprite, 'What happened?!'],
         [
           playerSprite,
           '(I told the king about the betrayal of John. His closest friend turns out to be a bad guy.)',
         ],
-        [
-          playerSprite,
-          'And here is the gems he stolen.',
-        ],
+        [playerSprite, 'And here is the gems he stolen.'],
         [kingSprite, '...'],
         [kingSprite, "I couldn'd believe what happened!"],
-        [kingSprite, 'Thank you, my friend, for bringing me back the best gem...'],
+        [
+          kingSprite,
+          'Thank you, my friend, for bringing me back the best gem...',
+        ],
         [kingSprite, 'The gem of truth!'],
         [kingSprite, 'It worth more than all other gems combined.'],
         [

@@ -48,25 +48,24 @@ function conv_john(johnSprite, playerSprite, incident) {
     return [
       [johnSprite, 'You KILL the dragon king! That never happened!!'],
       [playerSprite, 'It was... easy.'],
-      [johnSprite, 'Ok, that was not expected...'],
+      [johnSprite, 'That was not expected...'],
       [
         playerSprite,
         'You are welcome! Now, where are the gems? I was told to bring them back.',
       ],
       [johnSprite, '...'],
       [playerSprite, 'John...?'],
-      [johnSprite, '...'],
       [playerSprite, "John... John, are you ok? You don't look good."],
       [
         johnSprite,
-        'I am sorry, my friend, but you are not going to leave here',
+        'I am sorry, my friend, but you are not going to leave here.',
         PALETTE_RED[3],
         () => {
           johnSprite[SPRITE_NAME] = 'johnTheBadGuy'
           johnSprite[SPRITE_BACKGROUND_COLOR] = PALETTE_RED[4]
           johnSprite[SPRITE_BORDER_COLOR] = PALETTE_RED[4]
-          johnSprite[SPRITE_STATE][SPRITE_HP] = 20
-          johnSprite[SPRITE_STATE][SPRITE_HP_MAX] = 20
+          johnSprite[SPRITE_STATE][SPRITE_HP] = 30
+          johnSprite[SPRITE_STATE][SPRITE_HP_MAX] = 30
           johnSprite[SPRITE_STATE][SPRITE_DAMAGE] = 3
           johnSprite[SPRITE_STATE][SPRITE_ATTACK_RATE] = 200
         },
@@ -90,7 +89,7 @@ function conv_john(johnSprite, playerSprite, incident) {
     return [
       dialogContent_factory([
         johnSprite,
-        'You need to find your way across the maze. I heard the gems are in the south! (SPACE key to attack)',
+        'I heard the gems are in the south! (SPACE key to attack)',
         PALETTE_RED[3],
       ]),
     ]
